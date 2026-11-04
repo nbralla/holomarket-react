@@ -1,0 +1,3053 @@
+{
+  "config": {
+    "comision": 3,
+    "iva": 19,
+    "envioMismaRegion": 2990,
+    "envioOtraRegion": 4990,
+    "stockBajo": 1,
+    "sesionMinutos": 30,
+    "retiroMinimo": 5000,
+    "dolar": 950,
+    "secuencias": {
+      "usuario": 3,
+      "publicacion": 27,
+      "pedido": 1022,
+      "movimiento": 50,
+      "actividad": 67,
+      "retiro": 2
+    }
+  },
+  "usuarios": [
+    {
+      "id": "U00",
+      "rut": "11.111.111-1",
+      "nombre": "Equipo HoloMarket",
+      "email": "admin@holomarket.cl",
+      "sal": "870c4e64a9c239ba",
+      "clave": "dd7b6a757df0f274e93d0d06e1ab080a8a06965a26ae9e1330578cdfdb1315af",
+      "rol": "admin",
+      "region": "Metropolitana de Santiago",
+      "comuna": "Santiago",
+      "telefono": "+56 2 2345 6789",
+      "direccion": "",
+      "estado": "activo",
+      "creado": 1782417227511,
+      "cuenta": null
+    },
+    {
+      "id": "U01",
+      "rut": "12.345.678-5",
+      "nombre": "Camila Rojas",
+      "email": "camila@demo.cl",
+      "sal": "1e611b1b9c6b0c06",
+      "clave": "6b268ff37cb627e62380ea3fabb7ad9d23c35f99ac96a3c17e3f976e07977c2c",
+      "rol": "cliente",
+      "region": "Metropolitana de Santiago",
+      "comuna": "Ñuñoa",
+      "telefono": "+56 9 8765 4321",
+      "direccion": "Av. Irarrázaval 3450, depto. 1204",
+      "estado": "activo",
+      "creado": 1787601227511,
+      "cuenta": null
+    },
+    {
+      "id": "U02",
+      "rut": "17.654.321-3",
+      "nombre": "Diego Muñoz",
+      "email": "diego@demo.cl",
+      "sal": "9c11a03eff090003",
+      "clave": "45a3ba13c42045d1d69807e1b6ac4c5325914b39e70fa1fec7ce5ebbb6f4f90a",
+      "rol": "cliente",
+      "region": "Valparaíso",
+      "comuna": "Viña del Mar",
+      "telefono": "+56 9 7654 3210",
+      "direccion": "Av. Libertad 1180",
+      "estado": "activo",
+      "creado": 1785009227511,
+      "cuenta": null
+    },
+    {
+      "id": "U03",
+      "rut": "19.876.543-0",
+      "nombre": "Valentina Soto",
+      "email": "valentina@demo.cl",
+      "sal": "081d402df0f7ee2f",
+      "clave": "7058cca15878d9bb83f419016b1652fb052c9da522414724cc54ecb30c70b930",
+      "rol": "cliente",
+      "region": "Biobío",
+      "comuna": "Concepción",
+      "telefono": "+56 9 6543 2109",
+      "direccion": "O'Higgins 940, of. 32",
+      "estado": "activo",
+      "creado": 1786305227511,
+      "cuenta": {
+        "banco": "BancoEstado",
+        "tipo": "Cuenta vista / CuentaRUT",
+        "numero": "19876543",
+        "actualizada": 1786305227511
+      }
+    }
+  ],
+  "publicaciones": [
+    {
+      "id": "P001",
+      "vendedorId": "U02",
+      "juego": "pokemon",
+      "nombre": "Charizard ex",
+      "edicion": "Obsidian Flames",
+      "numero": "125/197",
+      "rareza": "Double Rare",
+      "acabado": "Holo",
+      "idioma": "ES",
+      "condicion": "NM",
+      "precio": 5990,
+      "stock": 3,
+      "estado": "activa",
+      "descripcion": "Sacada del sobre directo a sleeve y toploader.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1788461627511,
+      "actualizado": 1788461627511
+    },
+    {
+      "id": "P002",
+      "vendedorId": "U03",
+      "juego": "pokemon",
+      "nombre": "Charizard ex",
+      "edicion": "Obsidian Flames",
+      "numero": "125/197",
+      "rareza": "Double Rare",
+      "acabado": "Holo",
+      "idioma": "EN",
+      "condicion": "EX",
+      "precio": 4490,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "Pequeño blanqueo en una esquina del reverso.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1788893627511,
+      "actualizado": 1788893627511,
+      "precioAnterior": 5490
+    },
+    {
+      "id": "P003",
+      "vendedorId": "U01",
+      "juego": "pokemon",
+      "nombre": "Charizard ex",
+      "edicion": "Obsidian Flames",
+      "numero": "125/197",
+      "rareza": "Double Rare",
+      "acabado": "Holo",
+      "idioma": "ES",
+      "condicion": "NM",
+      "precio": 6490,
+      "stock": 2,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1789757627511,
+      "actualizado": 1789757627511
+    },
+    {
+      "id": "P004",
+      "vendedorId": "U02",
+      "juego": "pokemon",
+      "nombre": "Umbreon VMAX (arte alternativo)",
+      "edicion": "Evolving Skies",
+      "numero": "215/203",
+      "rareza": "Secret Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "EX",
+      "precio": 1249990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "Centrado aproximado 55/45. Se envía con seguro, en caja rígida.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1790189627511,
+      "actualizado": 1790189627511,
+      "precioAnterior": 1399990
+    },
+    {
+      "id": "P005",
+      "vendedorId": "U02",
+      "juego": "magic",
+      "nombre": "Sol Ring",
+      "edicion": "Commander Masters",
+      "numero": "",
+      "rareza": "Uncommon",
+      "acabado": "Normal",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 2490,
+      "stock": 5,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1789757627511,
+      "actualizado": 1789757627511
+    },
+    {
+      "id": "P006",
+      "vendedorId": "U03",
+      "juego": "pokemon",
+      "nombre": "Charizard ex (ilustración especial)",
+      "edicion": "Scarlet & Violet 151",
+      "numero": "199/165",
+      "rareza": "Special Illustration Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 139990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "Nunca jugada. Guardada en carpeta de 9 bolsillos.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1788893627511,
+      "actualizado": 1788893627511,
+      "precioAnterior": 159990
+    },
+    {
+      "id": "P007",
+      "vendedorId": "U03",
+      "juego": "pokemon",
+      "nombre": "Pikachu ex (ilustración especial)",
+      "edicion": "Surging Sparks",
+      "numero": "238/191",
+      "rareza": "Special Illustration Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 279990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1792349627511,
+      "actualizado": 1792349627511
+    },
+    {
+      "id": "P008",
+      "vendedorId": "U02",
+      "juego": "pokemon",
+      "nombre": "Gardevoir ex (ilustración especial)",
+      "edicion": "Scarlet & Violet",
+      "numero": "245/198",
+      "rareza": "Special Illustration Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "ES",
+      "condicion": "NM",
+      "precio": 44990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1790621627511,
+      "actualizado": 1790621627511
+    },
+    {
+      "id": "P009",
+      "vendedorId": "U03",
+      "juego": "pokemon",
+      "nombre": "Iono (ilustración especial)",
+      "edicion": "Paldea Evolved",
+      "numero": "269/193",
+      "rareza": "Special Illustration Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 64990,
+      "stock": 0,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1791572027511,
+      "actualizado": 1791572027511
+    },
+    {
+      "id": "P010",
+      "vendedorId": "U02",
+      "juego": "pokemon",
+      "nombre": "Giratina V (arte alternativo)",
+      "edicion": "Lost Origin",
+      "numero": "186/196",
+      "rareza": "Ultra Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 229990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1790880827511,
+      "actualizado": 1790880827511
+    },
+    {
+      "id": "P011",
+      "vendedorId": "U03",
+      "juego": "pokemon",
+      "nombre": "Lugia V (arte alternativo)",
+      "edicion": "Silver Tempest",
+      "numero": "186/195",
+      "rareza": "Ultra Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 169990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1791831227511,
+      "actualizado": 1791831227511
+    },
+    {
+      "id": "P012",
+      "vendedorId": "U02",
+      "juego": "pokemon",
+      "nombre": "Pikachu",
+      "edicion": "Scarlet & Violet 151",
+      "numero": "025/165",
+      "rareza": "Common",
+      "acabado": "Normal",
+      "idioma": "ES",
+      "condicion": "NM",
+      "precio": 590,
+      "stock": 8,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1789325627511,
+      "actualizado": 1789325627511,
+      "precioAnterior": 790
+    },
+    {
+      "id": "P013",
+      "vendedorId": "U03",
+      "juego": "pokemon",
+      "nombre": "Pikachu",
+      "edicion": "Scarlet & Violet 151",
+      "numero": "025/165",
+      "rareza": "Common",
+      "acabado": "Reverse holo",
+      "idioma": "ES",
+      "condicion": "NM",
+      "precio": 890,
+      "stock": 12,
+      "estado": "activa",
+      "descripcion": "Versión reverse holo.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1790189627511,
+      "actualizado": 1790189627511
+    },
+    {
+      "id": "P014",
+      "vendedorId": "U01",
+      "juego": "pokemon",
+      "nombre": "Mew ex (dorada)",
+      "edicion": "Scarlet & Violet 151",
+      "numero": "205/165",
+      "rareza": "Hyper Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 24990,
+      "stock": 1,
+      "estado": "pausada",
+      "descripcion": "Pausada mientras decido si la cambio.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1792263227511,
+      "actualizado": 1792263227511
+    },
+    {
+      "id": "P015",
+      "vendedorId": "U02",
+      "juego": "magic",
+      "nombre": "The One Ring",
+      "edicion": "The Lord of the Rings: Tales of Middle-earth",
+      "numero": "",
+      "rareza": "Mythic Rare",
+      "acabado": "Normal",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 54990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1791399227511,
+      "actualizado": 1791399227511
+    },
+    {
+      "id": "P016",
+      "vendedorId": "U02",
+      "juego": "magic",
+      "nombre": "Sheoldred, the Apocalypse",
+      "edicion": "Dominaria United",
+      "numero": "",
+      "rareza": "Mythic Rare",
+      "acabado": "Normal",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 49990,
+      "stock": 2,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1791658427511,
+      "actualizado": 1791658427511,
+      "precioAnterior": 59990
+    },
+    {
+      "id": "P017",
+      "vendedorId": "U03",
+      "juego": "magic",
+      "nombre": "Lightning Bolt",
+      "edicion": "Magic 2010",
+      "numero": "",
+      "rareza": "Common",
+      "acabado": "Normal",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 1490,
+      "stock": 6,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1790016827511,
+      "actualizado": 1790016827511
+    },
+    {
+      "id": "P018",
+      "vendedorId": "U01",
+      "juego": "magic",
+      "nombre": "Ragavan, Nimble Pilferer",
+      "edicion": "Modern Horizons 2",
+      "numero": "",
+      "rareza": "Mythic Rare",
+      "acabado": "Normal",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 39990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1792522427511,
+      "actualizado": 1792522427511
+    },
+    {
+      "id": "P019",
+      "vendedorId": "U03",
+      "juego": "yugioh",
+      "nombre": "Blue-Eyes White Dragon",
+      "edicion": "Legend of Blue Eyes White Dragon",
+      "numero": "LOB-EN001",
+      "rareza": "Ultra Rare",
+      "acabado": "Holo",
+      "idioma": "EN",
+      "condicion": "EX",
+      "precio": 74990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "Edición Unlimited.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1789325627511,
+      "actualizado": 1789325627511
+    },
+    {
+      "id": "P020",
+      "vendedorId": "U03",
+      "juego": "yugioh",
+      "nombre": "Dark Magician",
+      "edicion": "Legend of Blue Eyes White Dragon",
+      "numero": "LOB-EN005",
+      "rareza": "Ultra Rare",
+      "acabado": "Holo",
+      "idioma": "EN",
+      "condicion": "GD",
+      "precio": 39990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1791312827511,
+      "actualizado": 1791312827511,
+      "precioAnterior": 44990
+    },
+    {
+      "id": "P021",
+      "vendedorId": "U02",
+      "juego": "yugioh",
+      "nombre": "Ash Blossom & Joyous Spring",
+      "edicion": "Maximum Crisis",
+      "numero": "",
+      "rareza": "Secret Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "EN",
+      "condicion": "NM",
+      "precio": 12990,
+      "stock": 3,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1791917627511,
+      "actualizado": 1791917627511,
+      "precioAnterior": 15990
+    },
+    {
+      "id": "P022",
+      "vendedorId": "U02",
+      "juego": "onepiece",
+      "nombre": "Monkey.D.Luffy (líder)",
+      "edicion": "Romance Dawn (OP-01)",
+      "numero": "OP01-003",
+      "rareza": "Leader",
+      "acabado": "Normal",
+      "idioma": "JP",
+      "condicion": "NM",
+      "precio": 3490,
+      "stock": 4,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1792090427511,
+      "actualizado": 1792090427511
+    },
+    {
+      "id": "P023",
+      "vendedorId": "U02",
+      "juego": "onepiece",
+      "nombre": "Shanks",
+      "edicion": "Romance Dawn (OP-01)",
+      "numero": "OP01-120",
+      "rareza": "Secret Rare",
+      "acabado": "Foil / Full art",
+      "idioma": "JP",
+      "condicion": "NM",
+      "precio": 54990,
+      "stock": 1,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1790189627511,
+      "actualizado": 1790189627511
+    },
+    {
+      "id": "P024",
+      "vendedorId": "U03",
+      "juego": "myl",
+      "nombre": "Excalibur",
+      "edicion": "Espada Sagrada",
+      "numero": "",
+      "rareza": "Ultra Real",
+      "acabado": "Normal",
+      "idioma": "ES",
+      "condicion": "NM",
+      "precio": 14990,
+      "stock": 2,
+      "estado": "activa",
+      "descripcion": "Clásico del TCG chileno.",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1790621627511,
+      "actualizado": 1790621627511,
+      "precioAnterior": 17990
+    },
+    {
+      "id": "P025",
+      "vendedorId": "U03",
+      "juego": "myl",
+      "nombre": "Aquiles",
+      "edicion": "Helénica",
+      "numero": "",
+      "rareza": "Real",
+      "acabado": "Normal",
+      "idioma": "ES",
+      "condicion": "EX",
+      "precio": 4990,
+      "stock": 3,
+      "estado": "activa",
+      "descripcion": "",
+      "imagen": null,
+      "imagenApi": null,
+      "creado": 1792263227511,
+      "actualizado": 1792263227511
+    },
+    {
+      "id": "P026",
+      "vendedorId": "U01",
+      "juego": "onepiece",
+      "nombre": "Monkey.D.Luffy (OP05-119) (Manga)",
+      "edicion": "Premium Booster -The Best-",
+      "numero": "OP05-119",
+      "rareza": "Secret Rare",
+      "acabado": "Holo",
+      "idioma": "EN",
+      "condicion": "MT",
+      "precio": 5000000,
+      "descripcion": "",
+      "stock": 2,
+      "estado": "activa",
+      "imagen": null,
+      "imagenApi": "https://tcgplayer-cdn.tcgplayer.com/product/587963_400w.jpg",
+      "creado": 1792785867199,
+      "actualizado": 1792785867199
+    },
+    {
+      "id": "P027",
+      "vendedorId": "U01",
+      "juego": "myl",
+      "nombre": "arturo prat - sp",
+      "edicion": "IMP - Libertadores",
+      "numero": "197",
+      "rareza": "Legendaria",
+      "acabado": "Normal",
+      "idioma": "ES",
+      "condicion": "NM",
+      "precio": 1500000,
+      "descripcion": "",
+      "stock": 1,
+      "estado": "activa",
+      "imagen": null,
+      "imagenApi": "https://api.myl.cl/static/cards/161/197.png",
+      "creado": 1792785927531,
+      "actualizado": 1792785927531
+    }
+  ],
+  "pedidos": [
+    {
+      "id": "HM-1001",
+      "compradorId": "U03",
+      "vendedorId": "U02",
+      "fecha": 1788810827511,
+      "items": [
+        {
+          "pubId": "P001",
+          "nombre": "Charizard ex",
+          "juego": "pokemon",
+          "edicion": "Obsidian Flames",
+          "numero": "125/197",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 6490,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 6490,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Valentina Soto",
+        "telefono": "+56 9 6543 2109",
+        "region": "Biobío",
+        "comuna": "Concepción",
+        "direccion": "O'Higgins 940, of. 32"
+      },
+      "total": 11480,
+      "comisionPct": 8,
+      "comision": 519,
+      "ivaComision": 99,
+      "netoVendedor": 5872,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1788810827511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1788897227511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1789070027511
+        }
+      ],
+      "seguimiento": "BX-4300731"
+    },
+    {
+      "id": "HM-1002",
+      "compradorId": "U02",
+      "vendedorId": "U03",
+      "fecha": 1789156427511,
+      "items": [
+        {
+          "pubId": "P006",
+          "nombre": "Charizard ex (ilustración especial)",
+          "juego": "pokemon",
+          "edicion": "Scarlet & Violet 151",
+          "numero": "199/165",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 154990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 154990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Diego Muñoz",
+        "telefono": "+56 9 7654 3210",
+        "region": "Valparaíso",
+        "comuna": "Viña del Mar",
+        "direccion": "Av. Libertad 1180"
+      },
+      "total": 159980,
+      "comisionPct": 8,
+      "comision": 12399,
+      "ivaComision": 2356,
+      "netoVendedor": 140235,
+      "pago": {
+        "metodo": "transferencia",
+        "detalle": "transferencia simulada"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1789156427511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1789242827511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1789415627511
+        }
+      ],
+      "seguimiento": "BX-4301462"
+    },
+    {
+      "id": "HM-1003",
+      "compradorId": "U01",
+      "vendedorId": "U02",
+      "fecha": 1789502027511,
+      "items": [
+        {
+          "pubId": "P001",
+          "nombre": "Charizard ex",
+          "juego": "pokemon",
+          "edicion": "Obsidian Flames",
+          "numero": "125/197",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 6290,
+          "cantidad": 2
+        }
+      ],
+      "subtotal": 12580,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 17570,
+      "comisionPct": 8,
+      "comision": 1006,
+      "ivaComision": 191,
+      "netoVendedor": 11383,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1789502027511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1789588427511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1789761227511
+        }
+      ],
+      "seguimiento": "BX-4302193"
+    },
+    {
+      "id": "HM-1004",
+      "compradorId": "U02",
+      "vendedorId": "U03",
+      "fecha": 1789674827511,
+      "items": [
+        {
+          "pubId": "P019",
+          "nombre": "Blue-Eyes White Dragon",
+          "juego": "yugioh",
+          "edicion": "Legend of Blue Eyes White Dragon",
+          "numero": "LOB-EN001",
+          "condicion": "EX",
+          "idioma": "EN",
+          "precio": 69990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 69990,
+      "envio": {
+        "metodo": "retiro",
+        "costo": 0,
+        "receptor": "Diego Muñoz",
+        "telefono": "+56 9 7654 3210",
+        "region": "Valparaíso",
+        "comuna": "Viña del Mar",
+        "direccion": "Av. Libertad 1180"
+      },
+      "total": 69990,
+      "comisionPct": 8,
+      "comision": 5599,
+      "ivaComision": 1064,
+      "netoVendedor": 63327,
+      "pago": {
+        "metodo": "transferencia",
+        "detalle": "transferencia simulada"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1789674827511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1789674827511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1789847627511
+        }
+      ],
+      "seguimiento": ""
+    },
+    {
+      "id": "HM-1005",
+      "compradorId": "U01",
+      "vendedorId": "U02",
+      "fecha": 1789761227511,
+      "items": [
+        {
+          "pubId": "P012",
+          "nombre": "Pikachu",
+          "juego": "pokemon",
+          "edicion": "Scarlet & Violet 151",
+          "numero": "025/165",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 550,
+          "cantidad": 3
+        }
+      ],
+      "subtotal": 1650,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 6640,
+      "comisionPct": 8,
+      "comision": 132,
+      "ivaComision": 25,
+      "netoVendedor": 1493,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1789761227511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1789847627511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790020427511
+        }
+      ],
+      "seguimiento": "BX-4303655"
+    },
+    {
+      "id": "HM-1006",
+      "compradorId": "U01",
+      "vendedorId": "U03",
+      "fecha": 1789934027511,
+      "items": [
+        {
+          "pubId": "P002",
+          "nombre": "Charizard ex",
+          "juego": "pokemon",
+          "edicion": "Obsidian Flames",
+          "numero": "125/197",
+          "condicion": "EX",
+          "idioma": "EN",
+          "precio": 4990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 4990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 9980,
+      "comisionPct": 8,
+      "comision": 399,
+      "ivaComision": 76,
+      "netoVendedor": 4515,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1789934027511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790020427511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790193227511
+        }
+      ],
+      "seguimiento": "BX-4304386"
+    },
+    {
+      "id": "HM-1007",
+      "compradorId": "U03",
+      "vendedorId": "U02",
+      "fecha": 1790106827511,
+      "items": [
+        {
+          "pubId": "P005",
+          "nombre": "Sol Ring",
+          "juego": "magic",
+          "edicion": "Commander Masters",
+          "numero": "",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 2290,
+          "cantidad": 2
+        }
+      ],
+      "subtotal": 4580,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Valentina Soto",
+        "telefono": "+56 9 6543 2109",
+        "region": "Biobío",
+        "comuna": "Concepción",
+        "direccion": "O'Higgins 940, of. 32"
+      },
+      "total": 9570,
+      "comisionPct": 8,
+      "comision": 366,
+      "ivaComision": 70,
+      "netoVendedor": 4144,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790106827511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790193227511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790366027511
+        }
+      ],
+      "seguimiento": "BX-4305117"
+    },
+    {
+      "id": "HM-1008",
+      "compradorId": "U03",
+      "vendedorId": "U01",
+      "fecha": 1790193227511,
+      "items": [
+        {
+          "pubId": "P003",
+          "nombre": "Charizard ex",
+          "juego": "pokemon",
+          "edicion": "Obsidian Flames",
+          "numero": "125/197",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 6990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 6990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Valentina Soto",
+        "telefono": "+56 9 6543 2109",
+        "region": "Biobío",
+        "comuna": "Concepción",
+        "direccion": "O'Higgins 940, of. 32"
+      },
+      "total": 11980,
+      "comisionPct": 8,
+      "comision": 559,
+      "ivaComision": 106,
+      "netoVendedor": 6325,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790193227511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790279627511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790452427511
+        }
+      ],
+      "seguimiento": "BX-4305848"
+    },
+    {
+      "id": "HM-1009",
+      "compradorId": "U02",
+      "vendedorId": "U03",
+      "fecha": 1790279627511,
+      "items": [
+        {
+          "pubId": "P017",
+          "nombre": "Lightning Bolt",
+          "juego": "magic",
+          "edicion": "Magic 2010",
+          "numero": "",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 1390,
+          "cantidad": 3
+        }
+      ],
+      "subtotal": 4170,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Diego Muñoz",
+        "telefono": "+56 9 7654 3210",
+        "region": "Valparaíso",
+        "comuna": "Viña del Mar",
+        "direccion": "Av. Libertad 1180"
+      },
+      "total": 9160,
+      "comisionPct": 8,
+      "comision": 334,
+      "ivaComision": 63,
+      "netoVendedor": 3773,
+      "pago": {
+        "metodo": "transferencia",
+        "detalle": "transferencia simulada"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790279627511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790366027511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790538827511
+        }
+      ],
+      "seguimiento": "BX-4306579"
+    },
+    {
+      "id": "HM-1010",
+      "compradorId": "U03",
+      "vendedorId": "U02",
+      "fecha": 1790366027511,
+      "items": [
+        {
+          "pubId": "P004",
+          "nombre": "Umbreon VMAX (arte alternativo)",
+          "juego": "pokemon",
+          "edicion": "Evolving Skies",
+          "numero": "215/203",
+          "condicion": "EX",
+          "idioma": "EN",
+          "precio": 1189990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 1189990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Valentina Soto",
+        "telefono": "+56 9 6543 2109",
+        "region": "Biobío",
+        "comuna": "Concepción",
+        "direccion": "O'Higgins 940, of. 32"
+      },
+      "total": 1194980,
+      "comisionPct": 8,
+      "comision": 95199,
+      "ivaComision": 18088,
+      "netoVendedor": 1076703,
+      "pago": {
+        "metodo": "transferencia",
+        "detalle": "transferencia simulada"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790366027511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790452427511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790625227511
+        }
+      ],
+      "seguimiento": "BX-4307310"
+    },
+    {
+      "id": "HM-1011",
+      "compradorId": "U01",
+      "vendedorId": "U02",
+      "fecha": 1790538827511,
+      "items": [
+        {
+          "pubId": "P023",
+          "nombre": "Shanks",
+          "juego": "onepiece",
+          "edicion": "Romance Dawn (OP-01)",
+          "numero": "OP01-120",
+          "condicion": "NM",
+          "idioma": "JP",
+          "precio": 59990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 59990,
+      "envio": {
+        "metodo": "retiro",
+        "costo": 0,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 59990,
+      "comisionPct": 8,
+      "comision": 4799,
+      "ivaComision": 912,
+      "netoVendedor": 54279,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790538827511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790538827511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790711627511
+        }
+      ],
+      "seguimiento": ""
+    },
+    {
+      "id": "HM-1012",
+      "compradorId": "U01",
+      "vendedorId": "U03",
+      "fecha": 1790625227511,
+      "items": [
+        {
+          "pubId": "P013",
+          "nombre": "Pikachu",
+          "juego": "pokemon",
+          "edicion": "Scarlet & Violet 151",
+          "numero": "025/165",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 850,
+          "cantidad": 2
+        }
+      ],
+      "subtotal": 1700,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 6690,
+      "comisionPct": 8,
+      "comision": 136,
+      "ivaComision": 26,
+      "netoVendedor": 1538,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790625227511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790711627511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1790884427511
+        }
+      ],
+      "seguimiento": "BX-4308772"
+    },
+    {
+      "id": "HM-1013",
+      "compradorId": "U01",
+      "vendedorId": "U03",
+      "fecha": 1790884427511,
+      "items": [
+        {
+          "pubId": "P024",
+          "nombre": "Excalibur",
+          "juego": "myl",
+          "edicion": "Espada Sagrada",
+          "numero": "",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 13990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 13990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 18980,
+      "comisionPct": 8,
+      "comision": 1119,
+      "ivaComision": 213,
+      "netoVendedor": 12658,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790884427511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1790970827511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1791143627511
+        }
+      ],
+      "seguimiento": "BX-4309503"
+    },
+    {
+      "id": "HM-1014",
+      "compradorId": "U03",
+      "vendedorId": "U02",
+      "fecha": 1790970827511,
+      "items": [
+        {
+          "pubId": "P001",
+          "nombre": "Charizard ex",
+          "juego": "pokemon",
+          "edicion": "Obsidian Flames",
+          "numero": "125/197",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 5990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 5990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Valentina Soto",
+        "telefono": "+56 9 6543 2109",
+        "region": "Biobío",
+        "comuna": "Concepción",
+        "direccion": "O'Higgins 940, of. 32"
+      },
+      "total": 10980,
+      "comisionPct": 8,
+      "comision": 479,
+      "ivaComision": 91,
+      "netoVendedor": 5420,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1790970827511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1791057227511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1791230027511
+        }
+      ],
+      "seguimiento": "BX-4310234"
+    },
+    {
+      "id": "HM-1015",
+      "compradorId": "U01",
+      "vendedorId": "U02",
+      "fecha": 1791143627511,
+      "items": [
+        {
+          "pubId": "P008",
+          "nombre": "Gardevoir ex (ilustración especial)",
+          "juego": "pokemon",
+          "edicion": "Scarlet & Violet",
+          "numero": "245/198",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 42990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 42990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 47980,
+      "comisionPct": 8,
+      "comision": 3439,
+      "ivaComision": 653,
+      "netoVendedor": 38898,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1791143627511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1791230027511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1791402827511
+        }
+      ],
+      "seguimiento": "BX-4310965"
+    },
+    {
+      "id": "HM-1016",
+      "compradorId": "U01",
+      "vendedorId": "U03",
+      "fecha": 1791230027511,
+      "items": [
+        {
+          "pubId": "P006",
+          "nombre": "Charizard ex (ilustración especial)",
+          "juego": "pokemon",
+          "edicion": "Scarlet & Violet 151",
+          "numero": "199/165",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 144990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 144990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 149980,
+      "comisionPct": 8,
+      "comision": 11599,
+      "ivaComision": 2204,
+      "netoVendedor": 131187,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1791230027511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1791316427511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1791489227511
+        }
+      ],
+      "seguimiento": "BX-4311696"
+    },
+    {
+      "id": "HM-1017",
+      "compradorId": "U02",
+      "vendedorId": "U03",
+      "fecha": 1791748427511,
+      "items": [
+        {
+          "pubId": "P002",
+          "nombre": "Charizard ex",
+          "juego": "pokemon",
+          "edicion": "Obsidian Flames",
+          "numero": "125/197",
+          "condicion": "EX",
+          "idioma": "EN",
+          "precio": 4690,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 4690,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Diego Muñoz",
+        "telefono": "+56 9 7654 3210",
+        "region": "Valparaíso",
+        "comuna": "Viña del Mar",
+        "direccion": "Av. Libertad 1180"
+      },
+      "total": 9680,
+      "comisionPct": 8,
+      "comision": 375,
+      "ivaComision": 71,
+      "netoVendedor": 4244,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1791748427511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1791834827511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1792007627511
+        }
+      ],
+      "seguimiento": "BX-4312427"
+    },
+    {
+      "id": "HM-1018",
+      "compradorId": "U03",
+      "vendedorId": "U02",
+      "fecha": 1792007627511,
+      "items": [
+        {
+          "pubId": "P012",
+          "nombre": "Pikachu",
+          "juego": "pokemon",
+          "edicion": "Scarlet & Violet 151",
+          "numero": "025/165",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 590,
+          "cantidad": 4
+        }
+      ],
+      "subtotal": 2360,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Valentina Soto",
+        "telefono": "+56 9 6543 2109",
+        "region": "Biobío",
+        "comuna": "Concepción",
+        "direccion": "O'Higgins 940, of. 32"
+      },
+      "total": 7350,
+      "comisionPct": 8,
+      "comision": 189,
+      "ivaComision": 36,
+      "netoVendedor": 2135,
+      "pago": {
+        "metodo": "transferencia",
+        "detalle": "transferencia simulada"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1792007627511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1792094027511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1792266827511
+        }
+      ],
+      "seguimiento": "BX-4313158"
+    },
+    {
+      "id": "HM-1019",
+      "compradorId": "U01",
+      "vendedorId": "U02",
+      "fecha": 1792266827511,
+      "items": [
+        {
+          "pubId": "P005",
+          "nombre": "Sol Ring",
+          "juego": "magic",
+          "edicion": "Commander Masters",
+          "numero": "",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 2490,
+          "cantidad": 1
+        },
+        {
+          "pubId": "P016",
+          "nombre": "Sheoldred, the Apocalypse",
+          "juego": "magic",
+          "edicion": "Dominaria United",
+          "numero": "",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 49990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 52480,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 57470,
+      "comisionPct": 8,
+      "comision": 4198,
+      "ivaComision": 798,
+      "netoVendedor": 47484,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1792266827511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1792353227511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1792526027511
+        }
+      ],
+      "seguimiento": "BX-4402193"
+    },
+    {
+      "id": "HM-1020",
+      "compradorId": "U02",
+      "vendedorId": "U03",
+      "fecha": 1792439627511,
+      "items": [
+        {
+          "pubId": "P009",
+          "nombre": "Iono (ilustración especial)",
+          "juego": "pokemon",
+          "edicion": "Paldea Evolved",
+          "numero": "269/193",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 64990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 64990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Diego Muñoz",
+        "telefono": "+56 9 7654 3210",
+        "region": "Valparaíso",
+        "comuna": "Viña del Mar",
+        "direccion": "Av. Libertad 1180"
+      },
+      "total": 69980,
+      "comisionPct": 8,
+      "comision": 5199,
+      "ivaComision": 988,
+      "netoVendedor": 58803,
+      "pago": {
+        "metodo": "transferencia",
+        "detalle": "transferencia simulada"
+      },
+      "estado": "entregado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1792439627511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1792526027511
+        },
+        {
+          "estado": "entregado",
+          "fecha": 1792698827511
+        }
+      ],
+      "seguimiento": "BX-4417520"
+    },
+    {
+      "id": "HM-1021",
+      "compradorId": "U01",
+      "vendedorId": "U03",
+      "fecha": 1792612427511,
+      "items": [
+        {
+          "pubId": "P017",
+          "nombre": "Lightning Bolt",
+          "juego": "magic",
+          "edicion": "Magic 2010",
+          "numero": "",
+          "condicion": "NM",
+          "idioma": "EN",
+          "precio": 1490,
+          "cantidad": 2
+        }
+      ],
+      "subtotal": 2980,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Camila Rojas",
+        "telefono": "+56 9 8765 4321",
+        "region": "Metropolitana de Santiago",
+        "comuna": "Ñuñoa",
+        "direccion": "Av. Irarrázaval 3450, depto. 1204"
+      },
+      "total": 7970,
+      "comisionPct": 8,
+      "comision": 238,
+      "ivaComision": 45,
+      "netoVendedor": 2697,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "enviado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1792612427511
+        },
+        {
+          "estado": "enviado",
+          "fecha": 1792698827511
+        }
+      ],
+      "seguimiento": "BX-4431007"
+    },
+    {
+      "id": "HM-1022",
+      "compradorId": "U03",
+      "vendedorId": "U02",
+      "fecha": 1792698827511,
+      "items": [
+        {
+          "pubId": "P008",
+          "nombre": "Gardevoir ex (ilustración especial)",
+          "juego": "pokemon",
+          "edicion": "Scarlet & Violet",
+          "numero": "245/198",
+          "condicion": "NM",
+          "idioma": "ES",
+          "precio": 44990,
+          "cantidad": 1
+        }
+      ],
+      "subtotal": 44990,
+      "envio": {
+        "metodo": "despacho",
+        "costo": 4990,
+        "receptor": "Valentina Soto",
+        "telefono": "+56 9 6543 2109",
+        "region": "Biobío",
+        "comuna": "Concepción",
+        "direccion": "O'Higgins 940, of. 32"
+      },
+      "total": 49980,
+      "comisionPct": 8,
+      "comision": 3599,
+      "ivaComision": 684,
+      "netoVendedor": 40707,
+      "pago": {
+        "metodo": "tarjeta",
+        "detalle": "tarjeta terminada en 1111"
+      },
+      "estado": "pagado",
+      "historial": [
+        {
+          "estado": "pagado",
+          "fecha": 1792698827511
+        }
+      ],
+      "seguimiento": ""
+    }
+  ],
+  "movimientos": [
+    {
+      "id": "M001",
+      "fecha": 1788461627511,
+      "pubId": "P001",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 7,
+      "antes": 0,
+      "despues": 7,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M026",
+      "fecha": 1788810827511,
+      "pubId": "P001",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 7,
+      "despues": 6,
+      "ref": "HM-1001",
+      "uid": "U03"
+    },
+    {
+      "id": "M002",
+      "fecha": 1788893627511,
+      "pubId": "P002",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M006",
+      "fecha": 1788893627511,
+      "pubId": "P006",
+      "carta": "Charizard ex (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M027",
+      "fecha": 1789156427511,
+      "pubId": "P006",
+      "carta": "Charizard ex (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 3,
+      "despues": 2,
+      "ref": "HM-1002",
+      "uid": "U02"
+    },
+    {
+      "id": "M012",
+      "fecha": 1789325627511,
+      "pubId": "P012",
+      "carta": "Pikachu",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 15,
+      "antes": 0,
+      "despues": 15,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M019",
+      "fecha": 1789325627511,
+      "pubId": "P019",
+      "carta": "Blue-Eyes White Dragon",
+      "juego": "yugioh",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 2,
+      "antes": 0,
+      "despues": 2,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M028",
+      "fecha": 1789502027511,
+      "pubId": "P001",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -2,
+      "antes": 6,
+      "despues": 4,
+      "ref": "HM-1003",
+      "uid": "U01"
+    },
+    {
+      "id": "M029",
+      "fecha": 1789674827511,
+      "pubId": "P019",
+      "carta": "Blue-Eyes White Dragon",
+      "juego": "yugioh",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 2,
+      "despues": 1,
+      "ref": "HM-1004",
+      "uid": "U02"
+    },
+    {
+      "id": "M003",
+      "fecha": 1789757627511,
+      "pubId": "P003",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U01",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U01"
+    },
+    {
+      "id": "M005",
+      "fecha": 1789757627511,
+      "pubId": "P005",
+      "carta": "Sol Ring",
+      "juego": "magic",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 8,
+      "antes": 0,
+      "despues": 8,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M030",
+      "fecha": 1789761227511,
+      "pubId": "P012",
+      "carta": "Pikachu",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -3,
+      "antes": 15,
+      "despues": 12,
+      "ref": "HM-1005",
+      "uid": "U01"
+    },
+    {
+      "id": "M031",
+      "fecha": 1789934027511,
+      "pubId": "P002",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 3,
+      "despues": 2,
+      "ref": "HM-1006",
+      "uid": "U01"
+    },
+    {
+      "id": "M017",
+      "fecha": 1790016827511,
+      "pubId": "P017",
+      "carta": "Lightning Bolt",
+      "juego": "magic",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 11,
+      "antes": 0,
+      "despues": 11,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M032",
+      "fecha": 1790106827511,
+      "pubId": "P005",
+      "carta": "Sol Ring",
+      "juego": "magic",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -2,
+      "antes": 8,
+      "despues": 6,
+      "ref": "HM-1007",
+      "uid": "U03"
+    },
+    {
+      "id": "M004",
+      "fecha": 1790189627511,
+      "pubId": "P004",
+      "carta": "Umbreon VMAX (arte alternativo)",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 2,
+      "antes": 0,
+      "despues": 2,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M013",
+      "fecha": 1790189627511,
+      "pubId": "P013",
+      "carta": "Pikachu",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 14,
+      "antes": 0,
+      "despues": 14,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M023",
+      "fecha": 1790189627511,
+      "pubId": "P023",
+      "carta": "Shanks",
+      "juego": "onepiece",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 2,
+      "antes": 0,
+      "despues": 2,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M033",
+      "fecha": 1790193227511,
+      "pubId": "P003",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U01",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 3,
+      "despues": 2,
+      "ref": "HM-1008",
+      "uid": "U03"
+    },
+    {
+      "id": "M034",
+      "fecha": 1790279627511,
+      "pubId": "P017",
+      "carta": "Lightning Bolt",
+      "juego": "magic",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -3,
+      "antes": 11,
+      "despues": 8,
+      "ref": "HM-1009",
+      "uid": "U02"
+    },
+    {
+      "id": "M035",
+      "fecha": 1790366027511,
+      "pubId": "P004",
+      "carta": "Umbreon VMAX (arte alternativo)",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 2,
+      "despues": 1,
+      "ref": "HM-1010",
+      "uid": "U03"
+    },
+    {
+      "id": "M036",
+      "fecha": 1790538827511,
+      "pubId": "P023",
+      "carta": "Shanks",
+      "juego": "onepiece",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 2,
+      "despues": 1,
+      "ref": "HM-1011",
+      "uid": "U01"
+    },
+    {
+      "id": "M008",
+      "fecha": 1790621627511,
+      "pubId": "P008",
+      "carta": "Gardevoir ex (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M024",
+      "fecha": 1790621627511,
+      "pubId": "P024",
+      "carta": "Excalibur",
+      "juego": "myl",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M037",
+      "fecha": 1790625227511,
+      "pubId": "P013",
+      "carta": "Pikachu",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -2,
+      "antes": 14,
+      "despues": 12,
+      "ref": "HM-1012",
+      "uid": "U01"
+    },
+    {
+      "id": "M010",
+      "fecha": 1790880827511,
+      "pubId": "P010",
+      "carta": "Giratina V (arte alternativo)",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M038",
+      "fecha": 1790884427511,
+      "pubId": "P024",
+      "carta": "Excalibur",
+      "juego": "myl",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 3,
+      "despues": 2,
+      "ref": "HM-1013",
+      "uid": "U01"
+    },
+    {
+      "id": "M039",
+      "fecha": 1790970827511,
+      "pubId": "P001",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 4,
+      "despues": 3,
+      "ref": "HM-1014",
+      "uid": "U03"
+    },
+    {
+      "id": "M040",
+      "fecha": 1791143627511,
+      "pubId": "P008",
+      "carta": "Gardevoir ex (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 3,
+      "despues": 2,
+      "ref": "HM-1015",
+      "uid": "U01"
+    },
+    {
+      "id": "M041",
+      "fecha": 1791230027511,
+      "pubId": "P006",
+      "carta": "Charizard ex (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 2,
+      "despues": 1,
+      "ref": "HM-1016",
+      "uid": "U01"
+    },
+    {
+      "id": "M020",
+      "fecha": 1791312827511,
+      "pubId": "P020",
+      "carta": "Dark Magician",
+      "juego": "yugioh",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M015",
+      "fecha": 1791399227511,
+      "pubId": "P015",
+      "carta": "The One Ring",
+      "juego": "magic",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M009",
+      "fecha": 1791572027511,
+      "pubId": "P009",
+      "carta": "Iono (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M016",
+      "fecha": 1791658427511,
+      "pubId": "P016",
+      "carta": "Sheoldred, the Apocalypse",
+      "juego": "magic",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M042",
+      "fecha": 1791748427511,
+      "pubId": "P002",
+      "carta": "Charizard ex",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 2,
+      "despues": 1,
+      "ref": "HM-1017",
+      "uid": "U02"
+    },
+    {
+      "id": "M011",
+      "fecha": 1791831227511,
+      "pubId": "P011",
+      "carta": "Lugia V (arte alternativo)",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M021",
+      "fecha": 1791917627511,
+      "pubId": "P021",
+      "carta": "Ash Blossom & Joyous Spring",
+      "juego": "yugioh",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M043",
+      "fecha": 1792007627511,
+      "pubId": "P012",
+      "carta": "Pikachu",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -4,
+      "antes": 12,
+      "despues": 8,
+      "ref": "HM-1018",
+      "uid": "U03"
+    },
+    {
+      "id": "M022",
+      "fecha": 1792090427511,
+      "pubId": "P022",
+      "carta": "Monkey.D.Luffy (líder)",
+      "juego": "onepiece",
+      "vendedorId": "U02",
+      "tipo": "alta",
+      "cantidad": 4,
+      "antes": 0,
+      "despues": 4,
+      "ref": "Publicación inicial",
+      "uid": "U02"
+    },
+    {
+      "id": "M014",
+      "fecha": 1792263227511,
+      "pubId": "P014",
+      "carta": "Mew ex (dorada)",
+      "juego": "pokemon",
+      "vendedorId": "U01",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U01"
+    },
+    {
+      "id": "M025",
+      "fecha": 1792263227511,
+      "pubId": "P025",
+      "carta": "Aquiles",
+      "juego": "myl",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 3,
+      "antes": 0,
+      "despues": 3,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M044",
+      "fecha": 1792266827511,
+      "pubId": "P005",
+      "carta": "Sol Ring",
+      "juego": "magic",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 6,
+      "despues": 5,
+      "ref": "HM-1019",
+      "uid": "U01"
+    },
+    {
+      "id": "M045",
+      "fecha": 1792266827511,
+      "pubId": "P016",
+      "carta": "Sheoldred, the Apocalypse",
+      "juego": "magic",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 3,
+      "despues": 2,
+      "ref": "HM-1019",
+      "uid": "U01"
+    },
+    {
+      "id": "M007",
+      "fecha": 1792349627511,
+      "pubId": "P007",
+      "carta": "Pikachu ex (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U03"
+    },
+    {
+      "id": "M046",
+      "fecha": 1792439627511,
+      "pubId": "P009",
+      "carta": "Iono (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 1,
+      "despues": 0,
+      "ref": "HM-1020",
+      "uid": "U02"
+    },
+    {
+      "id": "M018",
+      "fecha": 1792522427511,
+      "pubId": "P018",
+      "carta": "Ragavan, Nimble Pilferer",
+      "juego": "magic",
+      "vendedorId": "U01",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación inicial",
+      "uid": "U01"
+    },
+    {
+      "id": "M047",
+      "fecha": 1792612427511,
+      "pubId": "P017",
+      "carta": "Lightning Bolt",
+      "juego": "magic",
+      "vendedorId": "U03",
+      "tipo": "venta",
+      "cantidad": -2,
+      "antes": 8,
+      "despues": 6,
+      "ref": "HM-1021",
+      "uid": "U01"
+    },
+    {
+      "id": "M048",
+      "fecha": 1792698827511,
+      "pubId": "P008",
+      "carta": "Gardevoir ex (ilustración especial)",
+      "juego": "pokemon",
+      "vendedorId": "U02",
+      "tipo": "venta",
+      "cantidad": -1,
+      "antes": 2,
+      "despues": 1,
+      "ref": "HM-1022",
+      "uid": "U03"
+    },
+    {
+      "id": "M049",
+      "fecha": 1792785867199,
+      "pubId": "P026",
+      "carta": "Monkey.D.Luffy (OP05-119) (Manga)",
+      "juego": "onepiece",
+      "vendedorId": "U01",
+      "tipo": "alta",
+      "cantidad": 2,
+      "antes": 0,
+      "despues": 2,
+      "ref": "Publicación nueva",
+      "uid": "U01"
+    },
+    {
+      "id": "M050",
+      "fecha": 1792785927531,
+      "pubId": "P027",
+      "carta": "arturo prat - sp",
+      "juego": "myl",
+      "vendedorId": "U01",
+      "tipo": "alta",
+      "cantidad": 1,
+      "antes": 0,
+      "despues": 1,
+      "ref": "Publicación nueva",
+      "uid": "U01"
+    }
+  ],
+  "actividad": [
+    {
+      "id": "A052",
+      "fecha": 1785009227511,
+      "uid": "U02",
+      "accion": "Registro de usuario",
+      "detalle": "diego@demo.cl"
+    },
+    {
+      "id": "A053",
+      "fecha": 1786305227511,
+      "uid": "U03",
+      "accion": "Registro de usuario",
+      "detalle": "valentina@demo.cl"
+    },
+    {
+      "id": "A051",
+      "fecha": 1787601227511,
+      "uid": "U01",
+      "accion": "Registro de usuario",
+      "detalle": "camila@demo.cl"
+    },
+    {
+      "id": "A001",
+      "fecha": 1788461627511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Charizard ex (P001), 7 u."
+    },
+    {
+      "id": "A026",
+      "fecha": 1788810827511,
+      "uid": "U03",
+      "accion": "Compra realizada",
+      "detalle": "HM-1001 por $11.480"
+    },
+    {
+      "id": "A002",
+      "fecha": 1788893627511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Charizard ex (P002), 3 u."
+    },
+    {
+      "id": "A006",
+      "fecha": 1788893627511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Charizard ex (ilustración especial) (P006), 3 u."
+    },
+    {
+      "id": "A027",
+      "fecha": 1789156427511,
+      "uid": "U02",
+      "accion": "Compra realizada",
+      "detalle": "HM-1002 por $159.980"
+    },
+    {
+      "id": "A012",
+      "fecha": 1789325627511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Pikachu (P012), 15 u."
+    },
+    {
+      "id": "A019",
+      "fecha": 1789325627511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Blue-Eyes White Dragon (P019), 2 u."
+    },
+    {
+      "id": "A028",
+      "fecha": 1789502027511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1003 por $17.570"
+    },
+    {
+      "id": "A029",
+      "fecha": 1789674827511,
+      "uid": "U02",
+      "accion": "Compra realizada",
+      "detalle": "HM-1004 por $69.990"
+    },
+    {
+      "id": "A003",
+      "fecha": 1789757627511,
+      "uid": "U01",
+      "accion": "Publicación creada",
+      "detalle": "Charizard ex (P003), 3 u."
+    },
+    {
+      "id": "A005",
+      "fecha": 1789757627511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Sol Ring (P005), 8 u."
+    },
+    {
+      "id": "A030",
+      "fecha": 1789761227511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1005 por $6.640"
+    },
+    {
+      "id": "A031",
+      "fecha": 1789934027511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1006 por $9.980"
+    },
+    {
+      "id": "A017",
+      "fecha": 1790016827511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Lightning Bolt (P017), 11 u."
+    },
+    {
+      "id": "A032",
+      "fecha": 1790106827511,
+      "uid": "U03",
+      "accion": "Compra realizada",
+      "detalle": "HM-1007 por $9.570"
+    },
+    {
+      "id": "A004",
+      "fecha": 1790189627511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Umbreon VMAX (arte alternativo) (P004), 2 u."
+    },
+    {
+      "id": "A013",
+      "fecha": 1790189627511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Pikachu (P013), 14 u."
+    },
+    {
+      "id": "A023",
+      "fecha": 1790189627511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Shanks (P023), 2 u."
+    },
+    {
+      "id": "A033",
+      "fecha": 1790193227511,
+      "uid": "U03",
+      "accion": "Compra realizada",
+      "detalle": "HM-1008 por $11.980"
+    },
+    {
+      "id": "A034",
+      "fecha": 1790279627511,
+      "uid": "U02",
+      "accion": "Compra realizada",
+      "detalle": "HM-1009 por $9.160"
+    },
+    {
+      "id": "A035",
+      "fecha": 1790366027511,
+      "uid": "U03",
+      "accion": "Compra realizada",
+      "detalle": "HM-1010 por $1.194.980"
+    },
+    {
+      "id": "A036",
+      "fecha": 1790538827511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1011 por $59.990"
+    },
+    {
+      "id": "A008",
+      "fecha": 1790621627511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Gardevoir ex (ilustración especial) (P008), 3 u."
+    },
+    {
+      "id": "A024",
+      "fecha": 1790621627511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Excalibur (P024), 3 u."
+    },
+    {
+      "id": "A037",
+      "fecha": 1790625227511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1012 por $6.690"
+    },
+    {
+      "id": "A010",
+      "fecha": 1790880827511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Giratina V (arte alternativo) (P010), 1 u."
+    },
+    {
+      "id": "A038",
+      "fecha": 1790884427511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1013 por $18.980"
+    },
+    {
+      "id": "A039",
+      "fecha": 1790970827511,
+      "uid": "U03",
+      "accion": "Compra realizada",
+      "detalle": "HM-1014 por $10.980"
+    },
+    {
+      "id": "A040",
+      "fecha": 1791143627511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1015 por $47.980"
+    },
+    {
+      "id": "A041",
+      "fecha": 1791230027511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1016 por $149.980"
+    },
+    {
+      "id": "A020",
+      "fecha": 1791312827511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Dark Magician (P020), 1 u."
+    },
+    {
+      "id": "A015",
+      "fecha": 1791399227511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "The One Ring (P015), 1 u."
+    },
+    {
+      "id": "A009",
+      "fecha": 1791572027511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Iono (ilustración especial) (P009), 1 u."
+    },
+    {
+      "id": "A016",
+      "fecha": 1791658427511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Sheoldred, the Apocalypse (P016), 3 u."
+    },
+    {
+      "id": "A042",
+      "fecha": 1791748427511,
+      "uid": "U02",
+      "accion": "Compra realizada",
+      "detalle": "HM-1017 por $9.680"
+    },
+    {
+      "id": "A011",
+      "fecha": 1791831227511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Lugia V (arte alternativo) (P011), 1 u."
+    },
+    {
+      "id": "A021",
+      "fecha": 1791917627511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Ash Blossom & Joyous Spring (P021), 3 u."
+    },
+    {
+      "id": "A043",
+      "fecha": 1792007627511,
+      "uid": "U03",
+      "accion": "Compra realizada",
+      "detalle": "HM-1018 por $7.350"
+    },
+    {
+      "id": "A022",
+      "fecha": 1792090427511,
+      "uid": "U02",
+      "accion": "Publicación creada",
+      "detalle": "Monkey.D.Luffy (líder) (P022), 4 u."
+    },
+    {
+      "id": "A014",
+      "fecha": 1792263227511,
+      "uid": "U01",
+      "accion": "Publicación creada",
+      "detalle": "Mew ex (dorada) (P014), 1 u."
+    },
+    {
+      "id": "A025",
+      "fecha": 1792263227511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Aquiles (P025), 3 u."
+    },
+    {
+      "id": "A044",
+      "fecha": 1792266827511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1019 por $57.470"
+    },
+    {
+      "id": "A007",
+      "fecha": 1792349627511,
+      "uid": "U03",
+      "accion": "Publicación creada",
+      "detalle": "Pikachu ex (ilustración especial) (P007), 1 u."
+    },
+    {
+      "id": "A045",
+      "fecha": 1792439627511,
+      "uid": "U02",
+      "accion": "Compra realizada",
+      "detalle": "HM-1020 por $69.980"
+    },
+    {
+      "id": "A018",
+      "fecha": 1792522427511,
+      "uid": "U01",
+      "accion": "Publicación creada",
+      "detalle": "Ragavan, Nimble Pilferer (P018), 1 u."
+    },
+    {
+      "id": "A046",
+      "fecha": 1792612427511,
+      "uid": "U01",
+      "accion": "Compra realizada",
+      "detalle": "HM-1021 por $7.970"
+    },
+    {
+      "id": "A047",
+      "fecha": 1792698827511,
+      "uid": "U03",
+      "accion": "Compra realizada",
+      "detalle": "HM-1022 por $49.980"
+    },
+    {
+      "id": "A048",
+      "fecha": 1792716107511,
+      "uid": "U03",
+      "accion": "Retiro solicitado",
+      "detalle": "RET-001 por $30.000"
+    },
+    {
+      "id": "A049",
+      "fecha": 1792742027511,
+      "uid": "U00",
+      "accion": "Retiro transferido",
+      "detalle": "RET-001 por $30.000, comprobante TRF-883201"
+    },
+    {
+      "id": "A050",
+      "fecha": 1792767947511,
+      "uid": "U03",
+      "accion": "Retiro solicitado",
+      "detalle": "RET-002 por $20.000"
+    },
+    {
+      "id": "A054",
+      "fecha": 1792785493644,
+      "uid": "U00",
+      "accion": "Configuración actualizada",
+      "detalle": "Comisión por venta (%): 8 → 0"
+    },
+    {
+      "id": "A055",
+      "fecha": 1792785558516,
+      "uid": "U00",
+      "accion": "Inicio de sesión",
+      "detalle": "Rol admin"
+    },
+    {
+      "id": "A056",
+      "fecha": 1792785569140,
+      "uid": "U00",
+      "accion": "Configuración actualizada",
+      "detalle": "Comisión por venta (%): 0 → 3"
+    },
+    {
+      "id": "A057",
+      "fecha": 1792785792861,
+      "uid": "U00",
+      "accion": "Cierre de sesión",
+      "detalle": ""
+    },
+    {
+      "id": "A058",
+      "fecha": 1792785799570,
+      "uid": null,
+      "accion": "Inicio de sesión fallido",
+      "detalle": "nbrallach@gmail.com"
+    },
+    {
+      "id": "A059",
+      "fecha": 1792785802794,
+      "uid": null,
+      "accion": "Inicio de sesión fallido",
+      "detalle": "nbrallach@gmail.com"
+    },
+    {
+      "id": "A060",
+      "fecha": 1792785808292,
+      "uid": null,
+      "accion": "Inicio de sesión fallido",
+      "detalle": "nbrallach@gmail.com"
+    },
+    {
+      "id": "A061",
+      "fecha": 1792785825698,
+      "uid": "U01",
+      "accion": "Inicio de sesión",
+      "detalle": "Rol cliente"
+    },
+    {
+      "id": "A062",
+      "fecha": 1792785867199,
+      "uid": "U01",
+      "accion": "Publicación creada",
+      "detalle": "Monkey.D.Luffy (OP05-119) (Manga) (P026), 2 u. a $5.000.000"
+    },
+    {
+      "id": "A063",
+      "fecha": 1792785927531,
+      "uid": "U01",
+      "accion": "Publicación creada",
+      "detalle": "arturo prat - sp (P027), 1 u. a $1.500.000"
+    },
+    {
+      "id": "A064",
+      "fecha": 1792789582446,
+      "uid": "U01",
+      "accion": "Inicio de sesión",
+      "detalle": "Rol cliente"
+    },
+    {
+      "id": "A065",
+      "fecha": 1793634843594,
+      "uid": "U01",
+      "accion": "Inicio de sesión",
+      "detalle": "Rol cliente"
+    },
+    {
+      "id": "A066",
+      "fecha": 1793635548694,
+      "uid": "U01",
+      "accion": "Inicio de sesión",
+      "detalle": "Rol cliente"
+    },
+    {
+      "id": "A067",
+      "fecha": 1793635567778,
+      "uid": "U01",
+      "accion": "Pago rechazado",
+      "detalle": "$9.480: La tarjeta no tiene fondos o cupo suficiente para este monto."
+    }
+  ],
+  "retiros": [
+    {
+      "id": "RET-001",
+      "uid": "U03",
+      "monto": 30000,
+      "estado": "pagado",
+      "fecha": 1792716107511,
+      "historial": [
+        {
+          "estado": "solicitado",
+          "fecha": 1792716107511
+        },
+        {
+          "estado": "pagado",
+          "fecha": 1792742027511
+        }
+      ],
+      "comprobante": "TRF-883201",
+      "motivo": "",
+      "cuenta": {
+        "banco": "BancoEstado",
+        "tipo": "Cuenta vista / CuentaRUT",
+        "ultimos": "6543",
+        "titular": "Valentina Soto",
+        "rut": "19.876.543-0"
+      }
+    },
+    {
+      "id": "RET-002",
+      "uid": "U03",
+      "monto": 20000,
+      "estado": "solicitado",
+      "fecha": 1792767947511,
+      "historial": [
+        {
+          "estado": "solicitado",
+          "fecha": 1792767947511
+        }
+      ],
+      "comprobante": "",
+      "motivo": "",
+      "cuenta": {
+        "banco": "BancoEstado",
+        "tipo": "Cuenta vista / CuentaRUT",
+        "ultimos": "6543",
+        "titular": "Valentina Soto",
+        "rut": "19.876.543-0"
+      }
+    }
+  ]
+}
