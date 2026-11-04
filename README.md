@@ -293,7 +293,3 @@ Sigue el guion de demostración de arriba.
 - json-server es una API de práctica: no valida permisos. En un backend real, las reglas de `logica/` y las contraseñas se verificarían en el servidor.
 - Las cartas se dibujan con CSS; no se usan imágenes oficiales de las marcas salvo las que entrega API TCG.
 
-## Subir el proyecto a GitHub
-
-Sigue [docs/GUIA_GIT.md](docs/GUIA_GIT.md): configurar Git, crear el repositorio, hacer los commits
-por etapas y subirlo con `git push`. Sube también `db.json`; nunca `.env.local` ni `node_modules`.
