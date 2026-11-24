@@ -1,0 +1,13 @@
+HoloMarket - DSY1104 Desarrollo FullStack II - Evaluación Parcial 3
+Integrantes: Nicolas Bralla y Sergio Melillan
+
+Sitio en la nube (front en S3):
+http://NOMBRE-BUCKET.s3-website-us-east-1.amazonaws.com
+
+API (backend en EC2):
+http://TU_ELASTIC_IP/api/estado
+
+Repositorio GitHub:
+https://github.com/nbralla/holomarket-react
+
+Cuentas de prueba en la nube: las contraseñas se entregan en la presentación (no se publican aquí).

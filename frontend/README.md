@@ -1,14 +1,15 @@
-# HoloMarket · Marketplace de cartas TCG en React
+# HoloMarket · Frontend (React)
 
-Proyecto de **DSY1104 Desarrollo FullStack II** (Duoc UC). Es la misma tienda HoloMarket de la
-Evaluación Parcial 1, rehecha con el mismo stack del ejemplo del curso (Pokédex CRUD):
-**React 19 + TypeScript + Vite + React Router + Bootstrap 5 + json-server 0.17.4**.
+Frontend de HoloMarket para **DSY1104 Desarrollo FullStack II** (Duoc UC):
+**React 19 + TypeScript + Vite + React Router + Bootstrap 5**. Los datos y las reglas del negocio
+viven en el backend Spring Boot + MySQL de la carpeta [`../backend`](../backend) (ver el
+[README general](../README.md)).
 
 Personas que compran y venden cartas sueltas de Pokémon, Magic, Yu-Gi-Oh!, One Piece y Mitos y
 Leyendas: catálogo con filtros, carrito, pago simulado, stock automático con historial, publicación
 de cartas, inventario, pedidos con seguimiento, retiro de ganancias y panel de administración.
-Los datos (usuarios, publicaciones, pedidos, stock, retiros...) viven en **`db.json`** y se leen y
-modifican con una API REST que levanta **json-server**. La sesión y el carrito quedan en el navegador.
+Los datos (usuarios, publicaciones, pedidos, stock, retiros...) viven en **MySQL** y se leen y
+modifican con la **API REST del backend** (con token JWT). La sesión (token) y el carrito quedan en el navegador.
 
 ## Requisitos para ejecutarlo
 
@@ -16,39 +17,46 @@ modifican con una API REST que levanta **json-server**. La sesión y el carrito 
 |---|---|---|
 | Node.js | 20.19 o superior (o 22.12+) | Ejecutar Vite y npm |
 | npm | El que viene con Node | Instalar dependencias |
-| Git | Cualquiera reciente | Control de versiones (ver [docs/GUIA_GIT.md](docs/GUIA_GIT.md)) |
+| Git | Cualquiera reciente | Control de versiones |
 | VS Code | Recomendado | Editor, con las extensiones ESLint y Prettier |
 
 Comprueba las versiones con `node -v`, `npm -v` y `git --version`.
 
 ## Instalación y ejecución
 
-Igual que en el ejemplo de la Pokédex:
+Primero levanta el backend (MySQL + Spring Boot), como explica el [README general](../README.md).
+Después, en esta carpeta (donde está `package.json`):
 
-1. Abrir una terminal en esta carpeta (donde está `package.json`).
-2. `npm install`
-3. **Terminal 1:** `npm run api`  → http://127.0.0.1:3000/publicaciones
-4. **Terminal 2:** `npm run dev`  → http://localhost:5173
+1. `npm install`
+2. `npm run dev` → http://localhost:5173
 
-Si abres la app sin la terminal 1, la página muestra **“Sin conexión con la API”** con un botón
-para reintentar. Cada vez que guardas un archivo, la página se actualiza sola.
+En desarrollo, Vite reenvía todo lo que empieza con `/api` al backend en `http://127.0.0.1:8080`
+(proxy en `vite.config.ts`), así no hay problemas de CORS. Si el backend está apagado, la página
+muestra **“Sin conexión con la API”** con un botón para reintentar.
 
 ### Scripts
 
 | Comando | Qué hace |
 |---|---|
-| `npm run api` | Levanta json-server con `db.json` en http://127.0.0.1:3000 |
 | `npm run dev` | Servidor de desarrollo con recarga en caliente. **No revisa tipos.** |
-| `npm run build` | Revisa los tipos con TypeScript (`tsc -b`) y genera la versión final en `dist/` |
+| `npm run build` | Revisa los tipos con TypeScript (`tsc -b`) y genera la versión final en `dist/` (la que se sube a S3) |
 | `npm run preview` | Sirve la carpeta `dist/` para probar el build |
 | `npm run lint` | Revisa el código con ESLint |
 | `npm run test` | Ejecuta todas las pruebas: lógica (Vitest) y componentes (Karma + Jasmine) |
 | `npm run test:componentes` | Pruebas de componentes React con **Karma + Jasmine** en Chrome, con reporte de cobertura |
 | `npm run test:componentes:ver` | Igual, pero abre Chrome y vuelve a ejecutar al guardar |
-| `npm run test:logica` | Pruebas de la lógica del negocio con Vitest |
+| `npm run test:logica` | Pruebas de la lógica con Vitest |
 
 Antes de entregar o subir cambios, ejecuta `npm run build` y `npm run test`: `npm run dev` puede
 funcionar aunque haya errores de tipos.
+
+### Compilar para producción (S3)
+
+1. Copia `.env.production.example` como `.env.production` y pon la IP del backend:
+   `VITE_API_URL=http://TU_ELASTIC_IP/api`
+2. `npm run build` y sube el **contenido** de `dist/` al bucket.
+
+`VITE_API_URL` queda grabada dentro del JavaScript: si cambia la IP hay que volver a compilar y subir.
 
 ## Cuentas de prueba
 
@@ -76,7 +84,7 @@ funcionar aunque haya errores de tipos.
 7. **Registro:** crea una cuenta con el RUT de prueba y muestra las validaciones.
 
 Para volver a los datos iniciales: Administración › Configuración › **Restablecer datos de demostración**
-(reescribe `db.json` a través de la API).
+(el backend borra todo y vuelve a cargar la demo en MySQL).
 
 ## Cartas, vendedores e historial de precios
 
@@ -132,22 +140,20 @@ traen 8 cartas en oferta. Lógica en `src/logica/ofertas.ts`.
   Yu-Gi-Oh! (Common… Starlight Rare, Quarter Century Secret Rare), One Piece (Common… Leader, Treasure Rare)
   y Mitos y Leyendas (Vasallo, Cortesano, Real, Mega Real, Ultra Real, Legendaria).
 
-## API REST (json-server)
+## Conexión con la API REST
 
-`vite.config.ts` tiene un proxy: todo lo que la app pide a `/api/...` se reenvía a json-server
-(`/api/publicaciones` → `http://127.0.0.1:3000/publicaciones`), igual que en la Pokédex.
+`src/services/datos.ts` es el cliente de la API: un `fetch` por endpoint, con el token JWT en la
+cabecera `Authorization: Bearer ...`. La URL base sale de `VITE_API_URL` (en desarrollo, `/api`).
 
-| Recurso | Operaciones |
-|---|---|
-| `/api/usuarios`, `/api/publicaciones`, `/api/pedidos`, `/api/movimientos`, `/api/actividad`, `/api/retiros` | `GET` (lista), `POST` (crear), `PUT /:id` (actualizar), `DELETE /:id` (eliminar) |
-| `/api/config` | `GET` y `PUT` (un solo objeto: comisión, IVA, envíos, secuencias de ids) |
+1. Al abrir el sitio se pide `GET /api/estado` (lo que el usuario puede ver según su rol) y se muestra “Cargando HoloMarket...”.
+2. Cada acción (comprar, publicar, ajustar stock, enviar un pedido...) llama a **su** endpoint con
+   `ejecutar()` (`src/context/TiendaProvider.tsx`). El backend valida y aplica la regla de negocio.
+3. Si responde bien, se vuelve a pedir `GET /api/estado` y React redibuja. Si responde con error, se
+   muestra su mensaje tal cual (por ejemplo, “El stock cambió mientras comprabas”).
+4. Si el token venció o la cuenta fue bloqueada (401), la sesión se cierra sola.
 
-Cómo se guardan los cambios (`src/services/datos.ts` y `src/context/TiendaProvider.tsx`):
-
-1. Al abrir el sitio se piden todas las colecciones (`GET`) y se muestra “Cargando HoloMarket...”.
-2. Cada acción (comprar, publicar, ajustar stock...) aplica una regla de `src/logica/` sobre una copia del estado y la pantalla se actualiza al tiro.
-3. `cambiosEntre(antes, después)` calcula qué registros son nuevos (`POST`), cuáles cambiaron (`PUT`) y cuáles se borraron (`DELETE`), y los envía en orden. La configuración (con las secuencias de ids) va primero.
-4. Si la API falla, se avisa y se vuelven a leer los datos de `db.json`. Si un guardado quedó a medias, al cargar se corrigen las secuencias para no repetir ids.
+La lista completa de endpoints está en el [README del backend](../backend/README.md) y en Swagger
+(http://localhost:8080/swagger-ui.html con el backend encendido).
 
 ## Estructura del proyecto
 
@@ -155,34 +161,31 @@ Se usa la estructura del ejemplo y del manual (`components`, `pages`, `services`
 agregan carpetas para los datos, la lógica de negocio y el estado global.
 
 ```
-holomarket-react/
+frontend/
 ├── index.html              Página única: React se monta en <div id="root">
-├── package.json            Dependencias y scripts (dev, api, build, test...)
-├── db.json                 Base de datos de json-server (npm run api)
-├── vite.config.ts          Configuración de Vite (proxy /api -> json-server y /apitcg -> API TCG)
+├── package.json            Dependencias y scripts (dev, build, test...)
+├── vite.config.ts          Configuración de Vite (proxy /api -> backend y /apitcg -> API TCG)
 ├── tsconfig*.json          Configuración de TypeScript (modo estricto)
 ├── eslint.config.js        Reglas de ESLint
-├── .env.example            Plantilla para tu clave de API TCG (copiar como .env.local)
+├── .env.example            Plantilla para tu clave de API TCG en desarrollo (copiar como .env.local)
+├── .env.production.example Plantilla con la URL del backend para compilar (copiar como .env.production)
 ├── public/                 Archivos estáticos (favicon)
-├── docs/
-│   ├── GUIA_GIT.md         Paso a paso para subir el proyecto a GitHub
-│   └── ARQUITECTURA.md     Cómo está organizado el código y por qué
 └── src/
     ├── main.tsx            Punto de entrada: BrowserRouter + Providers + Arranque (carga la API)
     ├── App.tsx             <Routes> con cada <Route> (/catalogo, /carta/:id...) y control de acceso por rol
     ├── index.css           Estilos globales y diseño responsivo
     ├── types/              Tipos de TypeScript (Usuario, Publicacion, Pedido, Retiro...)
     ├── data/               Catálogo de juegos, regiones, bancos y datos de demostración
-    ├── utils/              Validaciones (RUT, Luhn...), formato CLP, SHA-256, navegación
-    ├── services/           API json-server (datos.ts), sesión, API TCG, localStorage y CSV
-    ├── logica/             Reglas del negocio como funciones puras (+ pruebas Vitest)
+    ├── utils/              Validaciones (RUT, Luhn...), formato CLP, navegación
+    ├── services/           Cliente de la API REST (datos.ts), sesión, API TCG, dólar, localStorage y CSV
+    ├── logica/             Consultas y cálculos para mostrar (catálogo, carrito, saldo) + pruebas Vitest
     ├── context/            Estado global con Context API: tienda, avisos y ventana modal
     ├── hooks/              Hooks personalizados: useTienda, useRuta, useFormulario, useCarrito...
     ├── components/         Componentes reutilizables: Cabecera, Carta, Ficha, Tabla, Campo...
     └── pages/              Una página por ruta (Catalogo, Detalle, Carrito, Vender, admin/...)
 ```
 
-Más detalle en [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
+Más detalle en [docs/ARQUITECTURA.md](../docs/ARQUITECTURA.md).
 
 ## Rutas
 
@@ -216,7 +219,7 @@ los enlaces), igual que en la Pokédex:
 | R.3 | RF-03 | Catálogo con búsqueda, filtros y detalle | `pages/Catalogo.tsx`, `pages/Detalle.tsx` |
 | R.4 | RF-04 | Carrito de compras | `pages/Carrito.tsx`, `hooks/useCarrito.ts` |
 | R.5 | RF-05 | Checkout y pago simulado | `pages/Checkout.tsx` |
-| R.6 | RF-06 | Stock automático e historial | `logica/compras.ts`, `pages/Confirmacion.tsx`, `pages/Inventario.tsx` |
+| R.6 | RF-06 | Stock automático e historial | Backend: `PedidoService`, `AuditoriaService`; front: `pages/Confirmacion.tsx`, `pages/Inventario.tsx` |
 | R.7 | RF-07 | Publicación de cartas | `pages/Vender.tsx` |
 | R.8 | RF-08 | Gestión de inventario | `pages/Inventario.tsx` |
 | R.9 | RF-09 | Pedidos y seguimiento | `pages/Pedidos.tsx` |
@@ -254,13 +257,14 @@ Cómo funciona y por qué es seguro:
 - Cada imagen se guarda 30 días en el navegador para no gastar el límite mensual del plan.
 - En **Vender**, al escribir 3 letras del nombre aparece una lista de cartas de API TCG; al elegir
   una se completan nombre, edición, número y rareza, y esa imagen queda en la publicación.
-- Las imágenes solo se piden con `npm run dev` (el proxy es parte del servidor de desarrollo de Vite).
+- En producción (sitio en S3) no existe el proxy de Vite: las consultas van a `/api/tcg/...` del
+  **backend**, que agrega la clave `APITCG_KEY` de su `.env.prod`. Tampoco llega al navegador.
 
 ## Pruebas
 
 ### Componentes React: Karma + Jasmine (`npm run test:componentes`)
 
-81 pruebas en 22 archivos `*.spec.tsx`, junto a cada componente. Karma abre Chrome sin ventana, esbuild
+82 pruebas en 22 archivos `*.spec.tsx`, junto a cada componente. Karma abre Chrome sin ventana, esbuild
 compila TypeScript/JSX y Istanbul mide la cobertura (reporte en `coverage/html/index.html`).
 
 | Tipo de prueba (pauta del curso) | Ejemplos |
@@ -270,15 +274,16 @@ compila TypeScript/JSX y Istanbul mide la cobertura (reporte en `coverage/html/i
 | Props | `CondicionChip`, `EstadoChip`, `GraficoPrecios` (dólar e impresión), `FichaProducto` |
 | Estado | Formularios de Ingresar, Registro, Checkout y Vender cambian al escribir; período del gráfico; pestañas |
 | Eventos | Clics, teclado (flechas en el gráfico), selects, envío de formularios, ventanas modales |
-| Mocks | Tienda simulada con espías (`jasmine.createSpy`); `fetch` simulado con `spyOn` para json-server, el dólar y API TCG |
+| Mocks | Tienda simulada con espías (`jasmine.createSpy`); la API simulada con `spyOn(api, 'comprar')` (respuestas 201, 402 y 409); `fetch` simulado para el arranque, el dólar y API TCG |
 
 Herramientas: `karma.conf.cjs` (configuración), `src/pruebas/montar.tsx` (monta un componente con Router,
 avisos, modal y la tienda simulada, y simula `fetch`). Cobertura actual: ~58 % de líneas del código de `src/`.
 
 ### Lógica del negocio: Vitest (`npm run test:logica`)
 
-47 pruebas (`*.test.ts`) de validaciones, SHA-256, reglas del negocio (stock, compras, saldo, retiros),
-agrupación de cartas, elección de imágenes de API TCG y operaciones que se envían a json-server.
+40 pruebas (`*.test.ts`) de validaciones, catálogo, carrito, saldo del vendedor, agrupación de cartas,
+elección de imágenes de API TCG, dólar y del cliente de la API (con `fetch` simulado: errores 400, 402 y sin red).
+Las reglas que escriben datos (compra, stock, retiros) se aplican en el backend.
 
 ### Manuales
 
@@ -287,9 +292,9 @@ Sigue el guion de demostración de arriba.
 ## Notas
 
 - Los pagos son simulados: no hay cobros y solo se guardan los 4 últimos dígitos de la tarjeta.
-- Las contraseñas se guardan como hash SHA-256 con sal; tras 3 intentos fallidos el ingreso se bloquea 30 segundos.
+- Las contraseñas las guarda el backend con BCrypt; tras 3 intentos fallidos el backend bloquea ese correo 30 segundos.
 - La sesión se cierra tras 30 minutos sin actividad (configurable).
-- Los datos viven en `db.json`: todos los navegadores ven lo mismo. Al volver a una pestaña se releen de la API.
-- json-server es una API de práctica: no valida permisos. En un backend real, las reglas de `logica/` y las contraseñas se verificarían en el servidor.
+- Los datos viven en MySQL: todos los navegadores ven lo mismo. Al volver a una pestaña se releen de la API.
+- Los permisos los valida el backend en cada petición (JWT + rol): esconder un botón en el front no basta.
 - Las cartas se dibujan con CSS; no se usan imágenes oficiales de las marcas salvo las que entrega API TCG.
 
