@@ -1,0 +1,49 @@
+# Producción (EC2): MySQL + backend juntos. MySQL no publica ningún puerto: solo el backend lo ve,
+# por la red interna de Docker. El backend queda en el puerto 80 de la máquina.
+# Uso:  docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
+name: holomarket-prod
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Falta MYSQL_ROOT_PASSWORD en .env.prod}
+      MYSQL_DATABASE: ${DB_NAME:-holomarket}
+      MYSQL_USER: ${DB_USER:-holomarket}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Falta DB_PASSWORD en .env.prod}
+      TZ: America/Santiago
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    mem_limit: 768m
+
+  api:
+    build: .
+    image: holomarket-api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${DB_HOST:-mysql}
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-holomarket}
+      DB_USER: ${DB_USER:-holomarket}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_PARAMS: ${DB_PARAMS:-useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=America/Santiago}
+      JWT_SECRET: ${JWT_SECRET:?Falta JWT_SECRET en .env.prod}
+      CORS_ORIGINS: ${CORS_ORIGINS:?Falta CORS_ORIGINS en .env.prod}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Falta ADMIN_PASSWORD en .env.prod}
+      DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:?Falta DEMO_USER_PASSWORD en .env.prod}
+      APITCG_KEY: ${APITCG_KEY:-}
+      SWAGGER_ENABLED: ${SWAGGER_ENABLED:-false}
+    ports:
+      - "80:8080"
+    mem_limit: 900m
+
+volumes:
+  mysql_data:

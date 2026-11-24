@@ -1,6 +1,6 @@
 {
   "config": {
-    "comision": 3,
+    "comision": 8,
     "iva": 19,
     "envioMismaRegion": 2990,
     "envioOtraRegion": 4990,
@@ -10,10 +10,10 @@
     "dolar": 950,
     "secuencias": {
       "usuario": 3,
-      "publicacion": 27,
+      "publicacion": 25,
       "pedido": 1022,
-      "movimiento": 50,
-      "actividad": 67,
+      "movimiento": 48,
+      "actividad": 53,
       "retiro": 2
     }
   },
@@ -23,15 +23,13 @@
       "rut": "11.111.111-1",
       "nombre": "Equipo HoloMarket",
       "email": "admin@holomarket.cl",
-      "sal": "870c4e64a9c239ba",
-      "clave": "dd7b6a757df0f274e93d0d06e1ab080a8a06965a26ae9e1330578cdfdb1315af",
       "rol": "admin",
       "region": "Metropolitana de Santiago",
       "comuna": "Santiago",
       "telefono": "+56 2 2345 6789",
       "direccion": "",
       "estado": "activo",
-      "creado": 1782417227511,
+      "creado": 1784818800000,
       "cuenta": null
     },
     {
@@ -39,15 +37,13 @@
       "rut": "12.345.678-5",
       "nombre": "Camila Rojas",
       "email": "camila@demo.cl",
-      "sal": "1e611b1b9c6b0c06",
-      "clave": "6b268ff37cb627e62380ea3fabb7ad9d23c35f99ac96a3c17e3f976e07977c2c",
       "rol": "cliente",
       "region": "Metropolitana de Santiago",
       "comuna": "Ñuñoa",
       "telefono": "+56 9 8765 4321",
       "direccion": "Av. Irarrázaval 3450, depto. 1204",
       "estado": "activo",
-      "creado": 1787601227511,
+      "creado": 1790002800000,
       "cuenta": null
     },
     {
@@ -55,15 +51,13 @@
       "rut": "17.654.321-3",
       "nombre": "Diego Muñoz",
       "email": "diego@demo.cl",
-      "sal": "9c11a03eff090003",
-      "clave": "45a3ba13c42045d1d69807e1b6ac4c5325914b39e70fa1fec7ce5ebbb6f4f90a",
       "rol": "cliente",
       "region": "Valparaíso",
       "comuna": "Viña del Mar",
       "telefono": "+56 9 7654 3210",
       "direccion": "Av. Libertad 1180",
       "estado": "activo",
-      "creado": 1785009227511,
+      "creado": 1787410800000,
       "cuenta": null
     },
     {
@@ -71,20 +65,18 @@
       "rut": "19.876.543-0",
       "nombre": "Valentina Soto",
       "email": "valentina@demo.cl",
-      "sal": "081d402df0f7ee2f",
-      "clave": "7058cca15878d9bb83f419016b1652fb052c9da522414724cc54ecb30c70b930",
       "rol": "cliente",
       "region": "Biobío",
       "comuna": "Concepción",
       "telefono": "+56 9 6543 2109",
       "direccion": "O'Higgins 940, of. 32",
       "estado": "activo",
-      "creado": 1786305227511,
+      "creado": 1788706800000,
       "cuenta": {
         "banco": "BancoEstado",
         "tipo": "Cuenta vista / CuentaRUT",
         "numero": "19876543",
-        "actualizada": 1786305227511
+        "actualizada": 1788706800000
       }
     }
   ],
@@ -101,13 +93,14 @@
       "idioma": "ES",
       "condicion": "NM",
       "precio": 5990,
+      "precioAnterior": null,
       "stock": 3,
       "estado": "activa",
       "descripcion": "Sacada del sobre directo a sleeve y toploader.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1788461627511,
-      "actualizado": 1788461627511
+      "creado": 1790863200000,
+      "actualizado": 1790863200000
     },
     {
       "id": "P002",
@@ -121,14 +114,14 @@
       "idioma": "EN",
       "condicion": "EX",
       "precio": 4490,
+      "precioAnterior": 5490,
       "stock": 1,
       "estado": "activa",
       "descripcion": "Pequeño blanqueo en una esquina del reverso.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1788893627511,
-      "actualizado": 1788893627511,
-      "precioAnterior": 5490
+      "creado": 1791295200000,
+      "actualizado": 1791295200000
     },
     {
       "id": "P003",
@@ -142,13 +135,14 @@
       "idioma": "ES",
       "condicion": "NM",
       "precio": 6490,
+      "precioAnterior": null,
       "stock": 2,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1789757627511,
-      "actualizado": 1789757627511
+      "creado": 1792159200000,
+      "actualizado": 1792159200000
     },
     {
       "id": "P004",
@@ -162,14 +156,14 @@
       "idioma": "EN",
       "condicion": "EX",
       "precio": 1249990,
+      "precioAnterior": 1399990,
       "stock": 1,
       "estado": "activa",
       "descripcion": "Centrado aproximado 55/45. Se envía con seguro, en caja rígida.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1790189627511,
-      "actualizado": 1790189627511,
-      "precioAnterior": 1399990
+      "creado": 1792591200000,
+      "actualizado": 1792591200000
     },
     {
       "id": "P005",
@@ -183,13 +177,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 2490,
+      "precioAnterior": null,
       "stock": 5,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1789757627511,
-      "actualizado": 1789757627511
+      "creado": 1792159200000,
+      "actualizado": 1792159200000
     },
     {
       "id": "P006",
@@ -203,14 +198,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 139990,
+      "precioAnterior": 159990,
       "stock": 1,
       "estado": "activa",
       "descripcion": "Nunca jugada. Guardada en carpeta de 9 bolsillos.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1788893627511,
-      "actualizado": 1788893627511,
-      "precioAnterior": 159990
+      "creado": 1791295200000,
+      "actualizado": 1791295200000
     },
     {
       "id": "P007",
@@ -224,13 +219,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 279990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1792349627511,
-      "actualizado": 1792349627511
+      "creado": 1794751200000,
+      "actualizado": 1794751200000
     },
     {
       "id": "P008",
@@ -244,13 +240,14 @@
       "idioma": "ES",
       "condicion": "NM",
       "precio": 44990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1790621627511,
-      "actualizado": 1790621627511
+      "creado": 1793023200000,
+      "actualizado": 1793023200000
     },
     {
       "id": "P009",
@@ -264,13 +261,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 64990,
+      "precioAnterior": null,
       "stock": 0,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1791572027511,
-      "actualizado": 1791572027511
+      "creado": 1793973600000,
+      "actualizado": 1793973600000
     },
     {
       "id": "P010",
@@ -284,13 +282,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 229990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1790880827511,
-      "actualizado": 1790880827511
+      "creado": 1793282400000,
+      "actualizado": 1793282400000
     },
     {
       "id": "P011",
@@ -304,13 +303,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 169990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1791831227511,
-      "actualizado": 1791831227511
+      "creado": 1794232800000,
+      "actualizado": 1794232800000
     },
     {
       "id": "P012",
@@ -324,14 +324,14 @@
       "idioma": "ES",
       "condicion": "NM",
       "precio": 590,
+      "precioAnterior": 790,
       "stock": 8,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1789325627511,
-      "actualizado": 1789325627511,
-      "precioAnterior": 790
+      "creado": 1791727200000,
+      "actualizado": 1791727200000
     },
     {
       "id": "P013",
@@ -345,13 +345,14 @@
       "idioma": "ES",
       "condicion": "NM",
       "precio": 890,
+      "precioAnterior": null,
       "stock": 12,
       "estado": "activa",
       "descripcion": "Versión reverse holo.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1790189627511,
-      "actualizado": 1790189627511
+      "creado": 1792591200000,
+      "actualizado": 1792591200000
     },
     {
       "id": "P014",
@@ -365,13 +366,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 24990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "pausada",
       "descripcion": "Pausada mientras decido si la cambio.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1792263227511,
-      "actualizado": 1792263227511
+      "creado": 1794664800000,
+      "actualizado": 1794664800000
     },
     {
       "id": "P015",
@@ -385,13 +387,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 54990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1791399227511,
-      "actualizado": 1791399227511
+      "creado": 1793800800000,
+      "actualizado": 1793800800000
     },
     {
       "id": "P016",
@@ -405,14 +408,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 49990,
+      "precioAnterior": 59990,
       "stock": 2,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1791658427511,
-      "actualizado": 1791658427511,
-      "precioAnterior": 59990
+      "creado": 1794060000000,
+      "actualizado": 1794060000000
     },
     {
       "id": "P017",
@@ -426,13 +429,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 1490,
+      "precioAnterior": null,
       "stock": 6,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1790016827511,
-      "actualizado": 1790016827511
+      "creado": 1792418400000,
+      "actualizado": 1792418400000
     },
     {
       "id": "P018",
@@ -446,13 +450,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 39990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1792522427511,
-      "actualizado": 1792522427511
+      "creado": 1794924000000,
+      "actualizado": 1794924000000
     },
     {
       "id": "P019",
@@ -466,13 +471,14 @@
       "idioma": "EN",
       "condicion": "EX",
       "precio": 74990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "Edición Unlimited.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1789325627511,
-      "actualizado": 1789325627511
+      "creado": 1791727200000,
+      "actualizado": 1791727200000
     },
     {
       "id": "P020",
@@ -486,14 +492,14 @@
       "idioma": "EN",
       "condicion": "GD",
       "precio": 39990,
+      "precioAnterior": 44990,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1791312827511,
-      "actualizado": 1791312827511,
-      "precioAnterior": 44990
+      "creado": 1793714400000,
+      "actualizado": 1793714400000
     },
     {
       "id": "P021",
@@ -507,14 +513,14 @@
       "idioma": "EN",
       "condicion": "NM",
       "precio": 12990,
+      "precioAnterior": 15990,
       "stock": 3,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1791917627511,
-      "actualizado": 1791917627511,
-      "precioAnterior": 15990
+      "creado": 1794319200000,
+      "actualizado": 1794319200000
     },
     {
       "id": "P022",
@@ -528,13 +534,14 @@
       "idioma": "JP",
       "condicion": "NM",
       "precio": 3490,
+      "precioAnterior": null,
       "stock": 4,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1792090427511,
-      "actualizado": 1792090427511
+      "creado": 1794492000000,
+      "actualizado": 1794492000000
     },
     {
       "id": "P023",
@@ -548,13 +555,14 @@
       "idioma": "JP",
       "condicion": "NM",
       "precio": 54990,
+      "precioAnterior": null,
       "stock": 1,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1790189627511,
-      "actualizado": 1790189627511
+      "creado": 1792591200000,
+      "actualizado": 1792591200000
     },
     {
       "id": "P024",
@@ -568,14 +576,14 @@
       "idioma": "ES",
       "condicion": "NM",
       "precio": 14990,
+      "precioAnterior": 17990,
       "stock": 2,
       "estado": "activa",
       "descripcion": "Clásico del TCG chileno.",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1790621627511,
-      "actualizado": 1790621627511,
-      "precioAnterior": 17990
+      "creado": 1793023200000,
+      "actualizado": 1793023200000
     },
     {
       "id": "P025",
@@ -589,53 +597,14 @@
       "idioma": "ES",
       "condicion": "EX",
       "precio": 4990,
+      "precioAnterior": null,
       "stock": 3,
       "estado": "activa",
       "descripcion": "",
       "imagen": null,
       "imagenApi": null,
-      "creado": 1792263227511,
-      "actualizado": 1792263227511
-    },
-    {
-      "id": "P026",
-      "vendedorId": "U01",
-      "juego": "onepiece",
-      "nombre": "Monkey.D.Luffy (OP05-119) (Manga)",
-      "edicion": "Premium Booster -The Best-",
-      "numero": "OP05-119",
-      "rareza": "Secret Rare",
-      "acabado": "Holo",
-      "idioma": "EN",
-      "condicion": "MT",
-      "precio": 5000000,
-      "descripcion": "",
-      "stock": 2,
-      "estado": "activa",
-      "imagen": null,
-      "imagenApi": "https://tcgplayer-cdn.tcgplayer.com/product/587963_400w.jpg",
-      "creado": 1792785867199,
-      "actualizado": 1792785867199
-    },
-    {
-      "id": "P027",
-      "vendedorId": "U01",
-      "juego": "myl",
-      "nombre": "arturo prat - sp",
-      "edicion": "IMP - Libertadores",
-      "numero": "197",
-      "rareza": "Legendaria",
-      "acabado": "Normal",
-      "idioma": "ES",
-      "condicion": "NM",
-      "precio": 1500000,
-      "descripcion": "",
-      "stock": 1,
-      "estado": "activa",
-      "imagen": null,
-      "imagenApi": "https://api.myl.cl/static/cards/161/197.png",
-      "creado": 1792785927531,
-      "actualizado": 1792785927531
+      "creado": 1794664800000,
+      "actualizado": 1794664800000
     }
   ],
   "pedidos": [
@@ -643,7 +612,7 @@
       "id": "HM-1001",
       "compradorId": "U03",
       "vendedorId": "U02",
-      "fecha": 1788810827511,
+      "fecha": 1791212400000,
       "items": [
         {
           "pubId": "P001",
@@ -680,15 +649,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1788810827511
+          "fecha": 1791212400000
         },
         {
           "estado": "enviado",
-          "fecha": 1788897227511
+          "fecha": 1791298800000
         },
         {
           "estado": "entregado",
-          "fecha": 1789070027511
+          "fecha": 1791471600000
         }
       ],
       "seguimiento": "BX-4300731"
@@ -697,7 +666,7 @@
       "id": "HM-1002",
       "compradorId": "U02",
       "vendedorId": "U03",
-      "fecha": 1789156427511,
+      "fecha": 1791558000000,
       "items": [
         {
           "pubId": "P006",
@@ -734,15 +703,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1789156427511
+          "fecha": 1791558000000
         },
         {
           "estado": "enviado",
-          "fecha": 1789242827511
+          "fecha": 1791644400000
         },
         {
           "estado": "entregado",
-          "fecha": 1789415627511
+          "fecha": 1791817200000
         }
       ],
       "seguimiento": "BX-4301462"
@@ -751,7 +720,7 @@
       "id": "HM-1003",
       "compradorId": "U01",
       "vendedorId": "U02",
-      "fecha": 1789502027511,
+      "fecha": 1791903600000,
       "items": [
         {
           "pubId": "P001",
@@ -788,15 +757,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1789502027511
+          "fecha": 1791903600000
         },
         {
           "estado": "enviado",
-          "fecha": 1789588427511
+          "fecha": 1791990000000
         },
         {
           "estado": "entregado",
-          "fecha": 1789761227511
+          "fecha": 1792162800000
         }
       ],
       "seguimiento": "BX-4302193"
@@ -805,7 +774,7 @@
       "id": "HM-1004",
       "compradorId": "U02",
       "vendedorId": "U03",
-      "fecha": 1789674827511,
+      "fecha": 1792076400000,
       "items": [
         {
           "pubId": "P019",
@@ -842,15 +811,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1789674827511
+          "fecha": 1792076400000
         },
         {
           "estado": "enviado",
-          "fecha": 1789674827511
+          "fecha": 1792076400000
         },
         {
           "estado": "entregado",
-          "fecha": 1789847627511
+          "fecha": 1792249200000
         }
       ],
       "seguimiento": ""
@@ -859,7 +828,7 @@
       "id": "HM-1005",
       "compradorId": "U01",
       "vendedorId": "U02",
-      "fecha": 1789761227511,
+      "fecha": 1792162800000,
       "items": [
         {
           "pubId": "P012",
@@ -896,15 +865,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1789761227511
+          "fecha": 1792162800000
         },
         {
           "estado": "enviado",
-          "fecha": 1789847627511
+          "fecha": 1792249200000
         },
         {
           "estado": "entregado",
-          "fecha": 1790020427511
+          "fecha": 1792422000000
         }
       ],
       "seguimiento": "BX-4303655"
@@ -913,7 +882,7 @@
       "id": "HM-1006",
       "compradorId": "U01",
       "vendedorId": "U03",
-      "fecha": 1789934027511,
+      "fecha": 1792335600000,
       "items": [
         {
           "pubId": "P002",
@@ -950,15 +919,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1789934027511
+          "fecha": 1792335600000
         },
         {
           "estado": "enviado",
-          "fecha": 1790020427511
+          "fecha": 1792422000000
         },
         {
           "estado": "entregado",
-          "fecha": 1790193227511
+          "fecha": 1792594800000
         }
       ],
       "seguimiento": "BX-4304386"
@@ -967,7 +936,7 @@
       "id": "HM-1007",
       "compradorId": "U03",
       "vendedorId": "U02",
-      "fecha": 1790106827511,
+      "fecha": 1792508400000,
       "items": [
         {
           "pubId": "P005",
@@ -1004,15 +973,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790106827511
+          "fecha": 1792508400000
         },
         {
           "estado": "enviado",
-          "fecha": 1790193227511
+          "fecha": 1792594800000
         },
         {
           "estado": "entregado",
-          "fecha": 1790366027511
+          "fecha": 1792767600000
         }
       ],
       "seguimiento": "BX-4305117"
@@ -1021,7 +990,7 @@
       "id": "HM-1008",
       "compradorId": "U03",
       "vendedorId": "U01",
-      "fecha": 1790193227511,
+      "fecha": 1792594800000,
       "items": [
         {
           "pubId": "P003",
@@ -1058,15 +1027,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790193227511
+          "fecha": 1792594800000
         },
         {
           "estado": "enviado",
-          "fecha": 1790279627511
+          "fecha": 1792681200000
         },
         {
           "estado": "entregado",
-          "fecha": 1790452427511
+          "fecha": 1792854000000
         }
       ],
       "seguimiento": "BX-4305848"
@@ -1075,7 +1044,7 @@
       "id": "HM-1009",
       "compradorId": "U02",
       "vendedorId": "U03",
-      "fecha": 1790279627511,
+      "fecha": 1792681200000,
       "items": [
         {
           "pubId": "P017",
@@ -1112,15 +1081,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790279627511
+          "fecha": 1792681200000
         },
         {
           "estado": "enviado",
-          "fecha": 1790366027511
+          "fecha": 1792767600000
         },
         {
           "estado": "entregado",
-          "fecha": 1790538827511
+          "fecha": 1792940400000
         }
       ],
       "seguimiento": "BX-4306579"
@@ -1129,7 +1098,7 @@
       "id": "HM-1010",
       "compradorId": "U03",
       "vendedorId": "U02",
-      "fecha": 1790366027511,
+      "fecha": 1792767600000,
       "items": [
         {
           "pubId": "P004",
@@ -1166,15 +1135,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790366027511
+          "fecha": 1792767600000
         },
         {
           "estado": "enviado",
-          "fecha": 1790452427511
+          "fecha": 1792854000000
         },
         {
           "estado": "entregado",
-          "fecha": 1790625227511
+          "fecha": 1793026800000
         }
       ],
       "seguimiento": "BX-4307310"
@@ -1183,7 +1152,7 @@
       "id": "HM-1011",
       "compradorId": "U01",
       "vendedorId": "U02",
-      "fecha": 1790538827511,
+      "fecha": 1792940400000,
       "items": [
         {
           "pubId": "P023",
@@ -1220,15 +1189,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790538827511
+          "fecha": 1792940400000
         },
         {
           "estado": "enviado",
-          "fecha": 1790538827511
+          "fecha": 1792940400000
         },
         {
           "estado": "entregado",
-          "fecha": 1790711627511
+          "fecha": 1793113200000
         }
       ],
       "seguimiento": ""
@@ -1237,7 +1206,7 @@
       "id": "HM-1012",
       "compradorId": "U01",
       "vendedorId": "U03",
-      "fecha": 1790625227511,
+      "fecha": 1793026800000,
       "items": [
         {
           "pubId": "P013",
@@ -1274,15 +1243,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790625227511
+          "fecha": 1793026800000
         },
         {
           "estado": "enviado",
-          "fecha": 1790711627511
+          "fecha": 1793113200000
         },
         {
           "estado": "entregado",
-          "fecha": 1790884427511
+          "fecha": 1793286000000
         }
       ],
       "seguimiento": "BX-4308772"
@@ -1291,7 +1260,7 @@
       "id": "HM-1013",
       "compradorId": "U01",
       "vendedorId": "U03",
-      "fecha": 1790884427511,
+      "fecha": 1793286000000,
       "items": [
         {
           "pubId": "P024",
@@ -1328,15 +1297,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790884427511
+          "fecha": 1793286000000
         },
         {
           "estado": "enviado",
-          "fecha": 1790970827511
+          "fecha": 1793372400000
         },
         {
           "estado": "entregado",
-          "fecha": 1791143627511
+          "fecha": 1793545200000
         }
       ],
       "seguimiento": "BX-4309503"
@@ -1345,7 +1314,7 @@
       "id": "HM-1014",
       "compradorId": "U03",
       "vendedorId": "U02",
-      "fecha": 1790970827511,
+      "fecha": 1793372400000,
       "items": [
         {
           "pubId": "P001",
@@ -1382,15 +1351,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1790970827511
+          "fecha": 1793372400000
         },
         {
           "estado": "enviado",
-          "fecha": 1791057227511
+          "fecha": 1793458800000
         },
         {
           "estado": "entregado",
-          "fecha": 1791230027511
+          "fecha": 1793631600000
         }
       ],
       "seguimiento": "BX-4310234"
@@ -1399,7 +1368,7 @@
       "id": "HM-1015",
       "compradorId": "U01",
       "vendedorId": "U02",
-      "fecha": 1791143627511,
+      "fecha": 1793545200000,
       "items": [
         {
           "pubId": "P008",
@@ -1436,15 +1405,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1791143627511
+          "fecha": 1793545200000
         },
         {
           "estado": "enviado",
-          "fecha": 1791230027511
+          "fecha": 1793631600000
         },
         {
           "estado": "entregado",
-          "fecha": 1791402827511
+          "fecha": 1793804400000
         }
       ],
       "seguimiento": "BX-4310965"
@@ -1453,7 +1422,7 @@
       "id": "HM-1016",
       "compradorId": "U01",
       "vendedorId": "U03",
-      "fecha": 1791230027511,
+      "fecha": 1793631600000,
       "items": [
         {
           "pubId": "P006",
@@ -1490,15 +1459,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1791230027511
+          "fecha": 1793631600000
         },
         {
           "estado": "enviado",
-          "fecha": 1791316427511
+          "fecha": 1793718000000
         },
         {
           "estado": "entregado",
-          "fecha": 1791489227511
+          "fecha": 1793890800000
         }
       ],
       "seguimiento": "BX-4311696"
@@ -1507,7 +1476,7 @@
       "id": "HM-1017",
       "compradorId": "U02",
       "vendedorId": "U03",
-      "fecha": 1791748427511,
+      "fecha": 1794150000000,
       "items": [
         {
           "pubId": "P002",
@@ -1544,15 +1513,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1791748427511
+          "fecha": 1794150000000
         },
         {
           "estado": "enviado",
-          "fecha": 1791834827511
+          "fecha": 1794236400000
         },
         {
           "estado": "entregado",
-          "fecha": 1792007627511
+          "fecha": 1794409200000
         }
       ],
       "seguimiento": "BX-4312427"
@@ -1561,7 +1530,7 @@
       "id": "HM-1018",
       "compradorId": "U03",
       "vendedorId": "U02",
-      "fecha": 1792007627511,
+      "fecha": 1794409200000,
       "items": [
         {
           "pubId": "P012",
@@ -1598,15 +1567,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1792007627511
+          "fecha": 1794409200000
         },
         {
           "estado": "enviado",
-          "fecha": 1792094027511
+          "fecha": 1794495600000
         },
         {
           "estado": "entregado",
-          "fecha": 1792266827511
+          "fecha": 1794668400000
         }
       ],
       "seguimiento": "BX-4313158"
@@ -1615,7 +1584,7 @@
       "id": "HM-1019",
       "compradorId": "U01",
       "vendedorId": "U02",
-      "fecha": 1792266827511,
+      "fecha": 1794668400000,
       "items": [
         {
           "pubId": "P005",
@@ -1663,15 +1632,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1792266827511
+          "fecha": 1794668400000
         },
         {
           "estado": "enviado",
-          "fecha": 1792353227511
+          "fecha": 1794754800000
         },
         {
           "estado": "entregado",
-          "fecha": 1792526027511
+          "fecha": 1794927600000
         }
       ],
       "seguimiento": "BX-4402193"
@@ -1680,7 +1649,7 @@
       "id": "HM-1020",
       "compradorId": "U02",
       "vendedorId": "U03",
-      "fecha": 1792439627511,
+      "fecha": 1794841200000,
       "items": [
         {
           "pubId": "P009",
@@ -1717,15 +1686,15 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1792439627511
+          "fecha": 1794841200000
         },
         {
           "estado": "enviado",
-          "fecha": 1792526027511
+          "fecha": 1794927600000
         },
         {
           "estado": "entregado",
-          "fecha": 1792698827511
+          "fecha": 1795100400000
         }
       ],
       "seguimiento": "BX-4417520"
@@ -1734,7 +1703,7 @@
       "id": "HM-1021",
       "compradorId": "U01",
       "vendedorId": "U03",
-      "fecha": 1792612427511,
+      "fecha": 1795014000000,
       "items": [
         {
           "pubId": "P017",
@@ -1771,11 +1740,11 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1792612427511
+          "fecha": 1795014000000
         },
         {
           "estado": "enviado",
-          "fecha": 1792698827511
+          "fecha": 1795100400000
         }
       ],
       "seguimiento": "BX-4431007"
@@ -1784,7 +1753,7 @@
       "id": "HM-1022",
       "compradorId": "U03",
       "vendedorId": "U02",
-      "fecha": 1792698827511,
+      "fecha": 1795100400000,
       "items": [
         {
           "pubId": "P008",
@@ -1821,7 +1790,7 @@
       "historial": [
         {
           "estado": "pagado",
-          "fecha": 1792698827511
+          "fecha": 1795100400000
         }
       ],
       "seguimiento": ""
@@ -1830,7 +1799,7 @@
   "movimientos": [
     {
       "id": "M001",
-      "fecha": 1788461627511,
+      "fecha": 1790863200000,
       "pubId": "P001",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -1844,7 +1813,7 @@
     },
     {
       "id": "M026",
-      "fecha": 1788810827511,
+      "fecha": 1791212400000,
       "pubId": "P001",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -1858,7 +1827,7 @@
     },
     {
       "id": "M002",
-      "fecha": 1788893627511,
+      "fecha": 1791295200000,
       "pubId": "P002",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -1872,7 +1841,7 @@
     },
     {
       "id": "M006",
-      "fecha": 1788893627511,
+      "fecha": 1791295200000,
       "pubId": "P006",
       "carta": "Charizard ex (ilustración especial)",
       "juego": "pokemon",
@@ -1886,7 +1855,7 @@
     },
     {
       "id": "M027",
-      "fecha": 1789156427511,
+      "fecha": 1791558000000,
       "pubId": "P006",
       "carta": "Charizard ex (ilustración especial)",
       "juego": "pokemon",
@@ -1900,7 +1869,7 @@
     },
     {
       "id": "M012",
-      "fecha": 1789325627511,
+      "fecha": 1791727200000,
       "pubId": "P012",
       "carta": "Pikachu",
       "juego": "pokemon",
@@ -1914,7 +1883,7 @@
     },
     {
       "id": "M019",
-      "fecha": 1789325627511,
+      "fecha": 1791727200000,
       "pubId": "P019",
       "carta": "Blue-Eyes White Dragon",
       "juego": "yugioh",
@@ -1928,7 +1897,7 @@
     },
     {
       "id": "M028",
-      "fecha": 1789502027511,
+      "fecha": 1791903600000,
       "pubId": "P001",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -1942,7 +1911,7 @@
     },
     {
       "id": "M029",
-      "fecha": 1789674827511,
+      "fecha": 1792076400000,
       "pubId": "P019",
       "carta": "Blue-Eyes White Dragon",
       "juego": "yugioh",
@@ -1956,7 +1925,7 @@
     },
     {
       "id": "M003",
-      "fecha": 1789757627511,
+      "fecha": 1792159200000,
       "pubId": "P003",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -1970,7 +1939,7 @@
     },
     {
       "id": "M005",
-      "fecha": 1789757627511,
+      "fecha": 1792159200000,
       "pubId": "P005",
       "carta": "Sol Ring",
       "juego": "magic",
@@ -1984,7 +1953,7 @@
     },
     {
       "id": "M030",
-      "fecha": 1789761227511,
+      "fecha": 1792162800000,
       "pubId": "P012",
       "carta": "Pikachu",
       "juego": "pokemon",
@@ -1998,7 +1967,7 @@
     },
     {
       "id": "M031",
-      "fecha": 1789934027511,
+      "fecha": 1792335600000,
       "pubId": "P002",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -2012,7 +1981,7 @@
     },
     {
       "id": "M017",
-      "fecha": 1790016827511,
+      "fecha": 1792418400000,
       "pubId": "P017",
       "carta": "Lightning Bolt",
       "juego": "magic",
@@ -2026,7 +1995,7 @@
     },
     {
       "id": "M032",
-      "fecha": 1790106827511,
+      "fecha": 1792508400000,
       "pubId": "P005",
       "carta": "Sol Ring",
       "juego": "magic",
@@ -2040,7 +2009,7 @@
     },
     {
       "id": "M004",
-      "fecha": 1790189627511,
+      "fecha": 1792591200000,
       "pubId": "P004",
       "carta": "Umbreon VMAX (arte alternativo)",
       "juego": "pokemon",
@@ -2054,7 +2023,7 @@
     },
     {
       "id": "M013",
-      "fecha": 1790189627511,
+      "fecha": 1792591200000,
       "pubId": "P013",
       "carta": "Pikachu",
       "juego": "pokemon",
@@ -2068,7 +2037,7 @@
     },
     {
       "id": "M023",
-      "fecha": 1790189627511,
+      "fecha": 1792591200000,
       "pubId": "P023",
       "carta": "Shanks",
       "juego": "onepiece",
@@ -2082,7 +2051,7 @@
     },
     {
       "id": "M033",
-      "fecha": 1790193227511,
+      "fecha": 1792594800000,
       "pubId": "P003",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -2096,7 +2065,7 @@
     },
     {
       "id": "M034",
-      "fecha": 1790279627511,
+      "fecha": 1792681200000,
       "pubId": "P017",
       "carta": "Lightning Bolt",
       "juego": "magic",
@@ -2110,7 +2079,7 @@
     },
     {
       "id": "M035",
-      "fecha": 1790366027511,
+      "fecha": 1792767600000,
       "pubId": "P004",
       "carta": "Umbreon VMAX (arte alternativo)",
       "juego": "pokemon",
@@ -2124,7 +2093,7 @@
     },
     {
       "id": "M036",
-      "fecha": 1790538827511,
+      "fecha": 1792940400000,
       "pubId": "P023",
       "carta": "Shanks",
       "juego": "onepiece",
@@ -2138,7 +2107,7 @@
     },
     {
       "id": "M008",
-      "fecha": 1790621627511,
+      "fecha": 1793023200000,
       "pubId": "P008",
       "carta": "Gardevoir ex (ilustración especial)",
       "juego": "pokemon",
@@ -2152,7 +2121,7 @@
     },
     {
       "id": "M024",
-      "fecha": 1790621627511,
+      "fecha": 1793023200000,
       "pubId": "P024",
       "carta": "Excalibur",
       "juego": "myl",
@@ -2166,7 +2135,7 @@
     },
     {
       "id": "M037",
-      "fecha": 1790625227511,
+      "fecha": 1793026800000,
       "pubId": "P013",
       "carta": "Pikachu",
       "juego": "pokemon",
@@ -2180,7 +2149,7 @@
     },
     {
       "id": "M010",
-      "fecha": 1790880827511,
+      "fecha": 1793282400000,
       "pubId": "P010",
       "carta": "Giratina V (arte alternativo)",
       "juego": "pokemon",
@@ -2194,7 +2163,7 @@
     },
     {
       "id": "M038",
-      "fecha": 1790884427511,
+      "fecha": 1793286000000,
       "pubId": "P024",
       "carta": "Excalibur",
       "juego": "myl",
@@ -2208,7 +2177,7 @@
     },
     {
       "id": "M039",
-      "fecha": 1790970827511,
+      "fecha": 1793372400000,
       "pubId": "P001",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -2222,7 +2191,7 @@
     },
     {
       "id": "M040",
-      "fecha": 1791143627511,
+      "fecha": 1793545200000,
       "pubId": "P008",
       "carta": "Gardevoir ex (ilustración especial)",
       "juego": "pokemon",
@@ -2236,7 +2205,7 @@
     },
     {
       "id": "M041",
-      "fecha": 1791230027511,
+      "fecha": 1793631600000,
       "pubId": "P006",
       "carta": "Charizard ex (ilustración especial)",
       "juego": "pokemon",
@@ -2250,7 +2219,7 @@
     },
     {
       "id": "M020",
-      "fecha": 1791312827511,
+      "fecha": 1793714400000,
       "pubId": "P020",
       "carta": "Dark Magician",
       "juego": "yugioh",
@@ -2264,7 +2233,7 @@
     },
     {
       "id": "M015",
-      "fecha": 1791399227511,
+      "fecha": 1793800800000,
       "pubId": "P015",
       "carta": "The One Ring",
       "juego": "magic",
@@ -2278,7 +2247,7 @@
     },
     {
       "id": "M009",
-      "fecha": 1791572027511,
+      "fecha": 1793973600000,
       "pubId": "P009",
       "carta": "Iono (ilustración especial)",
       "juego": "pokemon",
@@ -2292,7 +2261,7 @@
     },
     {
       "id": "M016",
-      "fecha": 1791658427511,
+      "fecha": 1794060000000,
       "pubId": "P016",
       "carta": "Sheoldred, the Apocalypse",
       "juego": "magic",
@@ -2306,7 +2275,7 @@
     },
     {
       "id": "M042",
-      "fecha": 1791748427511,
+      "fecha": 1794150000000,
       "pubId": "P002",
       "carta": "Charizard ex",
       "juego": "pokemon",
@@ -2320,7 +2289,7 @@
     },
     {
       "id": "M011",
-      "fecha": 1791831227511,
+      "fecha": 1794232800000,
       "pubId": "P011",
       "carta": "Lugia V (arte alternativo)",
       "juego": "pokemon",
@@ -2334,7 +2303,7 @@
     },
     {
       "id": "M021",
-      "fecha": 1791917627511,
+      "fecha": 1794319200000,
       "pubId": "P021",
       "carta": "Ash Blossom & Joyous Spring",
       "juego": "yugioh",
@@ -2348,7 +2317,7 @@
     },
     {
       "id": "M043",
-      "fecha": 1792007627511,
+      "fecha": 1794409200000,
       "pubId": "P012",
       "carta": "Pikachu",
       "juego": "pokemon",
@@ -2362,7 +2331,7 @@
     },
     {
       "id": "M022",
-      "fecha": 1792090427511,
+      "fecha": 1794492000000,
       "pubId": "P022",
       "carta": "Monkey.D.Luffy (líder)",
       "juego": "onepiece",
@@ -2376,7 +2345,7 @@
     },
     {
       "id": "M014",
-      "fecha": 1792263227511,
+      "fecha": 1794664800000,
       "pubId": "P014",
       "carta": "Mew ex (dorada)",
       "juego": "pokemon",
@@ -2390,7 +2359,7 @@
     },
     {
       "id": "M025",
-      "fecha": 1792263227511,
+      "fecha": 1794664800000,
       "pubId": "P025",
       "carta": "Aquiles",
       "juego": "myl",
@@ -2404,7 +2373,7 @@
     },
     {
       "id": "M044",
-      "fecha": 1792266827511,
+      "fecha": 1794668400000,
       "pubId": "P005",
       "carta": "Sol Ring",
       "juego": "magic",
@@ -2418,7 +2387,7 @@
     },
     {
       "id": "M045",
-      "fecha": 1792266827511,
+      "fecha": 1794668400000,
       "pubId": "P016",
       "carta": "Sheoldred, the Apocalypse",
       "juego": "magic",
@@ -2432,7 +2401,7 @@
     },
     {
       "id": "M007",
-      "fecha": 1792349627511,
+      "fecha": 1794751200000,
       "pubId": "P007",
       "carta": "Pikachu ex (ilustración especial)",
       "juego": "pokemon",
@@ -2446,7 +2415,7 @@
     },
     {
       "id": "M046",
-      "fecha": 1792439627511,
+      "fecha": 1794841200000,
       "pubId": "P009",
       "carta": "Iono (ilustración especial)",
       "juego": "pokemon",
@@ -2460,7 +2429,7 @@
     },
     {
       "id": "M018",
-      "fecha": 1792522427511,
+      "fecha": 1794924000000,
       "pubId": "P018",
       "carta": "Ragavan, Nimble Pilferer",
       "juego": "magic",
@@ -2474,7 +2443,7 @@
     },
     {
       "id": "M047",
-      "fecha": 1792612427511,
+      "fecha": 1795014000000,
       "pubId": "P017",
       "carta": "Lightning Bolt",
       "juego": "magic",
@@ -2488,7 +2457,7 @@
     },
     {
       "id": "M048",
-      "fecha": 1792698827511,
+      "fecha": 1795100400000,
       "pubId": "P008",
       "carta": "Gardevoir ex (ilustración especial)",
       "juego": "pokemon",
@@ -2499,505 +2468,379 @@
       "despues": 1,
       "ref": "HM-1022",
       "uid": "U03"
-    },
-    {
-      "id": "M049",
-      "fecha": 1792785867199,
-      "pubId": "P026",
-      "carta": "Monkey.D.Luffy (OP05-119) (Manga)",
-      "juego": "onepiece",
-      "vendedorId": "U01",
-      "tipo": "alta",
-      "cantidad": 2,
-      "antes": 0,
-      "despues": 2,
-      "ref": "Publicación nueva",
-      "uid": "U01"
-    },
-    {
-      "id": "M050",
-      "fecha": 1792785927531,
-      "pubId": "P027",
-      "carta": "arturo prat - sp",
-      "juego": "myl",
-      "vendedorId": "U01",
-      "tipo": "alta",
-      "cantidad": 1,
-      "antes": 0,
-      "despues": 1,
-      "ref": "Publicación nueva",
-      "uid": "U01"
     }
   ],
   "actividad": [
     {
       "id": "A052",
-      "fecha": 1785009227511,
+      "fecha": 1787410800000,
       "uid": "U02",
       "accion": "Registro de usuario",
       "detalle": "diego@demo.cl"
     },
     {
       "id": "A053",
-      "fecha": 1786305227511,
+      "fecha": 1788706800000,
       "uid": "U03",
       "accion": "Registro de usuario",
       "detalle": "valentina@demo.cl"
     },
     {
       "id": "A051",
-      "fecha": 1787601227511,
+      "fecha": 1790002800000,
       "uid": "U01",
       "accion": "Registro de usuario",
       "detalle": "camila@demo.cl"
     },
     {
       "id": "A001",
-      "fecha": 1788461627511,
+      "fecha": 1790863200000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Charizard ex (P001), 7 u."
     },
     {
       "id": "A026",
-      "fecha": 1788810827511,
+      "fecha": 1791212400000,
       "uid": "U03",
       "accion": "Compra realizada",
       "detalle": "HM-1001 por $11.480"
     },
     {
       "id": "A002",
-      "fecha": 1788893627511,
+      "fecha": 1791295200000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Charizard ex (P002), 3 u."
     },
     {
       "id": "A006",
-      "fecha": 1788893627511,
+      "fecha": 1791295200000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Charizard ex (ilustración especial) (P006), 3 u."
     },
     {
       "id": "A027",
-      "fecha": 1789156427511,
+      "fecha": 1791558000000,
       "uid": "U02",
       "accion": "Compra realizada",
       "detalle": "HM-1002 por $159.980"
     },
     {
       "id": "A012",
-      "fecha": 1789325627511,
+      "fecha": 1791727200000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Pikachu (P012), 15 u."
     },
     {
       "id": "A019",
-      "fecha": 1789325627511,
+      "fecha": 1791727200000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Blue-Eyes White Dragon (P019), 2 u."
     },
     {
       "id": "A028",
-      "fecha": 1789502027511,
+      "fecha": 1791903600000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1003 por $17.570"
     },
     {
       "id": "A029",
-      "fecha": 1789674827511,
+      "fecha": 1792076400000,
       "uid": "U02",
       "accion": "Compra realizada",
       "detalle": "HM-1004 por $69.990"
     },
     {
       "id": "A003",
-      "fecha": 1789757627511,
+      "fecha": 1792159200000,
       "uid": "U01",
       "accion": "Publicación creada",
       "detalle": "Charizard ex (P003), 3 u."
     },
     {
       "id": "A005",
-      "fecha": 1789757627511,
+      "fecha": 1792159200000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Sol Ring (P005), 8 u."
     },
     {
       "id": "A030",
-      "fecha": 1789761227511,
+      "fecha": 1792162800000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1005 por $6.640"
     },
     {
       "id": "A031",
-      "fecha": 1789934027511,
+      "fecha": 1792335600000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1006 por $9.980"
     },
     {
       "id": "A017",
-      "fecha": 1790016827511,
+      "fecha": 1792418400000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Lightning Bolt (P017), 11 u."
     },
     {
       "id": "A032",
-      "fecha": 1790106827511,
+      "fecha": 1792508400000,
       "uid": "U03",
       "accion": "Compra realizada",
       "detalle": "HM-1007 por $9.570"
     },
     {
       "id": "A004",
-      "fecha": 1790189627511,
+      "fecha": 1792591200000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Umbreon VMAX (arte alternativo) (P004), 2 u."
     },
     {
       "id": "A013",
-      "fecha": 1790189627511,
+      "fecha": 1792591200000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Pikachu (P013), 14 u."
     },
     {
       "id": "A023",
-      "fecha": 1790189627511,
+      "fecha": 1792591200000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Shanks (P023), 2 u."
     },
     {
       "id": "A033",
-      "fecha": 1790193227511,
+      "fecha": 1792594800000,
       "uid": "U03",
       "accion": "Compra realizada",
       "detalle": "HM-1008 por $11.980"
     },
     {
       "id": "A034",
-      "fecha": 1790279627511,
+      "fecha": 1792681200000,
       "uid": "U02",
       "accion": "Compra realizada",
       "detalle": "HM-1009 por $9.160"
     },
     {
       "id": "A035",
-      "fecha": 1790366027511,
+      "fecha": 1792767600000,
       "uid": "U03",
       "accion": "Compra realizada",
       "detalle": "HM-1010 por $1.194.980"
     },
     {
       "id": "A036",
-      "fecha": 1790538827511,
+      "fecha": 1792940400000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1011 por $59.990"
     },
     {
       "id": "A008",
-      "fecha": 1790621627511,
+      "fecha": 1793023200000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Gardevoir ex (ilustración especial) (P008), 3 u."
     },
     {
       "id": "A024",
-      "fecha": 1790621627511,
+      "fecha": 1793023200000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Excalibur (P024), 3 u."
     },
     {
       "id": "A037",
-      "fecha": 1790625227511,
+      "fecha": 1793026800000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1012 por $6.690"
     },
     {
       "id": "A010",
-      "fecha": 1790880827511,
+      "fecha": 1793282400000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Giratina V (arte alternativo) (P010), 1 u."
     },
     {
       "id": "A038",
-      "fecha": 1790884427511,
+      "fecha": 1793286000000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1013 por $18.980"
     },
     {
       "id": "A039",
-      "fecha": 1790970827511,
+      "fecha": 1793372400000,
       "uid": "U03",
       "accion": "Compra realizada",
       "detalle": "HM-1014 por $10.980"
     },
     {
       "id": "A040",
-      "fecha": 1791143627511,
+      "fecha": 1793545200000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1015 por $47.980"
     },
     {
       "id": "A041",
-      "fecha": 1791230027511,
+      "fecha": 1793631600000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1016 por $149.980"
     },
     {
       "id": "A020",
-      "fecha": 1791312827511,
+      "fecha": 1793714400000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Dark Magician (P020), 1 u."
     },
     {
       "id": "A015",
-      "fecha": 1791399227511,
+      "fecha": 1793800800000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "The One Ring (P015), 1 u."
     },
     {
       "id": "A009",
-      "fecha": 1791572027511,
+      "fecha": 1793973600000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Iono (ilustración especial) (P009), 1 u."
     },
     {
       "id": "A016",
-      "fecha": 1791658427511,
+      "fecha": 1794060000000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Sheoldred, the Apocalypse (P016), 3 u."
     },
     {
       "id": "A042",
-      "fecha": 1791748427511,
+      "fecha": 1794150000000,
       "uid": "U02",
       "accion": "Compra realizada",
       "detalle": "HM-1017 por $9.680"
     },
     {
       "id": "A011",
-      "fecha": 1791831227511,
+      "fecha": 1794232800000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Lugia V (arte alternativo) (P011), 1 u."
     },
     {
       "id": "A021",
-      "fecha": 1791917627511,
+      "fecha": 1794319200000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Ash Blossom & Joyous Spring (P021), 3 u."
     },
     {
       "id": "A043",
-      "fecha": 1792007627511,
+      "fecha": 1794409200000,
       "uid": "U03",
       "accion": "Compra realizada",
       "detalle": "HM-1018 por $7.350"
     },
     {
       "id": "A022",
-      "fecha": 1792090427511,
+      "fecha": 1794492000000,
       "uid": "U02",
       "accion": "Publicación creada",
       "detalle": "Monkey.D.Luffy (líder) (P022), 4 u."
     },
     {
       "id": "A014",
-      "fecha": 1792263227511,
+      "fecha": 1794664800000,
       "uid": "U01",
       "accion": "Publicación creada",
       "detalle": "Mew ex (dorada) (P014), 1 u."
     },
     {
       "id": "A025",
-      "fecha": 1792263227511,
+      "fecha": 1794664800000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Aquiles (P025), 3 u."
     },
     {
       "id": "A044",
-      "fecha": 1792266827511,
+      "fecha": 1794668400000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1019 por $57.470"
     },
     {
       "id": "A007",
-      "fecha": 1792349627511,
+      "fecha": 1794751200000,
       "uid": "U03",
       "accion": "Publicación creada",
       "detalle": "Pikachu ex (ilustración especial) (P007), 1 u."
     },
     {
       "id": "A045",
-      "fecha": 1792439627511,
+      "fecha": 1794841200000,
       "uid": "U02",
       "accion": "Compra realizada",
       "detalle": "HM-1020 por $69.980"
     },
     {
       "id": "A018",
-      "fecha": 1792522427511,
+      "fecha": 1794924000000,
       "uid": "U01",
       "accion": "Publicación creada",
       "detalle": "Ragavan, Nimble Pilferer (P018), 1 u."
     },
     {
       "id": "A046",
-      "fecha": 1792612427511,
+      "fecha": 1795014000000,
       "uid": "U01",
       "accion": "Compra realizada",
       "detalle": "HM-1021 por $7.970"
     },
     {
       "id": "A047",
-      "fecha": 1792698827511,
+      "fecha": 1795100400000,
       "uid": "U03",
       "accion": "Compra realizada",
       "detalle": "HM-1022 por $49.980"
     },
     {
       "id": "A048",
-      "fecha": 1792716107511,
+      "fecha": 1795117680000,
       "uid": "U03",
       "accion": "Retiro solicitado",
       "detalle": "RET-001 por $30.000"
     },
     {
       "id": "A049",
-      "fecha": 1792742027511,
+      "fecha": 1795143600000,
       "uid": "U00",
       "accion": "Retiro transferido",
       "detalle": "RET-001 por $30.000, comprobante TRF-883201"
     },
     {
       "id": "A050",
-      "fecha": 1792767947511,
+      "fecha": 1795169520000,
       "uid": "U03",
       "accion": "Retiro solicitado",
       "detalle": "RET-002 por $20.000"
-    },
-    {
-      "id": "A054",
-      "fecha": 1792785493644,
-      "uid": "U00",
-      "accion": "Configuración actualizada",
-      "detalle": "Comisión por venta (%): 8 → 0"
-    },
-    {
-      "id": "A055",
-      "fecha": 1792785558516,
-      "uid": "U00",
-      "accion": "Inicio de sesión",
-      "detalle": "Rol admin"
-    },
-    {
-      "id": "A056",
-      "fecha": 1792785569140,
-      "uid": "U00",
-      "accion": "Configuración actualizada",
-      "detalle": "Comisión por venta (%): 0 → 3"
-    },
-    {
-      "id": "A057",
-      "fecha": 1792785792861,
-      "uid": "U00",
-      "accion": "Cierre de sesión",
-      "detalle": ""
-    },
-    {
-      "id": "A058",
-      "fecha": 1792785799570,
-      "uid": null,
-      "accion": "Inicio de sesión fallido",
-      "detalle": "nbrallach@gmail.com"
-    },
-    {
-      "id": "A059",
-      "fecha": 1792785802794,
-      "uid": null,
-      "accion": "Inicio de sesión fallido",
-      "detalle": "nbrallach@gmail.com"
-    },
-    {
-      "id": "A060",
-      "fecha": 1792785808292,
-      "uid": null,
-      "accion": "Inicio de sesión fallido",
-      "detalle": "nbrallach@gmail.com"
-    },
-    {
-      "id": "A061",
-      "fecha": 1792785825698,
-      "uid": "U01",
-      "accion": "Inicio de sesión",
-      "detalle": "Rol cliente"
-    },
-    {
-      "id": "A062",
-      "fecha": 1792785867199,
-      "uid": "U01",
-      "accion": "Publicación creada",
-      "detalle": "Monkey.D.Luffy (OP05-119) (Manga) (P026), 2 u. a $5.000.000"
-    },
-    {
-      "id": "A063",
-      "fecha": 1792785927531,
-      "uid": "U01",
-      "accion": "Publicación creada",
-      "detalle": "arturo prat - sp (P027), 1 u. a $1.500.000"
-    },
-    {
-      "id": "A064",
-      "fecha": 1792789582446,
-      "uid": "U01",
-      "accion": "Inicio de sesión",
-      "detalle": "Rol cliente"
-    },
-    {
-      "id": "A065",
-      "fecha": 1793634843594,
-      "uid": "U01",
-      "accion": "Inicio de sesión",
-      "detalle": "Rol cliente"
-    },
-    {
-      "id": "A066",
-      "fecha": 1793635548694,
-      "uid": "U01",
-      "accion": "Inicio de sesión",
-      "detalle": "Rol cliente"
-    },
-    {
-      "id": "A067",
-      "fecha": 1793635567778,
-      "uid": "U01",
-      "accion": "Pago rechazado",
-      "detalle": "$9.480: La tarjeta no tiene fondos o cupo suficiente para este monto."
     }
   ],
   "retiros": [
@@ -3006,15 +2849,15 @@
       "uid": "U03",
       "monto": 30000,
       "estado": "pagado",
-      "fecha": 1792716107511,
+      "fecha": 1795117680000,
       "historial": [
         {
           "estado": "solicitado",
-          "fecha": 1792716107511
+          "fecha": 1795117680000
         },
         {
           "estado": "pagado",
-          "fecha": 1792742027511
+          "fecha": 1795143600000
         }
       ],
       "comprobante": "TRF-883201",
@@ -3032,11 +2875,11 @@
       "uid": "U03",
       "monto": 20000,
       "estado": "solicitado",
-      "fecha": 1792767947511,
+      "fecha": 1795169520000,
       "historial": [
         {
           "estado": "solicitado",
-          "fecha": 1792767947511
+          "fecha": 1795169520000
         }
       ],
       "comprobante": "",
