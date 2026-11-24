@@ -1,7 +1,8 @@
 /* Registro: validaciones del formulario (RUT, contraseñas, términos) y creación de la cuenta. */
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { estadoDemo, montar, simularFetch, tiendaFalsa } from '../pruebas/montar';
+import { montar, simularFetch, tiendaFalsa } from '../pruebas/montar';
+import type { Usuario } from '../types';
 import Registro from './Registro';
 
 describe('Registro', () => {
@@ -14,7 +15,7 @@ describe('Registro', () => {
     expect(screen.getByText('Elige tu región.')).toBeTruthy();
     expect(screen.getByText('Repite tu contraseña.')).toBeTruthy();
     expect(screen.getByText('Para crear tu cuenta debes aceptar los términos y la política de privacidad.')).toBeTruthy();
-    expect(tienda.actualizar).not.toHaveBeenCalled();
+    expect(tienda.registrar).not.toHaveBeenCalled();
   });
 
   it('avisa cuando las contraseñas no coinciden', async () => {
@@ -26,10 +27,11 @@ describe('Registro', () => {
     expect(screen.getByText('Las contraseñas no coinciden.')).toBeTruthy();
   });
 
-  it('con datos válidos crea la cuenta, inicia la sesión y lleva al catálogo', async () => {
+  it('con datos válidos pide crear la cuenta al backend y lleva al catálogo', async () => {
     const usuario = userEvent.setup();
-    const estado = estadoDemo();
-    const tienda = tiendaFalsa({ estado });
+    const tienda = tiendaFalsa({
+      registrar: jasmine.createSpy('registrar').and.resolveTo({ ok: true, usuario: { nombre: 'Ana Pérez' } as Usuario }),
+    });
     montar(<Registro />, { tienda, ruta: '/registro' });
 
     await usuario.type(screen.getByLabelText('RUT'), '21.456.789-K');
@@ -42,11 +44,11 @@ describe('Registro', () => {
     await usuario.click(screen.getByRole('checkbox'));
     await usuario.click(screen.getByRole('button', { name: 'Crear cuenta' }));
 
-    expect(tienda.actualizar).toHaveBeenCalledTimes(1);
-    const nueva = estado.usuarios.find((u) => u.email === 'ana@correo.cl');
-    expect(nueva?.nombre).toBe('Ana Pérez');
-    expect(nueva?.clave).not.toBe('Clave1234');   // se guarda el hash, nunca la contraseña
-    expect(tienda.iniciarSesion).toHaveBeenCalledOnceWith(nueva as never);
+    // La contraseña viaja al backend, que la guarda con BCrypt; el front nunca la almacena.
+    expect(tienda.registrar).toHaveBeenCalledOnceWith({
+      rut: '21.456.789-K', nombre: 'Ana Pérez', email: 'ana@correo.cl', telefono: '', region: 'Biobío',
+      comuna: 'Concepción', clave: 'Clave1234', acepta: true,
+    });
     expect(screen.getByTestId('url').textContent).toBe('/catalogo');
   });
 });

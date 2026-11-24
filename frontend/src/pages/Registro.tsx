@@ -1,7 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import Campo from '../components/Campo';
 import { REGIONES, comunasDe } from '../data/catalogo';
-import { emailRegistrado, registrarUsuario, rutRegistrado } from '../logica/usuarios';
 import { useAvisos } from '../hooks/useAvisos';
 import { useFormulario } from '../hooks/useFormulario';
 import { useLegal } from '../hooks/useLegal';
@@ -27,7 +26,8 @@ const INICIALES: Valores = { rut: '', nombre: '', email: '', telefono: '', regio
 const TEXTO_FUERZA = ['Usa entre 8 y 20 caracteres, con letras y números.', 'Seguridad: débil', 'Seguridad: media', 'Seguridad: fuerte'];
 
 export default function Registro() {
-  const { estado, actualizar, iniciarSesion } = useTienda();
+  const { registrar } = useTienda();
+  const [enviando, setEnviando] = useState(false);
   const { navegar } = useNavegar();
   const { avisar } = useAvisos();
   const verLegal = useLegal();
@@ -35,12 +35,10 @@ export default function Registro() {
 
   const f = useFormulario<Valores>('reg-', INICIALES, (v) => ({
     rut: !v.rut.trim() ? 'Ingresa tu RUT.'
-      : !rutValido(v.rut) ? 'El RUT no es válido. Revisa el número y el dígito verificador.'
-        : rutRegistrado(estado, v.rut) ? 'Ya existe una cuenta con este RUT.' : '',
+      : !rutValido(v.rut) ? 'El RUT no es válido. Revisa el número y el dígito verificador.' : '',
     nombre: nombreValido(v.nombre) ? '' : 'Escribe tu nombre y apellido, solo con letras (3 a 60 caracteres).',
     email: !v.email.trim() ? 'Ingresa tu correo.'
-      : !emailValido(v.email) ? 'Revisa el formato del correo, por ejemplo nombre@dominio.cl.'
-        : emailRegistrado(estado, v.email) ? 'Ya existe una cuenta con este correo. Si es tuyo, ingresa con él.' : '',
+      : !emailValido(v.email) ? 'Revisa el formato del correo, por ejemplo nombre@dominio.cl.' : '',
     telefono: !v.telefono.trim() || telefonoValido(v.telefono) ? '' : 'Usa un número chileno, por ejemplo +56 9 1234 5678.',
     region: v.region ? '' : 'Elige tu región.',
     comuna: v.comuna ? '' : 'Elige tu comuna.',
@@ -57,20 +55,22 @@ export default function Registro() {
     f.tocar('rut');
   };
 
-  const enviar = (ev: FormEvent<HTMLFormElement>) => {
+  // Que el RUT o el correo ya existan lo revisa el backend (responde 409 con el mensaje).
+  const enviar = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (rutValido(v.rut)) f.cambiar('rut', formatearRut(v.rut));
     if (!f.validarTodo()) return;
-    const r = actualizar((e) => registrarUsuario(e, {
+    setEnviando(true);
+    const r = await registrar({
       rut: v.rut, nombre: v.nombre, email: v.email, telefono: v.telefono, region: v.region, comuna: v.comuna, clave: v.clave,
-    }));
-    if (!r) return;
+      acepta: v.terminos,
+    });
+    setEnviando(false);
     if (!r.ok) {
       avisar(r.error, 'error');
       return;
     }
-    iniciarSesion(r.valor);
-    avisar(`Tu cuenta quedó creada. Te damos la bienvenida, ${r.valor.nombre.split(' ')[0]}.`, 'exito');
+    avisar(`Tu cuenta quedó creada. Te damos la bienvenida, ${r.usuario.nombre.split(' ')[0]}.`, 'exito');
     navegar(tomarDestino('/catalogo'));
   };
 
@@ -134,7 +134,7 @@ export default function Registro() {
             </label>
             <p className="campo__error" id="reg-terminos-error">{f.errores.terminos}</p>
           </div>
-          <button type="submit" className="btn btn--primario btn--grande">Crear cuenta</button>
+          <button type="submit" className="btn btn--primario btn--grande" disabled={enviando}>{enviando ? 'Creando cuenta…' : 'Crear cuenta'}</button>
         </form>
       </div>
     </section>

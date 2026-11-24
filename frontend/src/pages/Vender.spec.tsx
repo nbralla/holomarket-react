@@ -3,6 +3,8 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RAREZAS } from '../data/catalogo';
 import { estadoDemo, montar, simularFetch, tiendaFalsa, usuarioDemo } from '../pruebas/montar';
+import { api } from '../services/datos';
+import type { Publicacion } from '../types';
 import Vender from './Vender';
 
 function montarVender() {
@@ -46,7 +48,7 @@ describe('Vender (publicar una carta)', () => {
     expect(screen.getByText('Elige el juego de la carta.')).toBeTruthy();
     expect(screen.getByText('Escribe el nombre de la carta (2 a 60 caracteres).')).toBeTruthy();
     expect(screen.getByText('Elige la condición de la carta.')).toBeTruthy();
-    expect(tienda.actualizar).not.toHaveBeenCalled();
+    expect(tienda.ejecutar).not.toHaveBeenCalled();
   });
 
   it('el precio antes de la oferta debe ser mayor que el precio actual', async () => {
@@ -62,10 +64,10 @@ describe('Vender (publicar una carta)', () => {
     expect(screen.getByText('Se mostrará con 10 % de descuento en Ofertas.')).toBeTruthy();
   });
 
-  it('con los datos completos publica la carta y lleva al inventario', async () => {
+  it('con los datos completos envía la publicación a la API y lleva al inventario', async () => {
     const usuario = userEvent.setup();
-    const { tienda, estado } = montarVender();
-    const antes = estado.publicaciones.length;
+    const crear = spyOn(api, 'crearPublicacion').and.resolveTo({ id: 'P026', nombre: 'Mewtwo ex' } as Publicacion);
+    const { tienda } = montarVender();
 
     await usuario.selectOptions(screen.getByLabelText('Juego'), 'pokemon');
     await usuario.type(screen.getByLabelText('Nombre de la carta'), 'Mewtwo ex');
@@ -78,11 +80,10 @@ describe('Vender (publicar una carta)', () => {
     await usuario.type(screen.getByLabelText('Unidades disponibles'), '2');
     await usuario.click(screen.getByRole('button', { name: 'Publicar carta' }));
 
-    expect(tienda.actualizar).toHaveBeenCalledTimes(1);
-    expect(estado.publicaciones.length).toBe(antes + 1);
-    expect(estado.publicaciones[antes]).toEqual(jasmine.objectContaining({
-      nombre: 'Mewtwo ex', juego: 'pokemon', rareza: 'Double Rare', condicion: 'NM', precio: 8990, stock: 2, vendedorId: 'U02',
-    }));
+    expect(tienda.ejecutar).toHaveBeenCalledTimes(1);
+    expect(crear).toHaveBeenCalledOnceWith(jasmine.objectContaining({
+      nombre: 'Mewtwo ex', juego: 'pokemon', rareza: 'Double Rare', condicion: 'NM', precio: 8990, stock: 2, precioAnterior: null,
+    }), { imagen: null, imagenApi: null });
     expect(screen.getByTestId('url').textContent).toBe('/inventario');
   });
 });

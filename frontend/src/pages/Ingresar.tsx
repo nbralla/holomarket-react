@@ -18,7 +18,9 @@ export default function Ingresar() {
   const [error, setError] = useState('');
   const campoClave = useRef<HTMLInputElement>(null);
 
-  const entrar = (correo: string, contrasena: string) => {
+  const [enviando, setEnviando] = useState(false);
+
+  const entrar = async (correo: string, contrasena: string) => {
     setError('');
     const nuevos = {
       email: !correo.trim() ? 'Ingresa tu correo.' : emailValido(correo) ? '' : 'Revisa el formato del correo, por ejemplo nombre@dominio.cl.',
@@ -29,7 +31,9 @@ export default function Ingresar() {
       document.getElementById(nuevos.email ? 'login-email' : 'login-clave')?.focus();
       return;
     }
-    const r = ingresar(correo, contrasena);
+    setEnviando(true);
+    const r = await ingresar(correo, contrasena);
+    setEnviando(false);
     if (!r.ok) {
       setError(r.error);
       setClave('');
@@ -66,7 +70,7 @@ export default function Ingresar() {
                 </button>
               </div>
             </Campo>
-            <button type="submit" className="btn btn--primario btn--grande btn--bloque">Ingresar</button>
+            <button type="submit" className="btn btn--primario btn--grande btn--bloque" disabled={enviando}>{enviando ? 'Ingresando…' : 'Ingresar'}</button>
           </form>
         </div>
 

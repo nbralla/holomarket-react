@@ -13,7 +13,7 @@ createRoot(document.getElementById('root')!).render(
     {/* BrowserRouter envuelve TODA la app: así cualquier componente puede usar rutas y Links */}
     <BrowserRouter>
       <AvisosProvider>
-        {/* Arranque pide los datos a la API (json-server) y después muestra la tienda */}
+        {/* Arranque pide los datos a la API (backend Spring Boot) y después muestra la tienda */}
         <Arranque />
       </AvisosProvider>
     </BrowserRouter>

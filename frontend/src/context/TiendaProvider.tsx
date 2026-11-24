@@ -2,27 +2,27 @@
    Estado global de la tienda (Context API)
    -------------------------------------------------------------------------
    Guarda los datos, la sesión y el carrito, y los comparte con todas las
-   páginas mediante el hook useTienda(). Cada cambio:
-     1. se aplica sobre una copia ("borrador") con una función de logica/,
-     2. React vuelve a dibujar con la copia (la pantalla responde al tiro),
-     3. se envía a json-server solo lo que cambió (POST, PUT o DELETE).
-   Si la API falla, se avisa y se vuelven a cargar los datos de db.json.
-   La sesión y el carrito siguen en el navegador (localStorage).
+   páginas mediante el hook useTienda(). Cada acción:
+     1. llama a su endpoint del backend (Spring Boot), que aplica las reglas,
+     2. si responde bien, se vuelve a pedir GET /api/estado,
+     3. React redibuja con los datos nuevos.
+   Si el backend rechaza la acción, su mensaje se muestra tal cual.
+   La sesión (token JWT) y el carrito viven en el navegador (localStorage).
    ========================================================================= */
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { usuarioPorId } from '../logica/consultas';
-import { registrarActividad } from '../logica/estado';
 import { useNavigate } from 'react-router';
-import { cambiosEntre, cargarEstado, enviarCambios, hayCambiosPendientes, restablecerDatosDemo } from '../services/datos';
-import {
-  borrarSesion, guardarCarrito as persistirCarrito, guardarSesion, leerCarrito, leerSesion, verificarCredenciales,
-} from '../services/sesion';
-import type { Estado, ItemCarrito, Sesion, Usuario } from '../types';
+import { usuarioPorId } from '../logica/consultas';
+import { api, avisarNoAutorizado, cargarEstado, ErrorApi, type DatosRegistro, type RespuestaIngreso } from '../services/datos';
+import { borrarSesion, guardarCarrito as persistirCarrito, guardarSesion, leerCarrito, leerSesion } from '../services/sesion';
+import type { Estado, ItemCarrito, Resultado, Sesion } from '../types';
 import { useAvisos } from '../hooks/useAvisos';
 import { TiendaContext, type TiendaValor } from './tiendaContext';
 
 const MS_RENOVAR = 30000;      // la sesión se renueva como máximo cada 30 s de actividad
 const MS_REVISAR = 15000;      // cada 15 s se revisa si la sesión venció
+
+const mensajeDe = (error: unknown): string =>
+  error instanceof ErrorApi ? error.message : 'No pudimos completar la operación. Inténtalo de nuevo.';
 
 export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Estado; children: ReactNode }) {
   const { avisar } = useAvisos();
@@ -36,8 +36,10 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
   /* ---------- Usuario actual: sesión vigente y cuenta activa ---------- */
   const usuario = useMemo(() => {
     if (!sesion || sesion.expira <= ahora) return null;
+    // Con un token válido el backend entrega los datos completos del propio usuario (con su correo).
+    // Si solo llega la ficha pública, el token ya no sirve y la sesión se cierra.
     const u = usuarioPorId(estado, sesion.uid);
-    return u && u.estado === 'activo' ? u : null;
+    return u && u.estado === 'activo' && u.email ? u : null;
   }, [estado, sesion, ahora]);
   const uid = usuario?.id ?? null;
 
@@ -46,38 +48,30 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
     setCarrito(uid ? leerCarrito(uid) : []);
   }, [uid]);
 
-  /* ---------- Cambios sobre los datos ---------- */
-  /* Vuelve a leer db.json (si un cambio falló o si otra pestaña cambió los datos). */
+  /* ---------- Datos ---------- */
+  /* Vuelve a pedir GET /api/estado (después de cada acción, o si otra pestaña cambió los datos). */
   const recargar = useCallback(async () => {
     try {
       const nuevo = await cargarEstado();
       estadoRef.current = nuevo;
       setEstado(nuevo);
-    } catch {
-      avisar('No hay conexión con la API. ¿Está corriendo "npm run api"?', 'error');
+    } catch (error) {
+      avisar(mensajeDe(error), 'error');
     }
   }, [avisar]);
 
-  const actualizar = useCallback(<R,>(cambio: (borrador: Estado) => R): R | null => {
-    const base = estadoRef.current;
-    const borrador = structuredClone(base);
-    let resultado: R;
+  const ejecutar = useCallback(async <R,>(llamada: () => Promise<R>): Promise<Resultado<R>> => {
     try {
-      resultado = cambio(borrador);
+      const valor = await llamada();
+      await recargar();
+      return { ok: true, valor };
     } catch (error) {
-      console.error(error);
-      avisar('No pudimos completar la operación. Recarga la página e inténtalo de nuevo.', 'error');
-      return null;
+      if (!(error instanceof ErrorApi)) console.error(error);
+      // Si el stock o un estado cambió en el servidor, se traen los datos frescos para que la pantalla calce.
+      if (error instanceof ErrorApi && error.status === 409) await recargar();
+      return { ok: false, error: mensajeDe(error) };
     }
-    estadoRef.current = borrador;
-    setEstado(borrador);
-    enviarCambios(cambiosEntre(base, borrador)).catch((error) => {
-      console.error(error);
-      avisar('No pudimos guardar el cambio en el servidor. ¿Está corriendo "npm run api"? Volvimos a cargar los datos.', 'error');
-      recargar();
-    });
-    return resultado;
-  }, [avisar, recargar]);
+  }, [recargar]);
 
   const guardarCarrito = useCallback((items: ItemCarrito[]) => {
     if (!uid) return;
@@ -86,55 +80,65 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
   }, [uid]);
 
   /* ---------- Sesión ---------- */
-  const iniciarSesion = useCallback((u: Usuario) => {
+  /* Guarda el token, trae los datos que ese usuario puede ver y recién ahí lo da por ingresado. */
+  const abrirSesion = useCallback(async ({ token, usuario: u }: RespuestaIngreso) => {
+    const s = guardarSesion(u.id, estadoRef.current.config.sesionMinutos, token);
     ultimaRenovacion.current = Date.now();
+    await recargar();
     setAhora(Date.now());
-    setSesion(guardarSesion(u.id, estadoRef.current.config.sesionMinutos));
-  }, []);
+    setSesion(s);
+    return u;
+  }, [recargar]);
 
-  const ingresar = useCallback((email: string, clave: string) => {
-    const r = verificarCredenciales(estadoRef.current, email, clave);
-    if (r.ok) {
-      actualizar((e) => registrarActividad(e, 'Inicio de sesión', `Rol ${r.usuario.rol}`, r.usuario.id));
-      iniciarSesion(r.usuario);
-    } else if (!r.bloqueado) {
-      actualizar((e) => registrarActividad(e, 'Inicio de sesión fallido', email.trim().toLowerCase(), r.usuario?.id));
+  const ingresar = useCallback(async (email: string, clave: string) => {
+    try {
+      return { ok: true as const, usuario: await abrirSesion(await api.ingresar(email, clave)) };
+    } catch (error) {
+      return { ok: false as const, error: mensajeDe(error) };
     }
-    return r;
-  }, [actualizar, iniciarSesion]);
+  }, [abrirSesion]);
+
+  const registrar = useCallback(async (datos: DatosRegistro) => {
+    try {
+      return { ok: true as const, usuario: await abrirSesion(await api.registrar(datos)) };
+    } catch (error) {
+      return { ok: false as const, error: mensajeDe(error) };
+    }
+  }, [abrirSesion]);
 
   const cerrarSesion = useCallback((mensaje?: string) => {
-    if (uid) actualizar((e) => registrarActividad(e, 'Cierre de sesión', '', uid));
+    if (uid) api.salir().catch(() => undefined);
     borrarSesion();
     setSesion(null);
     avisar(mensaje ?? 'Cerraste sesión.', 'info');
     navigate('/');
-  }, [actualizar, avisar, navigate, uid]);
+    recargar();
+  }, [avisar, navigate, recargar, uid]);
 
   const restablecerDemo = useCallback(async () => {
-    const s = leerSesion();
-    try {
-      const nuevo = await restablecerDatosDemo(estadoRef.current);
-      estadoRef.current = nuevo;
-      setEstado(nuevo);
-    } catch (error) {
-      console.error(error);
-      avisar('La API no respondió y no se restablecieron los datos. ¿Está corriendo "npm run api"?', 'error');
-      await recargar();
-      return false;
-    }
-    if (s) setSesion(guardarSesion(s.uid, estadoRef.current.config.sesionMinutos));
-    actualizar((e) => registrarActividad(e, 'Datos de demostración restablecidos', '', s?.uid));
-    return true;
-  }, [actualizar, avisar, recargar]);
+    const r = await ejecutar(() => api.restablecerDemo());
+    if (!r.ok) avisar(r.error, 'error');
+    return r.ok;
+  }, [avisar, ejecutar]);
 
-  /* Si la sesión venció (o el usuario fue bloqueado), se cierra. */
+  /* Si el backend dice que el token ya no sirve (venció o bloquearon la cuenta), se cierra la sesión. */
+  useEffect(() => {
+    avisarNoAutorizado(() => {
+      borrarSesion();
+      setSesion(null);
+      avisar('Tu sesión expiró. Vuelve a ingresar para continuar.', 'info');
+    });
+    return () => avisarNoAutorizado(null);
+  }, [avisar]);
+
+  /* Si la sesión venció por inactividad (o el usuario fue bloqueado), se cierra. */
   useEffect(() => {
     if (!sesion || usuario) return;
     borrarSesion();
     setSesion(null);
     if (sesion.expira <= ahora) avisar('Tu sesión se cerró por inactividad. Vuelve a ingresar para continuar.', 'info');
-  }, [sesion, usuario, ahora, avisar]);
+    recargar();
+  }, [sesion, usuario, ahora, avisar, recargar]);
 
   useEffect(() => {
     const t = setInterval(() => setAhora(Date.now()), MS_REVISAR);
@@ -149,7 +153,7 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
       const s = sesionRef.current;
       if (!s || Date.now() - ultimaRenovacion.current < MS_RENOVAR) return;
       ultimaRenovacion.current = Date.now();
-      setSesion(guardarSesion(s.uid, estadoRef.current.config.sesionMinutos));
+      setSesion(guardarSesion(s.uid, estadoRef.current.config.sesionMinutos, s.token));
     };
     document.addEventListener('click', renovar);
     document.addEventListener('keydown', renovar);
@@ -167,24 +171,24 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
       if (ev.key && !ev.key.startsWith('hm_')) return;
       setSesion(leerSesion());
       if (uidRef.current) setCarrito(leerCarrito(uidRef.current));
+      if (ev.key === 'hm_sesion') recargar();
     };
     window.addEventListener('storage', alCambiar);
     return () => window.removeEventListener('storage', alCambiar);
-  }, []);
+  }, [recargar]);
 
-  /* Al volver a esta pestaña se releen los datos de db.json (otra pestaña u otro navegador pudo cambiarlos).
-     Si hay cambios enviándose, se espera a la próxima vez para no pisarlos. */
+  /* Al volver a esta pestaña se vuelven a pedir los datos (otra persona pudo comprar o cambiar algo). */
   useEffect(() => {
     const alVolver = () => {
-      if (document.visibilityState === 'visible' && !hayCambiosPendientes()) recargar();
+      if (document.visibilityState === 'visible') recargar();
     };
     document.addEventListener('visibilitychange', alVolver);
     return () => document.removeEventListener('visibilitychange', alVolver);
   }, [recargar]);
 
   const valor = useMemo<TiendaValor>(() => ({
-    estado, usuario, carrito, actualizar, guardarCarrito, ingresar, iniciarSesion, cerrarSesion, restablecerDemo,
-  }), [estado, usuario, carrito, actualizar, guardarCarrito, ingresar, iniciarSesion, cerrarSesion, restablecerDemo]);
+    estado, usuario, carrito, ejecutar, guardarCarrito, ingresar, registrar, cerrarSesion, restablecerDemo,
+  }), [estado, usuario, carrito, ejecutar, guardarCarrito, ingresar, registrar, cerrarSesion, restablecerDemo]);
 
   return <TiendaContext.Provider value={valor}>{children}</TiendaContext.Provider>;
 }

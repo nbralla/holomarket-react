@@ -6,8 +6,7 @@ import MarcoModal from '../components/MarcoModal';
 import Tabla from '../components/Tabla';
 import TablaMovimientos from '../components/TablaMovimientos';
 import { estadoPublicacion, saldoVendedor } from '../logica/consultas';
-import { registrarActividad } from '../logica/estado';
-import { ajustarStock, cambiarEstadoPublicacion, cambiarPrecio, eliminarPublicacion } from '../logica/publicaciones';
+import { api } from '../services/datos';
 import { useAvisos } from '../hooks/useAvisos';
 import { useModal } from '../hooks/useModal';
 import { useTienda } from '../hooks/useTienda';
@@ -73,7 +72,7 @@ function VentanaAjuste({ pub, cerrar }: { pub: Publicacion; cerrar: CerrarModal<
 
 /* Inventario del vendedor: precio y stock editables, pausar, eliminar e historial (kardex). */
 export default function Inventario({ usuario }: { usuario: Usuario }) {
-  const { estado, actualizar } = useTienda();
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const modal = useModal();
   const [filtro, setFiltro] = useState<Filtro>('todas');
@@ -100,9 +99,9 @@ export default function Inventario({ usuario }: { usuario: Usuario }) {
   const movimientos = estado.movimientos.filter((m) => m.vendedorId === usuario.id && (!kardex || m.pubId === kardex)).slice().reverse();
 
   /* ---------- Acciones ---------- */
-  const stockRapido = (pub: Publicacion, delta: 1 | -1) => {
-    const r = actualizar((e) => ajustarStock(e, usuario.id, pub.id, delta > 0 ? 'entrada' : 'salida', 1, 'Ajuste rápido desde inventario'));
-    if (r && !r.ok) avisar(r.error, 'error');
+  const stockRapido = async (pub: Publicacion, delta: 1 | -1) => {
+    const r = await ejecutar(() => api.ajustarStock(pub.id, delta > 0 ? 'entrada' : 'salida', 1, 'Ajuste rápido desde inventario'));
+    if (!r.ok) avisar(r.error, 'error');
     // Si el botón quedó deshabilitado (stock 0 o 999), el foco pasa al otro.
     requestAnimationFrame(() => {
       const mismo = document.querySelector<HTMLButtonElement>(`[data-accion="${delta > 0 ? 'stock-mas' : 'stock-menos'}"][data-id="${pub.id}"]`);
@@ -114,18 +113,13 @@ export default function Inventario({ usuario }: { usuario: Usuario }) {
   const abrirAjuste = async (pub: Publicacion) => {
     const a = await modal.abrir<Ajuste>((cerrar) => <VentanaAjuste pub={pub} cerrar={cerrar} />);
     if (!a) return;
-    const r = actualizar((e) => {
-      const res = ajustarStock(e, usuario.id, pub.id, a.tipo, a.cantidad, a.motivo);
-      if (res.ok) registrarActividad(e, 'Ajuste de stock', `${pub.nombre} (${pub.id}): ${res.valor.antes} → ${res.valor.despues}, ${a.motivo}`, usuario.id);
-      return res;
-    });
-    if (!r) return;
+    const r = await ejecutar(() => api.ajustarStock(pub.id, a.tipo, a.cantidad, a.motivo));
     if (!r.ok) avisar(r.error, 'error');
-    else avisar(`Stock de ${pub.nombre}: ${r.valor.antes} → ${r.valor.despues} ${plural(r.valor.despues, 'unidad', 'unidades')}.`, 'exito');
+    else avisar(`Stock de ${pub.nombre}: ${pub.stock} → ${r.valor.stock} ${plural(r.valor.stock, 'unidad', 'unidades')}.`, 'exito');
   };
 
   // El precio se guarda al salir del campo o con Enter (no en cada tecla).
-  const guardarPrecio = (pub: Publicacion, campo: HTMLInputElement) => {
+  const guardarPrecio = async (pub: Publicacion, campo: HTMLInputElement) => {
     const error = precioError(campo.value);
     if (error) {
       avisar(error, 'error');
@@ -134,15 +128,16 @@ export default function Inventario({ usuario }: { usuario: Usuario }) {
     }
     const nuevo = entero(campo.value);
     if (nuevo === pub.precio) return;
-    const r = actualizar((e) => cambiarPrecio(e, usuario.id, pub.id, nuevo));
-    if (r && !r.ok) avisar(r.error, 'error');
-    else if (r) avisar(`Precio de ${pub.nombre} actualizado a ${clp(nuevo)}.`, 'exito');
+    const r = await ejecutar(() => api.cambiarPrecio(pub.id, nuevo));
+    if (!r.ok) {
+      avisar(r.error, 'error');
+      campo.value = String(pub.precio);
+    } else avisar(`Precio de ${pub.nombre} actualizado a ${clp(nuevo)}.`, 'exito');
   };
 
-  const pausarOActivar = (pub: Publicacion) => {
+  const pausarOActivar = async (pub: Publicacion) => {
     const nuevo = pub.estado === 'pausada' ? 'activa' : 'pausada';
-    const r = actualizar((e) => cambiarEstadoPublicacion(e, usuario, pub.id, nuevo));
-    if (!r) return;
+    const r = await ejecutar(() => api.estadoPublicacion(pub.id, nuevo));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(nuevo === 'pausada' ? `Pausaste ${pub.nombre}: ya no aparece en el catálogo.` : `Activaste ${pub.nombre}: vuelve a aparecer en el catálogo.`, 'exito');
   };
@@ -155,8 +150,7 @@ export default function Inventario({ usuario }: { usuario: Usuario }) {
       peligro: true,
     });
     if (!ok) return;
-    const r = actualizar((e) => eliminarPublicacion(e, usuario, pub.id));
-    if (!r) return;
+    const r = await ejecutar(() => api.eliminarPublicacion(pub.id));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(`Eliminaste ${pub.nombre}.`, 'exito');
   };

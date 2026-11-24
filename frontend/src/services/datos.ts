@@ -1,101 +1,150 @@
 /* =========================================================================
-   Datos de la tienda en json-server (db.json)
+   Cliente de la API REST de HoloMarket (backend Spring Boot)
    -------------------------------------------------------------------------
-   Igual que en el ejemplo de la Pokédex: las URL empiezan con /api para
-   pasar por el proxy de Vite -> http://127.0.0.1:3000 (npm run api).
+   Igual que en el ejemplo de la PokéStore, la URL base sale de VITE_API_URL:
+     - Desarrollo: "/api" y el proxy de Vite la reenvía a http://localhost:8080.
+     - Producción (S3): http://IP-DE-LA-EC2/api, fijada en .env.production al compilar.
 
-     GET    /api/publicaciones        trae la colección completa (READ)
-     POST   /api/publicaciones        crea un registro (CREATE)
-     PUT    /api/publicaciones/P001   reemplaza un registro (UPDATE)
-     DELETE /api/publicaciones/P001   lo elimina (DELETE)
-     GET/PUT /api/config              la configuración es un solo objeto
-
-   Las reglas del negocio (logica/) trabajan sobre una copia del estado.
-   Después, cambiosEntre() compara el antes y el después y manda a la API
-   solo lo que cambió.
+   Las reglas del negocio (stock, montos, permisos) las aplica el backend.
+   Cada acción llama a su endpoint y después el front vuelve a pedir
+   GET /api/estado, que devuelve todo lo que el usuario puede ver.
    ========================================================================= */
 import { CONFIGURACION_INICIAL } from '../data/catalogo';
-import { crearEstadoInicial, estadoValido, reconciliarSecuencias } from '../logica/estado';
-import type { Estado } from '../types';
+import { estadoValido } from '../logica/estado';
+import type { DatosPublicacion } from '../logica/publicaciones';
+import type { Configuracion, Estado, ItemCarrito, MetodoEntrega, MetodoPago, Pedido, Publicacion, Retiro, Usuario } from '../types';
+import { leerSesion } from './sesion';
 
-const URL = '/api';
+// import.meta.env lo completa Vite; en Karma (esbuild) no existe, por eso el "?.".
+export const URL_API: string = import.meta.env?.VITE_API_URL || '/api';
 
-export const COLECCIONES = ['usuarios', 'publicaciones', 'pedidos', 'movimientos', 'actividad', 'retiros'] as const;
-type Coleccion = (typeof COLECCIONES)[number];
+/* Error con el mensaje que devuelve el backend: { status, message, errors }. */
+export class ErrorApi extends Error {
+  status: number;
+  errores: Record<string, string>;
 
-export type Operacion =
-  | { metodo: 'POST'; ruta: Coleccion; cuerpo: unknown }
-  | { metodo: 'PUT'; ruta: string; cuerpo: unknown }
-  | { metodo: 'DELETE'; ruta: string };
-
-async function pedir<T>(ruta: string, metodo = 'GET', cuerpo?: unknown): Promise<T> {
-  const res = await fetch(`${URL}/${ruta}`, {
-    method: metodo,
-    headers: cuerpo === undefined ? undefined : { 'Content-Type': 'application/json' },
-    body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo),
-  });
-  if (!res.ok) throw new Error(`Error ${res.status} en ${metodo} /api/${ruta}`);
-  return (await res.json()) as T;
+  constructor(status: number, mensaje: string, errores: Record<string, string> = {}) {
+    super(mensaje);
+    this.status = status;
+    this.errores = errores;
+  }
 }
 
-/* READ: trae todas las colecciones a la vez y revisa que tengan la forma esperada. */
+export const SIN_CONEXION = 'No hay conexión con el servidor de HoloMarket. Revisa que el backend esté encendido e inténtalo de nuevo.';
+
+/* Si el token venció o el usuario fue bloqueado, el proveedor de la tienda registra aquí qué hacer. */
+let alNoAutorizado: (() => void) | null = null;
+export const avisarNoAutorizado = (fn: (() => void) | null): void => { alNoAutorizado = fn; };
+
+async function pedir<T>(ruta: string, metodo = 'GET', cuerpo?: unknown): Promise<T> {
+  const token = leerSesion()?.token;
+  const headers: Record<string, string> = {};
+  if (cuerpo !== undefined) headers['Content-Type'] = 'application/json';
+  if (token) headers.Authorization = `Bearer ${token}`;
+  let res: Response;
+  try {
+    res = await fetch(`${URL_API}${ruta}`, {
+      method: metodo,
+      headers,
+      body: cuerpo === undefined ? undefined : JSON.stringify(cuerpo),
+    });
+  } catch {
+    throw new ErrorApi(0, SIN_CONEXION);
+  }
+  if (res.status === 204) return undefined as T;
+  const datos = await res.json().catch(() => null);
+  if (!res.ok) {
+    if (res.status === 401 && token) alNoAutorizado?.();
+    const errores: Record<string, string> = datos?.errors ?? {};
+    // Para errores de validación se muestra el primer campo con problema: es más útil que "Datos inválidos".
+    const detalle = datos?.message === 'Datos inválidos' ? Object.values(errores)[0] : undefined;
+    throw new ErrorApi(res.status, detalle ?? datos?.message ?? `Error ${res.status}`, errores);
+  }
+  return datos as T;
+}
+
+/* READ: todo lo que el usuario actual puede ver (según su token), con la forma de types/index.ts. */
 export async function cargarEstado(): Promise<Estado> {
-  const [config, ...listas] = await Promise.all([pedir<unknown>('config'), ...COLECCIONES.map((c) => pedir<unknown>(c))]);
-  const crudo: Record<string, unknown> = { config };
-  COLECCIONES.forEach((c, i) => { crudo[c] = listas[i]; });
-  if (!estadoValido(crudo)) throw new Error('db.json no tiene la forma esperada');
-  // Campos de configuración agregados después (por ejemplo, el dólar) toman su valor inicial.
+  const crudo = await pedir<Estado>('/estado');
+  if (!estadoValido(crudo)) throw new Error('La API respondió datos con una forma inesperada');
   crudo.config = { ...CONFIGURACION_INICIAL, ...crudo.config };
-  // Si un guardado anterior quedó a medias, la secuencia se corrige y se guarda con el próximo cambio.
-  reconciliarSecuencias(crudo);
   return crudo;
 }
 
-/* Compara dos estados y arma la lista de llamadas a la API (función pura: se prueba con Vitest). */
-export function cambiosEntre(antes: Estado, despues: Estado): Operacion[] {
-  const ops: Operacion[] = [];
-  const igual = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
-
-  // La configuración va PRIMERO: guarda las secuencias (HM-1006, A040...) antes de crear los registros.
-  // Si el envío se corta a la mitad, a lo más queda un número sin usar, nunca un id repetido.
-  if (!igual(antes.config, despues.config)) ops.push({ metodo: 'PUT', ruta: 'config', cuerpo: despues.config });
-
-  COLECCIONES.forEach((c) => {
-    const previos = new Map<string, unknown>(antes[c].map((x) => [x.id, x]));
-    despues[c].forEach((x) => {
-      const previo = previos.get(x.id);
-      if (previo === undefined) ops.push({ metodo: 'POST', ruta: c, cuerpo: x });
-      else if (!igual(previo, x)) ops.push({ metodo: 'PUT', ruta: `${c}/${encodeURIComponent(x.id)}`, cuerpo: x });
-      previos.delete(x.id);
-    });
-    previos.forEach((_x, id) => ops.push({ metodo: 'DELETE', ruta: `${c}/${encodeURIComponent(id)}` }));
-  });
-
-  return ops;
+/* ---------- Cuerpos de las peticiones ---------- */
+export interface DatosRegistro {
+  rut: string;
+  nombre: string;
+  email: string;
+  telefono: string;
+  region: string;
+  comuna: string;
+  clave: string;
+  acepta: boolean;
 }
 
-/* Las llamadas se envían de a una y en orden (una cola): así un PUT nunca llega antes que su POST. */
-let cola: Promise<void> = Promise.resolve();
-let pendientes = 0;
-
-export const hayCambiosPendientes = (): boolean => pendientes > 0;
-
-export function enviarCambios(ops: Operacion[]): Promise<void> {
-  if (ops.length === 0) return Promise.resolve();
-  pendientes += 1;
-  const tarea = cola.then(async () => {
-    for (const op of ops) {
-      await pedir(op.ruta, op.metodo, op.metodo === 'DELETE' ? undefined : op.cuerpo);
-    }
-  });
-  // Si una tarea falla, la cola sigue funcionando para las siguientes.
-  cola = tarea.catch(() => undefined).finally(() => { pendientes -= 1; });
-  return tarea;
+export interface DatosCompra {
+  entrega: MetodoEntrega;
+  pago: MetodoPago;
+  receptor: string;
+  telefono: string;
+  region: string;
+  comuna: string;
+  direccion: string;
+  numeroTarjeta: string;
 }
 
-/* Vuelve a los datos de demostración: calcula la diferencia con el estado actual y la envía. */
-export async function restablecerDatosDemo(actual: Estado): Promise<Estado> {
-  const nuevo = crearEstadoInicial();
-  await enviarCambios(cambiosEntre(actual, nuevo));
-  return nuevo;
+/* undefined = no cambia, null = se quita, texto = valor nuevo (igual que logica/publicaciones.ts) */
+export interface CambiosImagen {
+  imagen?: string | null;
+  imagenApi?: string | null;
 }
+
+export interface RespuestaIngreso {
+  token: string;
+  usuario: Usuario;
+}
+
+const cuerpoPublicacion = (d: DatosPublicacion, img: CambiosImagen) => ({
+  ...d,
+  imagen: img.imagen ?? null,
+  imagenApi: img.imagenApi ?? null,
+  cambiaImagen: img.imagen !== undefined,
+  cambiaImagenApi: img.imagenApi !== undefined,
+});
+
+const id = (x: string) => encodeURIComponent(x);
+
+/* ---------- Endpoints (uno por acción del negocio) ---------- */
+export const api = {
+  ingresar: (email: string, clave: string) => pedir<RespuestaIngreso>('/auth/login', 'POST', { email, clave }),
+  registrar: (d: DatosRegistro) => pedir<RespuestaIngreso>('/auth/registro', 'POST', d),
+  salir: () => pedir<void>('/auth/salir', 'POST'),
+
+  crearPublicacion: (d: DatosPublicacion, img: CambiosImagen) =>
+    pedir<Publicacion>('/publicaciones', 'POST', cuerpoPublicacion(d, img)),
+  editarPublicacion: (pubId: string, d: DatosPublicacion, img: CambiosImagen) =>
+    pedir<Publicacion>(`/publicaciones/${id(pubId)}`, 'PUT', cuerpoPublicacion(d, img)),
+  ajustarStock: (pubId: string, tipo: 'entrada' | 'salida', cantidad: number, motivo: string) =>
+    pedir<Publicacion>(`/publicaciones/${id(pubId)}/stock`, 'POST', { tipo, cantidad, motivo }),
+  cambiarPrecio: (pubId: string, precio: number) => pedir<Publicacion>(`/publicaciones/${id(pubId)}/precio`, 'PUT', { precio }),
+  estadoPublicacion: (pubId: string, estado: 'activa' | 'pausada') =>
+    pedir<Publicacion>(`/publicaciones/${id(pubId)}/estado`, 'PUT', { estado }),
+  eliminarPublicacion: (pubId: string) => pedir<void>(`/publicaciones/${id(pubId)}`, 'DELETE'),
+
+  comprar: (items: ItemCarrito[], d: DatosCompra) => pedir<Pedido[]>('/pedidos', 'POST', { items, ...d }),
+  marcarEnviado: (pedidoId: string, seguimiento: string) => pedir<Pedido>(`/pedidos/${id(pedidoId)}/enviar`, 'POST', { seguimiento }),
+  confirmarRecepcion: (pedidoId: string) => pedir<Pedido>(`/pedidos/${id(pedidoId)}/recibir`, 'POST'),
+  cancelarPedido: (pedidoId: string) => pedir<Pedido>(`/pedidos/${id(pedidoId)}/cancelar`, 'POST'),
+
+  guardarCuenta: (banco: string, tipo: string, numero: string) => pedir<void>('/usuarios/yo/cuenta', 'PUT', { banco, tipo, numero }),
+  solicitarRetiro: (monto: number) => pedir<Retiro>('/retiros', 'POST', { monto }),
+  anularRetiro: (retiroId: string) => pedir<Retiro>(`/retiros/${id(retiroId)}/anular`, 'POST'),
+  transferirRetiro: (retiroId: string, comprobante: string) => pedir<Retiro>(`/retiros/${id(retiroId)}/transferir`, 'POST', { comprobante }),
+  rechazarRetiro: (retiroId: string, motivo: string) => pedir<Retiro>(`/retiros/${id(retiroId)}/rechazar`, 'POST', { motivo }),
+
+  estadoUsuario: (usuarioId: string, estado: 'activo' | 'bloqueado') => pedir<Usuario>(`/usuarios/${id(usuarioId)}/estado`, 'PUT', { estado }),
+  guardarConfiguracion: (c: Configuracion) => pedir<Configuracion>('/config', 'PUT', c),
+  restablecerDemo: () => pedir<void>('/admin/restablecer', 'POST'),
+  registrarActividad: (accion: string, detalle: string) => pedir<void>('/actividad', 'POST', { accion, detalle }),
+};

@@ -1,19 +1,13 @@
-/* Arranque: carga los datos de json-server. Se simula la red con un mock de fetch. */
+/* Arranque: carga los datos del backend (GET /api/estado). Se simula la red con un mock de fetch. */
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { AvisosProvider } from '../context/AvisosProvider';
 import { estadoDemo, simularFetch } from '../pruebas/montar';
-import { COLECCIONES } from '../services/datos';
 import Arranque from './Arranque';
 
-/* Respuestas de una API que funciona: cada colección de la demo en su URL. */
-function apiConDatos(): Record<string, unknown> {
-  const e = estadoDemo();
-  const respuestas: Record<string, unknown> = { '/api/config': e.config };
-  COLECCIONES.forEach((c) => { respuestas[`/api/${c}`] = e[c]; });
-  return respuestas;
-}
+/* Respuesta de un backend que funciona: los datos de la demo en GET /api/estado. */
+const apiConDatos = (): Record<string, unknown> => ({ '/api/estado': estadoDemo() });
 
 const montarArranque = () => render(<MemoryRouter><AvisosProvider><Arranque /></AvisosProvider></MemoryRouter>);
 
@@ -24,12 +18,12 @@ describe('Arranque', () => {
     expect(screen.getByText('Cargando HoloMarket...')).toBeTruthy();
   });
 
-  it('si json-server no responde, explica qué hacer (y solo entonces muestra el error)', async () => {
+  it('si el backend no responde, explica qué hacer (y solo entonces muestra el error)', async () => {
     const fetchFalso = simularFetch({});   // sin respuestas: toda llamada falla
     montarArranque();
     expect(await screen.findByRole('heading', { name: 'Sin conexión con la API' })).toBeTruthy();
-    expect(screen.getByText('npm run api')).toBeTruthy();
-    expect(fetchFalso).toHaveBeenCalledWith('/api/config', jasmine.anything());
+    expect(screen.getByText('docker compose up -d')).toBeTruthy();
+    expect(fetchFalso).toHaveBeenCalledWith('/api/estado', jasmine.anything());
   });
 
   it('"Reintentar" vuelve a pedir los datos y, si llegan, muestra la tienda', async () => {

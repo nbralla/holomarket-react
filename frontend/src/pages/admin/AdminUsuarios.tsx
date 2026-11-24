@@ -1,6 +1,6 @@
 import { EstadoChip } from '../../components/Chips';
 import Tabla from '../../components/Tabla';
-import { cambiarEstadoUsuario } from '../../logica/usuarios';
+import { api } from '../../services/datos';
 import { useAvisos } from '../../hooks/useAvisos';
 import { useModal } from '../../hooks/useModal';
 import { useTienda } from '../../hooks/useTienda';
@@ -8,8 +8,8 @@ import type { Usuario } from '../../types';
 import { fecha, plural } from '../../utils/formato';
 
 /* Lista de usuarios. Bloquear cierra la sesión del usuario y oculta sus publicaciones. */
-export default function AdminUsuarios({ admin }: { admin: Usuario }) {
-  const { estado, actualizar } = useTienda();
+export default function AdminUsuarios() {
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const modal = useModal();
 
@@ -23,8 +23,7 @@ export default function AdminUsuarios({ admin }: { admin: Usuario }) {
       });
       if (!ok) return;
     }
-    const r = actualizar((e) => cambiarEstadoUsuario(e, admin, u.id, nuevo));
-    if (!r) return;
+    const r = await ejecutar(() => api.estadoUsuario(u.id, nuevo));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(nuevo === 'bloqueado' ? `Bloqueaste a ${u.nombre}.` : `Reactivaste a ${u.nombre}.`, 'exito');
   };

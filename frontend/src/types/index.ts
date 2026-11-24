@@ -49,9 +49,7 @@ export interface Usuario {
   id: string;
   rut: string;
   nombre: string;
-  email: string;
-  sal: string;             // texto aleatorio que se mezcla con la contraseña antes del hash
-  clave: string;           // hash SHA-256 de sal + contraseña (nunca la contraseña en texto plano)
+  email: string;           // vacío en la ficha pública de otros usuarios
   rol: Rol;
   region: string;
   comuna: string;
@@ -212,6 +210,7 @@ export interface ItemCarrito {
 
 export interface Sesion {
   uid: string;
+  token: string;           // JWT que entrega el backend al ingresar
   expira: number;
 }
 

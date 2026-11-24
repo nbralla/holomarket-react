@@ -2,19 +2,19 @@ import { useState } from 'react';
 import TablaMovimientos from '../../components/TablaMovimientos';
 import { IDS_JUEGOS, JUEGOS } from '../../data/catalogo';
 import { TIPOS_MOVIMIENTO } from '../../logica/consultas';
-import { registrarActividad } from '../../logica/estado';
+import { api } from '../../services/datos';
 import { csvMovimientos, descargarArchivo } from '../../services/csv';
 import { useAvisos } from '../../hooks/useAvisos';
 import { useTienda } from '../../hooks/useTienda';
-import type { TipoMovimiento, Usuario } from '../../types';
+import type { TipoMovimiento } from '../../types';
 import { plural } from '../../utils/formato';
 import { normalizar } from '../../utils/validaciones';
 
 const LIMITE = 100;
 
 /* Todos los movimientos de stock, con filtros y exportación a CSV (Excel). */
-export default function AdminMovimientos({ admin }: { admin: Usuario }) {
-  const { estado, actualizar } = useTienda();
+export default function AdminMovimientos() {
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const [texto, setTexto] = useState('');
   const [tipo, setTipo] = useState('');
@@ -26,7 +26,7 @@ export default function AdminMovimientos({ admin }: { admin: Usuario }) {
 
   const exportar = () => {
     descargarArchivo(`holomarket-movimientos-${new Date().toISOString().slice(0, 10)}.csv`, csvMovimientos(estado, lista));
-    actualizar((e) => registrarActividad(e, 'Exportación de movimientos', `${lista.length} registros en CSV`, admin.id));
+    ejecutar(() => api.registrarActividad('Exportación de movimientos', `${lista.length} registros en CSV`));
     avisar(`Descargaste ${lista.length} ${plural(lista.length, 'movimiento', 'movimientos')} en CSV.`, 'exito');
   };
 

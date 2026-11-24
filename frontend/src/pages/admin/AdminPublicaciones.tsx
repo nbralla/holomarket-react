@@ -4,18 +4,18 @@ import { EstadoChip } from '../../components/Chips';
 import Tabla from '../../components/Tabla';
 import { JUEGOS } from '../../data/catalogo';
 import { estadoPublicacion, usuarioPorId } from '../../logica/consultas';
-import { cambiarEstadoPublicacion, eliminarPublicacion } from '../../logica/publicaciones';
+import { api } from '../../services/datos';
 import { useAvisos } from '../../hooks/useAvisos';
 import { useModal } from '../../hooks/useModal';
 import { useTienda } from '../../hooks/useTienda';
-import type { Publicacion, Usuario } from '../../types';
+import type { Publicacion } from '../../types';
 import { clp, plural } from '../../utils/formato';
 import { normalizar } from '../../utils/validaciones';
 import { Link } from 'react-router';
 
 /* Moderación: el administrador puede pausar, activar o eliminar cualquier publicación. */
-export default function AdminPublicaciones({ admin }: { admin: Usuario }) {
-  const { estado, actualizar } = useTienda();
+export default function AdminPublicaciones() {
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const modal = useModal();
   const [texto, setTexto] = useState('');
@@ -29,9 +29,8 @@ export default function AdminPublicaciones({ admin }: { admin: Usuario }) {
     return normalizar(`${p.nombre} ${p.id} ${p.edicion} ${v ? v.nombre : ''}`).includes(q);
   }).sort((a, b) => b.creado - a.creado);
 
-  const cambiarEstado = (p: Publicacion, nuevo: 'activa' | 'pausada') => {
-    const r = actualizar((e) => cambiarEstadoPublicacion(e, admin, p.id, nuevo));
-    if (!r) return;
+  const cambiarEstado = async (p: Publicacion, nuevo: 'activa' | 'pausada') => {
+    const r = await ejecutar(() => api.estadoPublicacion(p.id, nuevo));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(nuevo === 'pausada' ? `Pausaste ${p.nombre}: ya no aparece en el catálogo.` : `Activaste ${p.nombre}: vuelve a aparecer en el catálogo.`, 'exito');
   };
@@ -44,8 +43,7 @@ export default function AdminPublicaciones({ admin }: { admin: Usuario }) {
       peligro: true,
     });
     if (!ok) return;
-    const r = actualizar((e) => eliminarPublicacion(e, admin, p.id));
-    if (!r) return;
+    const r = await ejecutar(() => api.eliminarPublicacion(p.id));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(`Eliminaste ${p.nombre}.`, 'exito');
   };

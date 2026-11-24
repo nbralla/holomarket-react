@@ -1,10 +1,9 @@
-import { useEffect, useRef, type ChangeEvent, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import Campo from '../components/Campo';
 import { REGIONES, comunasDe } from '../data/catalogo';
-import { calcularCompra, procesarCompra, revisarCarrito } from '../logica/compras';
-import { usuarioPorId } from '../logica/consultas';
-import { registrarActividad } from '../logica/estado';
-import { motivoRechazo, TEXTO_RECHAZO } from '../logica/ofertas';
+import { calcularCompra, revisarCarrito } from '../logica/compras';
+import { esMotivoRechazo } from '../logica/ofertas';
+import { api, ErrorApi } from '../services/datos';
 import { useAvisos } from '../hooks/useAvisos';
 import { useFormulario } from '../hooks/useFormulario';
 import { useLegal } from '../hooks/useLegal';
@@ -36,7 +35,8 @@ function formatearVencimiento(v: string) {
 }
 
 export default function Checkout({ usuario }: { usuario: Usuario }) {
-  const { estado, carrito, guardarCarrito, actualizar } = useTienda();
+  const { estado, carrito, guardarCarrito, ejecutar } = useTienda();
+  const [pagando, setPagando] = useState(false);
   const { navegar } = useNavegar();
   const { avisar } = useAvisos();
   const verLegal = useLegal();
@@ -70,7 +70,7 @@ export default function Checkout({ usuario }: { usuario: Usuario }) {
   const despacho = v.entrega === 'despacho';
   const compra = calcularCompra(estado, revision.lineas, v.entrega, (despacho && v.region) || usuario.region);
 
-  const pagar = (ev: FormEvent<HTMLFormElement>) => {
+  const pagar = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     const campos: (keyof Valores)[] = ['receptor', 'telefono'];
     if (despacho) campos.push('region', 'comuna', 'direccion');
@@ -79,21 +79,27 @@ export default function Checkout({ usuario }: { usuario: Usuario }) {
       avisar('Revisa los datos marcados antes de pagar.', 'error');
       return;
     }
-    // Pago simulado: algunas tarjetas de prueba son rechazadas por el "banco". No se cobra ni se toca el stock.
-    const motivo = v.pago === 'tarjeta' ? motivoRechazo(v.numero) : null;
+    if (pagando) return;
+    // El backend crea los pedidos en una transacción. Si el "banco" rechaza la tarjeta de prueba,
+    // responde 402 con el motivo: no se cobra ni se toca el stock, y el carrito se conserva.
+    let motivo = '';
+    setPagando(true);
+    const r = await ejecutar(async () => {
+      try {
+        return await api.comprar(carrito, {
+          entrega: v.entrega, pago: v.pago, receptor: v.receptor, telefono: v.telefono, region: despacho ? v.region : '',
+          comuna: despacho ? v.comuna : '', direccion: despacho ? v.direccion : '', numeroTarjeta: v.pago === 'tarjeta' ? v.numero : '',
+        });
+      } catch (error) {
+        if (error instanceof ErrorApi && error.status === 402) motivo = error.errores.motivo ?? 'rechazada';
+        throw error;
+      }
+    });
+    setPagando(false);
     if (motivo) {
-      actualizar((e) => registrarActividad(e, 'Pago rechazado', `${clp(compra.total)}: ${TEXTO_RECHAZO[motivo]}`, usuario.id));
-      navegar(`/pago-rechazado?motivo=${motivo}`);
+      navegar(`/pago-rechazado?motivo=${esMotivoRechazo(motivo) ? motivo : 'rechazada'}`);
       return;
     }
-    const r = actualizar((e) => {
-      const comprador = usuarioPorId(e, usuario.id) ?? usuario;
-      return procesarCompra(e, comprador, carrito, {
-        entrega: v.entrega, pago: v.pago, receptor: v.receptor, telefono: v.telefono, region: v.region,
-        comuna: v.comuna, direccion: v.direccion, numeroTarjeta: v.numero,
-      });
-    });
-    if (!r) return;
     if (!r.ok) {
       avisar(r.error, 'error');
       return;
@@ -211,7 +217,7 @@ export default function Checkout({ usuario }: { usuario: Usuario }) {
             <div className="resumen__fila"><span>Envío</span><span>{compra.envio ? clp(compra.envio) : 'Sin costo'}</span></div>
             <div className="resumen__fila resumen__total"><span>Total</span><span>{clp(compra.total)}</span></div>
           </div>
-          <button type="submit" className="btn btn--primario btn--grande btn--bloque" id="checkout-pagar">Pagar {clp(compra.total)}</button>
+          <button type="submit" className="btn btn--primario btn--grande btn--bloque" id="checkout-pagar" disabled={pagando}>{pagando ? 'Procesando el pago…' : `Pagar ${clp(compra.total)}`}</button>
           <p className="nota">Al pagar aceptas los <a href="#" data-accion="ver-terminos" onClick={verLegal('terminos')}>términos y condiciones</a>. Precios en CLP con IVA incluido.</p>
         </aside>
         </div>

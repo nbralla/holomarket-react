@@ -1,8 +1,8 @@
-/* Pruebas de los servicios: elección de la imagen de API TCG y cambios que se envían a json-server. */
-import { describe, expect, it } from 'vitest';
-import { crearEstadoInicial, reconciliarSecuencias } from '../logica/estado';
+/* Pruebas de los servicios: elección de la imagen de API TCG, cliente de la API REST (fetch simulado) y dólar. */
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { crearEstadoInicial } from '../logica/estado';
 import { consultaDe, elegirImagen, idSetPorNombre, rarezaDesde } from './apiTcg';
-import { cambiosEntre } from './datos';
+import { api, cargarEstado, ErrorApi, SIN_CONEXION } from './datos';
 import { leerBcch, leerMercado } from './dolar';
 
 const carta = (code: string, name: string, numero: string, set = 'SV: Scarlet & Violet 151') => ({
@@ -56,37 +56,42 @@ describe('Imágenes de API TCG', () => {
   });
 });
 
-describe('Cambios enviados a json-server', () => {
-  it('no envía nada si no cambió nada', () => {
+describe('Cliente de la API', () => {
+  afterEach(() => { vi.unstubAllGlobals(); });
+
+  const responder = (status: number, cuerpo: unknown) =>
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(JSON.stringify(cuerpo), { status })));
+
+  it('cargarEstado pide GET /api/estado y completa la configuración', async () => {
     const e = crearEstadoInicial(0);
-    expect(cambiosEntre(e, structuredClone(e))).toEqual([]);
+    const config: Partial<typeof e.config> = { ...e.config };
+    delete config.dolar;
+    responder(200, { ...e, config });
+    const estado = await cargarEstado();
+    expect(fetch).toHaveBeenCalledWith('/api/estado', expect.objectContaining({ method: 'GET' }));
+    expect(estado.publicaciones).toHaveLength(e.publicaciones.length);
+    expect(estado.config.dolar).toBe(950);   // valor inicial si la API no lo trae
   });
 
-  it('usa POST para lo nuevo, PUT para lo modificado y DELETE para lo eliminado', () => {
-    const antes = crearEstadoInicial(0);
-    const despues = structuredClone(antes);
-    despues.publicaciones[0].stock = 99;
-    despues.retiros.pop();
-    despues.actividad.push({ id: 'A9999', fecha: 1, uid: null, accion: 'Prueba', detalle: '' });
-    despues.config.comision = 9;
-
-    const ops = cambiosEntre(antes, despues);
-    expect(ops).toContainEqual({ metodo: 'PUT', ruta: `publicaciones/${antes.publicaciones[0].id}`, cuerpo: despues.publicaciones[0] });
-    expect(ops).toContainEqual({ metodo: 'DELETE', ruta: `retiros/${antes.retiros[antes.retiros.length - 1].id}` });
-    expect(ops).toContainEqual({ metodo: 'POST', ruta: 'actividad', cuerpo: despues.actividad[despues.actividad.length - 1] });
-    expect(ops).toContainEqual({ metodo: 'PUT', ruta: 'config', cuerpo: despues.config });
-    expect(ops).toHaveLength(4);
-    expect(ops[0]).toMatchObject({ metodo: 'PUT', ruta: 'config' });   // la secuencia se guarda antes que los registros
+  it('convierte el error del backend en un ErrorApi con su mensaje y sus datos', async () => {
+    responder(402, { status: 402, message: 'Sin fondos', errors: { motivo: 'fondos' } });
+    const error = await api.comprar([{ pubId: 'P001', cantidad: 1 }], {
+      entrega: 'retiro', pago: 'tarjeta', receptor: 'Ana', telefono: '+56911111111', region: '', comuna: '', direccion: '',
+      numeroTarjeta: '4000 0000 0000 9995',
+    }).catch((e: unknown) => e);
+    expect(error).toBeInstanceOf(ErrorApi);
+    expect((error as ErrorApi).status).toBe(402);
+    expect((error as ErrorApi).errores.motivo).toBe('fondos');
   });
 
-  it('corrige una secuencia atrasada para no repetir ids', () => {
-    const e = crearEstadoInicial(0);
-    e.config.secuencias.actividad = 1;
-    e.config.secuencias.pedido = 1000;
-    expect(reconciliarSecuencias(e)).toBe(true);
-    expect(e.config.secuencias.actividad).toBe(e.actividad.length);
-    expect(e.config.secuencias.pedido).toBe(1000 + e.pedidos.length);
-    expect(reconciliarSecuencias(e)).toBe(false);
+  it('en un error de validación muestra el mensaje del primer campo', async () => {
+    responder(400, { status: 400, message: 'Datos inválidos', errors: { precio: 'El precio mínimo es $100.' } });
+    await expect(api.cambiarPrecio('P001', 50)).rejects.toThrow('El precio mínimo es $100.');
+  });
+
+  it('si no hay red avisa que el servidor no responde', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new TypeError('Failed to fetch')));
+    await expect(cargarEstado()).rejects.toThrow(SIN_CONEXION);
   });
 });
 

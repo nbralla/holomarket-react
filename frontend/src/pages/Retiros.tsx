@@ -8,11 +8,11 @@ import { BANCOS, TIPOS_CUENTA } from '../data/catalogo';
 import {
   cuentaTexto, DIAS_HABILES_RETIRO, detalleRetiro, ESTADOS_RETIRO, resumenCuenta, saldoVendedor, textoEstadoPedido, usuarioPorId,
 } from '../logica/consultas';
-import { anularRetiro, guardarCuentaBancaria, solicitarRetiro } from '../logica/retiros';
 import { useAvisos } from '../hooks/useAvisos';
 import { enfocarCampo, useFormulario } from '../hooks/useFormulario';
 import { useModal } from '../hooks/useModal';
 import { useTienda } from '../hooks/useTienda';
+import { api } from '../services/datos';
 import type { Pedido, Retiro, Usuario } from '../types';
 import { clp, fecha, nombreCorto, plural } from '../utils/formato';
 import { cuentaBancariaValida, entero } from '../utils/validaciones';
@@ -35,7 +35,7 @@ function IconoBanco() {
 
 /* El vendedor registra su cuenta bancaria y retira el dinero de sus ventas ya entregadas. */
 export default function Retiros({ usuario }: { usuario: Usuario }) {
-  const { estado, actualizar } = useTienda();
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const modal = useModal();
   const [editandoCuenta, setEditandoCuenta] = useState(false);
@@ -69,19 +69,19 @@ export default function Retiros({ usuario }: { usuario: Usuario }) {
     requestAnimationFrame(() => enfocarCampo('ret-banco'));
   };
 
-  const enviarCuenta = (ev: FormEvent<HTMLFormElement>) => {
+  const enviarCuenta = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!fc.validarTodo()) return;
     const { banco, tipo, numero } = fc.valores;
-    const r = actualizar((e) => guardarCuentaBancaria(e, usuario.id, banco, tipo, numero));
-    if (!r) return;
+    const nueva = !usuario.cuenta;
+    const r = await ejecutar(() => api.guardarCuenta(banco, tipo, numero));
     if (!r.ok) {
       avisar(r.error, 'error');
       return;
     }
     setEditandoCuenta(false);
     fc.reiniciar({ banco, tipo, numero: '' });
-    avisar(r.valor.nueva ? 'Registraste tu cuenta bancaria. Ya puedes solicitar retiros.' : 'Actualizaste tu cuenta. Los retiros nuevos irán a esta cuenta.', 'exito');
+    avisar(nueva ? 'Registraste tu cuenta bancaria. Ya puedes solicitar retiros.' : 'Actualizaste tu cuenta. Los retiros nuevos irán a esta cuenta.', 'exito');
     requestAnimationFrame(() => {
       const campo = document.getElementById('ret-monto') as HTMLInputElement | null;
       if (campo && !campo.closest('fieldset')?.disabled) campo.focus();
@@ -110,9 +110,8 @@ export default function Retiros({ usuario }: { usuario: Usuario }) {
       confirmar: 'Solicitar retiro',
     });
     if (!ok) return;
-    // solicitarRetiro vuelve a calcular el saldo con los datos guardados (por si cambió en otra pestaña).
-    const r = actualizar((e) => solicitarRetiro(e, usuario.id, n));
-    if (!r) return;
+    // El backend vuelve a calcular el saldo con los datos guardados (por si cambió en otra pestaña).
+    const r = await ejecutar(() => api.solicitarRetiro(n));
     if (!r.ok) {
       avisar(r.error, 'error');
       return;
@@ -129,8 +128,7 @@ export default function Retiros({ usuario }: { usuario: Usuario }) {
       peligro: true,
     });
     if (!ok) return;
-    const r = actualizar((e) => anularRetiro(e, usuario.id, ret.id));
-    if (!r) return;
+    const r = await ejecutar(() => api.anularRetiro(ret.id));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(`Anulaste el retiro ${ret.id}. El monto volvió a tu saldo.`, 'exito');
   };

@@ -5,7 +5,7 @@ import Tabla from '../../components/Tabla';
 import { Tiempo } from '../../components/TablaMovimientos';
 import type { CerrarModal } from '../../context/modalContext';
 import { cuentaTexto, detalleRetiro, ESTADOS_RETIRO, usuarioPorId } from '../../logica/consultas';
-import { pagarRetiro, rechazarRetiro } from '../../logica/retiros';
+import { api } from '../../services/datos';
 import { useAvisos } from '../../hooks/useAvisos';
 import { useModal } from '../../hooks/useModal';
 import { useTienda } from '../../hooks/useTienda';
@@ -77,8 +77,8 @@ function VentanaRechazo({ retiro, vendedor, cerrar }: { retiro: Retiro; vendedor
 }
 
 /* Solicitudes de retiro de los vendedores: el administrador transfiere o rechaza. */
-export default function AdminRetiros({ admin }: { admin: Usuario }) {
-  const { estado, actualizar } = useTienda();
+export default function AdminRetiros() {
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const modal = useModal();
   const [filtro, setFiltro] = useState('');
@@ -91,8 +91,7 @@ export default function AdminRetiros({ admin }: { admin: Usuario }) {
     const v = usuarioPorId(estado, r.uid);
     const comprobante = await modal.abrir<string>((cerrar) => <VentanaPago retiro={r} vendedor={v} cerrar={cerrar} />);
     if (comprobante === null) return;
-    const res = actualizar((e) => pagarRetiro(e, admin, r.id, comprobante));
-    if (!res) return;
+    const res = await ejecutar(() => api.transferirRetiro(r.id, comprobante));
     if (!res.ok) avisar(res.error, 'error');
     else avisar(`Marcaste el retiro ${r.id} como transferido.`, 'exito');
   };
@@ -101,8 +100,7 @@ export default function AdminRetiros({ admin }: { admin: Usuario }) {
     const v = usuarioPorId(estado, r.uid);
     const motivo = await modal.abrir<string>((cerrar) => <VentanaRechazo retiro={r} vendedor={v} cerrar={cerrar} />);
     if (motivo === null) return;
-    const res = actualizar((e) => rechazarRetiro(e, admin, r.id, motivo));
-    if (!res) return;
+    const res = await ejecutar(() => api.rechazarRetiro(r.id, motivo));
     if (!res.ok) avisar(res.error, 'error');
     else avisar(`Rechazaste el retiro ${r.id}. El monto volvió al saldo del vendedor.`, 'exito');
   };

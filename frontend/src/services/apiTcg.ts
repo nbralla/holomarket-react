@@ -23,10 +23,12 @@ import type { DatosCarta, JuegoId } from '../types';
 import { sinParentesis } from '../utils/formato';
 import { normalizar } from '../utils/validaciones';
 import { borrar, CLAVES, guardar, leer } from './almacen';
+import { URL_API } from './datos';
 
 export const IMAGENES_ACTIVAS: boolean = typeof __IMAGENES_API__ === 'boolean' ? __IMAGENES_API__ : false;
 
-const BASE = '/apitcg/api';
+// En desarrollo pasa por el proxy de Vite; en producción por el backend, que agrega la clave.
+const BASE = import.meta.env?.PROD ? `${URL_API}/tcg/api` : '/apitcg/api';
 const TIEMPO_MAXIMO = 15000;
 export const DIAS_CACHE = 30;
 const SIMULTANEAS = 3;
@@ -98,6 +100,7 @@ export function explicarFalla(e: unknown): string {
   if (e instanceof DOMException && e.name === 'AbortError') return `la API tardó más de ${TIEMPO_MAXIMO / 1000} segundos en responder.`;
   if (e instanceof ErrorApi) {
     if (e.status === 401 || e.status === 403) return `la API rechazó la clave (error ${e.status}). Revisa APITCG_KEY en .env.local y vuelve a ejecutar "npm run dev".`;
+    if (e.status === 503) return 'el servidor no tiene configurada la clave de API TCG (APITCG_KEY).';
     if (e.status === 429) return 'se acabó el límite de consultas de tu plan de API TCG (error 429).';
     return `la API respondió con error ${e.status}${e.detalle ? `: ${e.detalle}` : ''}.`;
   }

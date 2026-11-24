@@ -7,7 +7,11 @@
    La tienda simulada (mock) usa los datos de demostración y reemplaza sus
    funciones por espías de Jasmine (jasmine.createSpy). Así una prueba puede
    verificar que el componente llamó a "ingresar" o "guardarCarrito" con los
-   datos correctos, sin guardar nada en json-server.
+   datos correctos, sin llamar al backend.
+
+   ejecutar() es el punto por donde las páginas llaman a la API: en la tienda
+   falsa corre la llamada (que la prueba simula con spyOn sobre "api") y
+   devuelve { ok, valor } o { ok: false, error }, igual que el proveedor real.
    ========================================================================= */
 import { render } from '@testing-library/react';
 import type { ReactElement } from 'react';
@@ -31,10 +35,16 @@ export function tiendaFalsa(cambios: Partial<TiendaValor> = {}): TiendaValor {
     estado,
     usuario: null,
     carrito: [],
-    actualizar: jasmine.createSpy('actualizar').and.callFake((cambio: (e: Estado) => unknown) => cambio(estado)),
+    ejecutar: jasmine.createSpy('ejecutar').and.callFake(async (llamada: () => Promise<unknown>) => {
+      try {
+        return { ok: true, valor: await llamada() };
+      } catch (error) {
+        return { ok: false, error: error instanceof Error ? error.message : String(error) };
+      }
+    }),
     guardarCarrito: jasmine.createSpy('guardarCarrito'),
     ingresar: jasmine.createSpy('ingresar'),
-    iniciarSesion: jasmine.createSpy('iniciarSesion'),
+    registrar: jasmine.createSpy('registrar'),
     cerrarSesion: jasmine.createSpy('cerrarSesion'),
     restablecerDemo: jasmine.createSpy('restablecerDemo').and.resolveTo(true),
     ...cambios,

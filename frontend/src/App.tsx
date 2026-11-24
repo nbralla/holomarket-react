@@ -190,7 +190,7 @@ export default function App() {
           <Route path="/retiros" element={privada('cliente', 'Retiros', 'Ingresa para retirar el dinero de tus ventas.',
             (u) => <Retiros usuario={u} />)} />
           <Route path="/admin" element={privada('admin', 'Administración', 'Ingresa con la cuenta de administración.',
-            (u) => <Admin ruta={ruta} admin={u} />)} />
+            () => <Admin ruta={ruta} />)} />
 
           {/* "*" = cualquier URL que no coincida con las de arriba */}
           <Route path="*" element={<Vista titulo="Página no encontrada"><NoEncontrada /></Vista>} />

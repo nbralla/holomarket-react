@@ -3,8 +3,7 @@ import Campo from '../../components/Campo';
 import { CAMPOS_CONFIGURACION, CONFIGURACION_INICIAL } from '../../data/catalogo';
 import { PUBLICACIONES_DEMO } from '../../data/demo';
 import { pubPorId } from '../../logica/consultas';
-import { registrarActividad } from '../../logica/estado';
-import { guardarConfiguracion } from '../../logica/usuarios';
+import { api } from '../../services/datos';
 import {
   buscarImagen, consultaDe, DIAS_CACHE, IMAGENES_ACTIVAS, imagenesGuardadas, reiniciarImagenes, ultimoError,
 } from '../../services/apiTcg';
@@ -12,15 +11,15 @@ import { useAvisos } from '../../hooks/useAvisos';
 import { enfocarCampo } from '../../hooks/useFormulario';
 import { useModal } from '../../hooks/useModal';
 import { useTienda } from '../../hooks/useTienda';
-import type { Configuracion, Usuario } from '../../types';
+import type { Configuracion } from '../../types';
 import { plural } from '../../utils/formato';
 import { entero } from '../../utils/validaciones';
 
 type Prueba = { tipo: 'cargando' } | { tipo: 'ok'; url: string; nombre: string } | { tipo: 'error'; mensaje: string } | { tipo: 'vacio'; nombre: string } | null;
 
 /* Estado de la API de imágenes, con un botón para probar la conexión. */
-function PanelImagenes({ admin }: { admin: Usuario }) {
-  const { estado, actualizar } = useTienda();
+function PanelImagenes() {
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const [prueba, setPrueba] = useState<Prueba>(null);
   const [, setVersion] = useState(0);
@@ -40,7 +39,7 @@ function PanelImagenes({ admin }: { admin: Usuario }) {
 
   const volverAPedir = () => {
     reiniciarImagenes();
-    actualizar((e) => registrarActividad(e, 'Caché de imágenes borrada', 'Se volverán a pedir las imágenes a la API', admin.id));
+    ejecutar(() => api.registrarActividad('Caché de imágenes borrada', 'Se volverán a pedir las imágenes a la API'));
     avisar('Borramos las imágenes guardadas. Se volverán a pedir a la API al abrir el catálogo.', 'exito', { href: '/catalogo', texto: 'Ir al catálogo' });
     setPrueba(null);
     setVersion((v) => v + 1);
@@ -80,8 +79,8 @@ function PanelImagenes({ admin }: { admin: Usuario }) {
 }
 
 /* Parámetros del negocio, imágenes y restablecimiento de los datos de prueba. */
-export default function AdminConfiguracion({ admin }: { admin: Usuario }) {
-  const { estado, actualizar, restablecerDemo } = useTienda();
+export default function AdminConfiguracion() {
+  const { estado, ejecutar, restablecerDemo } = useTienda();
   const { avisar } = useAvisos();
   const modal = useModal();
   const [valores, setValores] = useState<Record<string, string>>(() =>
@@ -96,7 +95,7 @@ export default function AdminConfiguracion({ admin }: { admin: Usuario }) {
     return Number.isNaN(n) || n < min || n > max ? `Ingresa un número entero entre ${min} y ${max}.` : '';
   };
 
-  const guardar = (ev: FormEvent<HTMLFormElement>) => {
+  const guardar = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     const nuevos = Object.fromEntries(CAMPOS_CONFIGURACION.map(([id]) => [id, error(id, valores[id])]));
     setErrores(nuevos);
@@ -107,9 +106,15 @@ export default function AdminConfiguracion({ admin }: { admin: Usuario }) {
     }
     const config = { ...estado.config } as Configuracion;
     CAMPOS_CONFIGURACION.forEach(([id]) => { config[id] = entero(valores[id]); });
-    const cambios = actualizar((e) => guardarConfiguracion(e, admin, config));
-    if (!cambios) return;
-    if (!cambios.length) avisar('No hay cambios que guardar.', 'info');
+    const cambios = CAMPOS_CONFIGURACION
+      .filter(([id]) => estado.config[id] !== config[id])
+      .map(([id, etiqueta]) => `${etiqueta}: ${estado.config[id]} → ${config[id]}`);
+    if (!cambios.length) {
+      avisar('No hay cambios que guardar.', 'info');
+      return;
+    }
+    const r = await ejecutar(() => api.guardarConfiguracion(config));
+    if (!r.ok) avisar(r.error, 'error');
     else avisar(`Guardaste la configuración (${cambios.join('; ')}). Se aplica a las compras nuevas.`, 'exito');
   };
 
@@ -124,7 +129,7 @@ export default function AdminConfiguracion({ admin }: { admin: Usuario }) {
     if (!(await restablecerDemo())) return;
     setValores(Object.fromEntries(CAMPOS_CONFIGURACION.map(([id]) => [id, String(CONFIGURACION_INICIAL[id])])));
     setErrores({});
-    avisar('Restablecimos los datos de demostración en db.json.', 'exito');
+    avisar('Restablecimos los datos de demostración en la base de datos.', 'exito');
   };
 
   return (
@@ -147,7 +152,7 @@ export default function AdminConfiguracion({ admin }: { admin: Usuario }) {
         </div>
         <div><button type="submit" className="btn btn--primario">Guardar configuración</button></div>
       </form>
-      <PanelImagenes admin={admin} />
+      <PanelImagenes />
       <section className="bloque zona-peligro" aria-labelledby="adm-demo">
         <h2 id="adm-demo" className="titulo-chico">Datos de demostración</h2>
         <p className="bajada">

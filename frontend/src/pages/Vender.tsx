@@ -5,7 +5,8 @@ import { CondicionChip } from '../components/Chips';
 import { ACABADOS, CONDICIONES, IDIOMAS, IDS_JUEGOS, JUEGOS, esJuego, rarezasDe } from '../data/catalogo';
 import { publicacionesVisibles } from '../logica/consultas';
 import { descuento } from '../logica/ofertas';
-import { crearPublicacion, editarPublicacion, pubPropia, type DatosPublicacion } from '../logica/publicaciones';
+import { pubPropia, type DatosPublicacion } from '../logica/publicaciones';
+import { api } from '../services/datos';
 import { buscarSugerencias, explicarFalla, IMAGENES_ACTIVAS, rarezaDesde, sugerenciasEnCache, urlSegura, type Sugerencia } from '../services/apiTcg';
 import { useAvisos } from '../hooks/useAvisos';
 import { useDebounce } from '../hooks/useDebounce';
@@ -35,7 +36,8 @@ type Valores = {
 };
 
 export default function Vender({ id, usuario }: { id: string; usuario: Usuario }) {
-  const { estado, actualizar } = useTienda();
+  const { estado, ejecutar } = useTienda();
+  const [guardando, setGuardando] = useState(false);
   const { navegar } = useNavegar();
   const { avisar } = useAvisos();
   const verLegal = useLegal();
@@ -226,8 +228,9 @@ export default function Vender({ id, usuario }: { id: string; usuario: Usuario }
   }
 
   /* ---------- Publicar o guardar cambios ---------- */
-  const enviar = (ev: FormEvent<HTMLFormElement>) => {
+  const enviar = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
+    if (guardando) return;
     const ok = f.validarTodo();
     if (!ok || fotoError) {
       if (ok) campoFoto.current?.focus();
@@ -241,19 +244,17 @@ export default function Vender({ id, usuario }: { id: string; usuario: Usuario }
       descripcion: v.descripcion,
     };
     const imagenes = { imagen: foto, imagenApi };
-    if (editandoId) {
-      const r = actualizar((e) => editarPublicacion(e, usuario.id, editandoId, datos, imagenes));
-      if (!r) return;
-      if (!r.ok) {
-        avisar(r.error, 'error');
-        return;
-      }
-      avisar(`Guardaste los cambios de ${r.valor.nombre}.`, 'exito', { href: `/carta/${r.valor.id}`, texto: 'Ver publicación' });
-    } else {
-      const pub = actualizar((e) => crearPublicacion(e, usuario, datos, { imagen: foto ?? null, imagenApi: imagenApi ?? null }));
-      if (!pub) return;
-      avisar(`Publicaste ${pub.nombre}. Ya aparece en el catálogo.`, 'exito', { href: `/carta/${pub.id}`, texto: 'Ver publicación' });
+    setGuardando(true);
+    const r = editandoId
+      ? await ejecutar(() => api.editarPublicacion(editandoId, datos, imagenes))
+      : await ejecutar(() => api.crearPublicacion(datos, { imagen: foto ?? null, imagenApi: imagenApi ?? null }));
+    setGuardando(false);
+    if (!r.ok) {
+      avisar(r.error, 'error');
+      return;
     }
+    avisar(editandoId ? `Guardaste los cambios de ${r.valor.nombre}.` : `Publicaste ${r.valor.nombre}. Ya aparece en el catálogo.`,
+      'exito', { href: `/carta/${r.valor.id}`, texto: 'Ver publicación' });
     navegar('/inventario');
   };
 
@@ -407,7 +408,9 @@ export default function Vender({ id, usuario }: { id: string; usuario: Usuario }
           </section>
 
           <div className="acciones-fila">
-            <button type="submit" className="btn btn--primario btn--grande" id="vender-enviar">{editandoId ? 'Guardar cambios' : 'Publicar carta'}</button>
+            <button type="submit" className="btn btn--primario btn--grande" id="vender-enviar" disabled={guardando}>
+              {guardando ? 'Guardando…' : editandoId ? 'Guardar cambios' : 'Publicar carta'}
+            </button>
             <Link className="btn btn--fantasma btn--grande" to="/inventario">Cancelar</Link>
           </div>
         </form>

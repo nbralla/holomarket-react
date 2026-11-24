@@ -3,14 +3,14 @@ import Carta from '../components/Carta';
 import { EstadoChip } from '../components/Chips';
 import MarcoModal from '../components/MarcoModal';
 import type { CerrarModal } from '../context/modalContext';
-import { cancelarPedido, confirmarRecepcion, marcarEnviado } from '../logica/compras';
 import { pedidoPorId, pubPorId, textoEstadoPedido, usuarioPorId } from '../logica/consultas';
 import { useAvisos } from '../hooks/useAvisos';
 import { useModal } from '../hooks/useModal';
 import { useTienda } from '../hooks/useTienda';
+import { api } from '../services/datos';
 import type { Pedido, Usuario } from '../types';
 import type { Ruta } from '../utils/navegacion';
-import { clp, fecha, fechaHora, nombreCorto, plural, suma } from '../utils/formato';
+import { clp, fecha, fechaHora, nombreCorto, suma } from '../utils/formato';
 import { Link } from 'react-router';
 
 type Vista = 'compras' | 'ventas';
@@ -169,7 +169,7 @@ function TarjetaPedido({ pedido: o, vista, destacado, alEnviar, alRecibir, alCan
 
 /* Compras y ventas del usuario, con su seguimiento: pagado → enviado → entregado. */
 export default function Pedidos({ ruta, usuario }: { ruta: Ruta; usuario: Usuario }) {
-  const { estado, actualizar } = useTienda();
+  const { estado, ejecutar } = useTienda();
   const { avisar } = useAvisos();
   const modal = useModal();
 
@@ -193,8 +193,7 @@ export default function Pedidos({ ruta, usuario }: { ruta: Ruta; usuario: Usuari
   const enviar = async (o: Pedido) => {
     const seguimiento = await modal.abrir<string>((cerrar) => <VentanaEnvio pedido={o} cerrar={cerrar} />);
     if (seguimiento === null) return;
-    const r = actualizar((e) => marcarEnviado(e, usuario.id, o.id, seguimiento));
-    if (!r) return;
+    const r = await ejecutar(() => api.marcarEnviado(o.id, seguimiento));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(`Marcaste el pedido ${o.id} como ${o.envio.metodo === 'retiro' ? 'listo para entrega' : 'enviado'}.`, 'exito');
   };
@@ -206,8 +205,7 @@ export default function Pedidos({ ruta, usuario }: { ruta: Ruta; usuario: Usuari
       confirmar: 'Sí, lo recibí',
     });
     if (!ok) return;
-    const r = actualizar((e) => confirmarRecepcion(e, usuario.id, o.id));
-    if (!r) return;
+    const r = await ejecutar(() => api.confirmarRecepcion(o.id));
     if (!r.ok) avisar(r.error, 'error');
     else avisar(`Confirmaste la recepción de ${o.id}. Liberamos el pago al vendedor.`, 'exito');
   };
@@ -222,10 +220,9 @@ export default function Pedidos({ ruta, usuario }: { ruta: Ruta; usuario: Usuari
       peligro: true,
     });
     if (!ok) return;
-    const r = actualizar((e) => cancelarPedido(e, usuario.id, o.id));
-    if (!r) return;
+    const r = await ejecutar(() => api.cancelarPedido(o.id));
     if (!r.ok) avisar(r.error, 'error');
-    else avisar(`Cancelaste el pedido ${o.id}. Devolvimos ${r.valor.devueltas} ${plural(r.valor.devueltas, 'unidad', 'unidades')} al stock.`, 'exito');
+    else avisar(`Cancelaste el pedido ${o.id}. ${unidades === 1 ? 'La unidad volvió' : `Las ${unidades} unidades volvieron`} al stock.`, 'exito');
   };
 
   return (

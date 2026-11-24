@@ -5,7 +5,7 @@ import { TiendaProvider } from '../context/TiendaProvider';
 import { cargarEstado } from '../services/datos';
 import type { Estado } from '../types';
 
-/* Pide los datos a json-server una sola vez al abrir el sitio. Mientras llegan muestra
+/* Pide los datos al backend (GET /api/estado) al abrir el sitio. Mientras llegan muestra
    "Cargando..."; si la API no responde, explica qué revisar y permite reintentar. */
 export default function Arranque() {
   const [estado, setEstado] = useState<Estado | null>(null);
@@ -17,7 +17,7 @@ export default function Arranque() {
     let vigente = true;   // si el componente se desmonta, ignoramos la respuesta
     cargarEstado()
       .then((datos) => { if (vigente) setEstado(datos); })
-      .catch(() => { if (vigente) setError('No se pudieron cargar los datos de la tienda. ¿Está corriendo "npm run api"?'); });
+      .catch(() => { if (vigente) setError('No se pudieron cargar los datos de la tienda. ¿Está encendido el backend?'); });
     return () => { vigente = false; };
   }, [intento]);
 
@@ -38,7 +38,7 @@ export default function Arranque() {
           <>
             <h1 className="titulo-vista">Sin conexión con la API</h1>
             <p>{error}</p>
-            <p className="nota">Abre otra terminal en la carpeta del proyecto y ejecuta <code>npm run api</code> (json-server en el puerto 3000).</p>
+            <p className="nota">En desarrollo: levanta MySQL con <code>docker compose up -d</code> y el backend Spring Boot (puerto 8080) desde la carpeta <code>backend/</code>.</p>
             <button type="button" className="btn btn--primario" onClick={() => { setError(null); setIntento((n) => n + 1); }}>
               Reintentar
             </button>

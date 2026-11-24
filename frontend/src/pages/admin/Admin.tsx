@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import { useTienda } from '../../hooks/useTienda';
-import type { Usuario } from '../../types';
 import type { Ruta } from '../../utils/navegacion';
 import AdminActividad from './AdminActividad';
 import AdminConfiguracion from './AdminConfiguracion';
@@ -21,7 +20,7 @@ const PESTANAS: [Pestana, string][] = [
 const esPestana = (v: string | null): v is Pestana => PESTANAS.some(([id]) => id === v);
 
 /* Panel de administración. La pestaña activa viene de la URL (/admin?tab=usuarios). */
-export default function Admin({ ruta, admin }: { ruta: Ruta; admin: Usuario }) {
+export default function Admin({ ruta }: { ruta: Ruta }) {
   const { estado } = useTienda();
   const pedida = ruta.params.get('tab');
   const pestana: Pestana = esPestana(pedida) ? pedida : 'resumen';
@@ -29,12 +28,12 @@ export default function Admin({ ruta, admin }: { ruta: Ruta; admin: Usuario }) {
 
   const contenido: Record<Pestana, ReactNode> = {
     resumen: <AdminResumen />,
-    publicaciones: <AdminPublicaciones admin={admin} />,
-    usuarios: <AdminUsuarios admin={admin} />,
-    movimientos: <AdminMovimientos admin={admin} />,
-    retiros: <AdminRetiros admin={admin} />,
+    publicaciones: <AdminPublicaciones />,
+    usuarios: <AdminUsuarios />,
+    movimientos: <AdminMovimientos />,
+    retiros: <AdminRetiros />,
     actividad: <AdminActividad />,
-    configuracion: <AdminConfiguracion admin={admin} />,
+    configuracion: <AdminConfiguracion />,
   };
 
   return (

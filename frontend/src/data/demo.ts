@@ -1,9 +1,9 @@
 /* =========================================================================
    Datos de demostración
    -------------------------------------------------------------------------
-   Con ellos se generó el archivo db.json que sirve json-server (npm run api)
-   (ver src/logica/estado.ts). Desde Administración › Configuración se pueden
-   restablecer antes de presentar.
+   Con ellos se generó backend/src/main/resources/datos-demo.json, que el
+   backend carga en MySQL en su primer arranque (ver src/logica/estado.ts).
+   Desde Administración › Configuración se pueden restablecer antes de presentar.
    ========================================================================= */
 import type { CondicionId, EstadoPedido, EstadoPublicacion, EstadoRetiro, JuegoId, MetodoEntrega, MetodoPago, Rol } from '../types';
 
@@ -12,7 +12,6 @@ export interface UsuarioDemo {
   rut: string;
   nombre: string;
   email: string;
-  clave: string;        // se muestra solo porque son cuentas públicas de prueba: se guarda su hash
   rol: Rol;
   region: string;
   comuna: string;
@@ -62,16 +61,16 @@ export interface RetiroDemo {
 }
 
 export const USUARIOS_DEMO: UsuarioDemo[] = [
-  { id: 'U00', rut: '11.111.111-1', nombre: 'Equipo HoloMarket', email: 'admin@holomarket.cl', clave: 'Admin1234',
+  { id: 'U00', rut: '11.111.111-1', nombre: 'Equipo HoloMarket', email: 'admin@holomarket.cl',
     rol: 'admin', region: 'Metropolitana de Santiago', comuna: 'Santiago', telefono: '+56 2 2345 6789',
     direccion: '', diasAtras: 120, demo: 'Administra usuarios, modera publicaciones y revisa métricas y movimientos de stock.' },
-  { id: 'U01', rut: '12.345.678-5', nombre: 'Camila Rojas', email: 'camila@demo.cl', clave: 'Demo1234',
+  { id: 'U01', rut: '12.345.678-5', nombre: 'Camila Rojas', email: 'camila@demo.cl',
     rol: 'cliente', region: 'Metropolitana de Santiago', comuna: 'Ñuñoa', telefono: '+56 9 8765 4321',
     direccion: 'Av. Irarrázaval 3450, depto. 1204', diasAtras: 60, demo: 'Compradora. Tiene pedidos en curso y algunas cartas publicadas.' },
-  { id: 'U02', rut: '17.654.321-3', nombre: 'Diego Muñoz', email: 'diego@demo.cl', clave: 'Demo1234',
+  { id: 'U02', rut: '17.654.321-3', nombre: 'Diego Muñoz', email: 'diego@demo.cl',
     rol: 'cliente', region: 'Valparaíso', comuna: 'Viña del Mar', telefono: '+56 9 7654 3210',
     direccion: 'Av. Libertad 1180', diasAtras: 90, demo: 'Vendedor con inventario grande y un pedido pendiente de envío.' },
-  { id: 'U03', rut: '19.876.543-0', nombre: 'Valentina Soto', email: 'valentina@demo.cl', clave: 'Demo1234',
+  { id: 'U03', rut: '19.876.543-0', nombre: 'Valentina Soto', email: 'valentina@demo.cl',
     rol: 'cliente', region: 'Biobío', comuna: 'Concepción', telefono: '+56 9 6543 2109',
     direccion: "O'Higgins 940, of. 32", diasAtras: 75, demo: 'Vendedora de Pokémon, Yu-Gi-Oh! y Mitos y Leyendas. Tiene un retiro pendiente.',
     cuenta: { banco: 'BancoEstado', tipo: 'Cuenta vista / CuentaRUT', numero: '19876543' } },

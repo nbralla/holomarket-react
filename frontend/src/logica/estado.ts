@@ -1,10 +1,12 @@
 /* =========================================================================
-   Estado de la tienda: creación de los datos de demostración y operaciones
-   básicas que comparten todas las reglas de negocio.
+   Estado de la tienda: datos de demostración y validación de su forma
    -------------------------------------------------------------------------
-   Todas las funciones de la carpeta logica/ son "puras" respecto de React:
-   reciben el estado (un borrador que se puede modificar) y no tocan el DOM
-   ni el localStorage. Por eso se pueden probar con Vitest sin navegador.
+   crearEstadoInicial() arma la demo completa (usuarios, publicaciones,
+   pedidos con su historial, kardex y retiros). La usan las pruebas y es la
+   fuente de backend/src/main/resources/datos-demo.json, con que el backend
+   llena MySQL en su primer arranque.
+   Las funciones de la carpeta logica/ son "puras" respecto de React: no
+   tocan el DOM ni el localStorage, así que se prueban con Vitest.
    ========================================================================= */
 import { CONFIGURACION_INICIAL } from '../data/catalogo';
 import { PEDIDOS_DEMO, PUBLICACIONES_DEMO, RETIROS_DEMO, USUARIOS_DEMO } from '../data/demo';
@@ -13,7 +15,6 @@ import type {
   Retiro, TipoMovimiento, TipoSecuencia, Usuario,
 } from '../types';
 import { clp, DIA } from '../utils/formato';
-import { hashClave, hexAleatorio } from '../utils/sha256';
 
 /* ---------- Identificadores correlativos: U04, P026, HM-1005, RET-003... ---------- */
 export function siguienteId(e: Estado, tipo: TipoSecuencia): string {
@@ -110,10 +111,9 @@ export function crearEstadoInicial(ahora = Date.now()): Estado {
   };
 
   e.usuarios = USUARIOS_DEMO.map((u) => {
-    const sal = hexAleatorio(8);
     const creado = ahora - u.diasAtras * DIA;
     return {
-      id: u.id, rut: u.rut, nombre: u.nombre, email: u.email.toLowerCase(), sal, clave: hashClave(sal, u.clave),
+      id: u.id, rut: u.rut, nombre: u.nombre, email: u.email.toLowerCase(),
       rol: u.rol, region: u.region, comuna: u.comuna, telefono: u.telefono, direccion: u.direccion,
       estado: 'activo', creado, cuenta: u.cuenta ? { ...u.cuenta, actualizada: creado } : null,
     };
@@ -199,23 +199,4 @@ export function estadoValido(e: unknown): e is Estado {
   const config = x.config as { secuencias?: unknown } | null | undefined;
   return ['usuarios', 'publicaciones', 'pedidos', 'movimientos', 'actividad', 'retiros'].every((c) => Array.isArray(x[c])) &&
     Boolean(config && typeof config === 'object' && config.secuencias);
-}
-
-/* Asegura que cada secuencia sea al menos el número más alto ya usado (HM-1005 -> 1005).
-   Si un guardado se cortó a la mitad (por ejemplo, al cerrar la pestaña), así nunca se repite un id.
-   Devuelve true si tuvo que corregir algo. */
-export function reconciliarSecuencias(e: Estado): boolean {
-  const colecciones: Record<TipoSecuencia, { id: string }[]> = {
-    usuario: e.usuarios, publicacion: e.publicaciones, pedido: e.pedidos,
-    movimiento: e.movimientos, actividad: e.actividad, retiro: e.retiros,
-  };
-  let corregido = false;
-  (Object.keys(colecciones) as TipoSecuencia[]).forEach((tipo) => {
-    const maximo = colecciones[tipo].reduce((max, x) => Math.max(max, Number(/(\d+)$/.exec(x.id)?.[1] ?? 0)), 0);
-    if ((e.config.secuencias[tipo] || 0) < maximo) {
-      e.config.secuencias[tipo] = maximo;
-      corregido = true;
-    }
-  });
-  return corregido;
 }

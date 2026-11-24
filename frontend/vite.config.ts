@@ -9,8 +9,10 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, '.', '')
   const claveApi = (env.APITCG_KEY ?? '').trim()
 
-  // Las imágenes de API TCG solo se activan con "npm run dev" y una clave en .env.local.
-  const imagenesActivas = command === 'serve' && claveApi !== ''
+  // Imágenes de API TCG:
+  //  - "npm run dev": directo con el proxy /apitcg de abajo, si hay clave en .env.local.
+  //  - "npm run build" (S3): a través del backend (/api/tcg), que tiene la clave en APITCG_KEY.
+  const imagenesActivas = command === 'build' || claveApi !== ''
 
   return {
     plugins: [react()],
@@ -37,15 +39,12 @@ export default defineConfig(({ command, mode }) => {
       port: 5173,          // puerto de la app
       strictPort: true,    // si el puerto está ocupado, avisa en vez de cambiarlo solo
       proxy: {
-        // Todo lo que React pida a /api/... Vite lo reenvía a json-server (npm run api).
-        // Con la barra final: así /apitcg/... (las imágenes) no entra por aquí.
+        // Todo lo que React pida a /api/... Vite lo reenvía al backend Spring Boot (puerto 8080).
+        // Así en desarrollo no hay CORS. Con la barra final: /apitcg/... (las imágenes) no entra por aquí.
         '/api/': {
           // 127.0.0.1 y no "localhost": en Windows "localhost" a veces apunta a IPv6 (::1)
-          // y json-server escucha en IPv4, entonces no se encuentran (error ECONNREFUSED)
-          target: 'http://127.0.0.1:3000',
+          target: 'http://127.0.0.1:8080',
           changeOrigin: true,
-          // json-server no conoce el prefijo /api: /api/publicaciones -> /publicaciones
-          rewrite: (ruta) => ruta.replace(/^\/api/, ''),
         },
 
         // El navegador llama a /apitcg/... y el servidor de Vite reenvía la consulta a

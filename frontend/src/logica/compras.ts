@@ -1,10 +1,14 @@
 /* =========================================================================
-   Carrito, compra y ciclo de vida de los pedidos
+   Carrito y resumen de la compra
+   -------------------------------------------------------------------------
+   Sirven para mostrar el carrito y el checkout al instante. El pago, el
+   descuento de stock y los estados del pedido los hace el backend
+   (PedidoService): ahí se vuelve a validar todo con los datos guardados.
    ========================================================================= */
-import type { Estado, ItemCarrito, MetodoEntrega, MetodoPago, Pedido, Publicacion, Resultado, Usuario } from '../types';
-import { clp, plural, suma } from '../utils/formato';
-import { pedidoPorId, pubPorId, publicacionesVisibles, usuarioPorId } from './consultas';
-import { cambiarStock, construirPedido, costoEnvio, lineaDesde, registrarActividad, siguienteId } from './estado';
+import type { Estado, ItemCarrito, MetodoEntrega, Publicacion, Resultado, Usuario } from '../types';
+import { plural, suma } from '../utils/formato';
+import { pubPorId, publicacionesVisibles, usuarioPorId } from './consultas';
+import { costoEnvio } from './estado';
 
 export interface LineaCarrito {
   item: ItemCarrito;
@@ -90,84 +94,4 @@ export function agregarAlCarrito(e: Estado, usuario: Usuario, items: ItemCarrito
     ? items.map((i) => (i.pubId === pubId ? { ...i, cantidad: i.cantidad + cantidad } : i))
     : [...items, { pubId, cantidad }];
   return { ok: true, valor: nuevos };
-}
-
-export interface DatosCompra {
-  entrega: MetodoEntrega;
-  pago: MetodoPago;
-  receptor: string;
-  telefono: string;
-  region: string;
-  comuna: string;
-  direccion: string;
-  numeroTarjeta: string;   // solo se usan los últimos 4 dígitos
-}
-
-/* Crea un pedido por vendedor y descuenta el stock. Antes revisa que haya stock para
-   todo el carrito: se compra todo o nada (nunca queda stock negativo). */
-export function procesarCompra(e: Estado, comprador: Usuario, items: ItemCarrito[], datos: DatosCompra): Resultado<Pedido[]> {
-  const { lineas, avisos } = revisarCarrito(e, comprador.id, items);
-  if (avisos.length) return { ok: false, error: `El stock cambió mientras comprabas. ${avisos.join(' ')} Revisa el resumen y vuelve a pagar.` };
-  if (!lineas.length) return { ok: false, error: 'Tu carrito quedó vacío.' };
-  const despacho = datos.entrega === 'despacho';
-  const region = despacho ? datos.region : comprador.region;
-  const compra = calcularCompra(e, lineas, datos.entrega, region);
-  const digitos = datos.numeroTarjeta.replace(/\D/g, '');
-  const detallePago = datos.pago === 'tarjeta' ? `tarjeta terminada en ${digitos.slice(-4)}` : 'transferencia simulada';
-  const ahora = Date.now();
-  const pedidos = compra.paquetes.map((g) => {
-    const pedido = construirPedido(e.config, {
-      id: siguienteId(e, 'pedido'), comprador, vendedor: g.vendedor, momento: ahora,
-      lineas: g.items.map((l) => lineaDesde(l.pub, l.item.cantidad)),
-      pago: { metodo: datos.pago, detalle: detallePago },
-      envio: {
-        metodo: datos.entrega, costo: g.envio, receptor: datos.receptor.trim(), telefono: datos.telefono.trim(),
-        region: despacho ? region : '', comuna: despacho ? datos.comuna : '', direccion: despacho ? datos.direccion.trim() : '',
-      },
-    });
-    e.pedidos.push(pedido);
-    g.items.forEach((l) => cambiarStock(e, l.pub, l.pub.stock - l.item.cantidad, 'venta', pedido.id, comprador.id));
-    registrarActividad(e, 'Compra realizada', `${pedido.id} a ${g.vendedor.nombre} por ${clp(pedido.total)}`, comprador.id);
-    return pedido;
-  });
-  return { ok: true, valor: pedidos };
-}
-
-/* ---------- Estados del pedido: pagado → enviado → entregado (o cancelado) ---------- */
-export function marcarEnviado(e: Estado, uid: string, id: string, seguimiento: string): Resultado<Pedido> {
-  const o = pedidoPorId(e, id);
-  if (!o || o.vendedorId !== uid || o.estado !== 'pagado') return { ok: false, error: 'Este pedido ya no se puede marcar como enviado.' };
-  const retiro = o.envio.metodo === 'retiro';
-  o.estado = 'enviado';
-  o.seguimiento = retiro ? '' : seguimiento.trim().toUpperCase();
-  o.historial.push({ estado: 'enviado', fecha: Date.now() });
-  registrarActividad(e, retiro ? 'Pedido listo para entrega' : 'Pedido enviado', `${o.id}${o.seguimiento ? `, seguimiento ${o.seguimiento}` : ''}`, uid);
-  return { ok: true, valor: o };
-}
-
-export function confirmarRecepcion(e: Estado, uid: string, id: string): Resultado<Pedido> {
-  const o = pedidoPorId(e, id);
-  if (!o || o.compradorId !== uid || o.estado !== 'enviado') return { ok: false, error: 'Este pedido ya no se puede confirmar.' };
-  o.estado = 'entregado';
-  o.historial.push({ estado: 'entregado', fecha: Date.now() });
-  registrarActividad(e, 'Pedido recibido', o.id, uid);
-  return { ok: true, valor: o };
-}
-
-/* Solo se cancela mientras está pagado (no enviado): las unidades vuelven al stock. */
-export function cancelarPedido(e: Estado, uid: string, id: string): Resultado<{ pedido: Pedido; devueltas: number }> {
-  const o = pedidoPorId(e, id);
-  if (!o || o.compradorId !== uid || o.estado !== 'pagado') return { ok: false, error: 'Este pedido ya no se puede cancelar.' };
-  let devueltas = 0;
-  o.items.forEach((it) => {
-    const pub = pubPorId(e, it.pubId);
-    if (pub && pub.estado !== 'eliminada' && pub.stock + it.cantidad <= 999) {
-      cambiarStock(e, pub, pub.stock + it.cantidad, 'cancelacion', o.id, uid);
-      devueltas += it.cantidad;
-    }
-  });
-  o.estado = 'cancelado';
-  o.historial.push({ estado: 'cancelado', fecha: Date.now() });
-  registrarActividad(e, 'Pedido cancelado', `${o.id}, ${devueltas} u. devueltas al stock`, uid);
-  return { ok: true, valor: { pedido: o, devueltas } };
 }

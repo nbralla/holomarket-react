@@ -3,7 +3,8 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRuta } from '../hooks/useRuta';
 import { estadoDemo, montar, simularFetch, tiendaFalsa, usuarioDemo } from '../pruebas/montar';
-import type { Estado } from '../types';
+import { api } from '../services/datos';
+import type { Estado, Pedido } from '../types';
 import Pedidos from './Pedidos';
 
 function montarPedidos(uid: string, ruta: string, estado: Estado = estadoDemo()) {
@@ -38,6 +39,7 @@ describe('Pedidos', () => {
     const estado = estadoDemo();
     const pendiente = estado.pedidos.find((o) => o.vendedorId === 'U02' && o.estado === 'pagado');
     expect(pendiente).toBeDefined();
+    const enviar = spyOn(api, 'marcarEnviado').and.resolveTo(pendiente as Pedido);
     const { tienda } = montarPedidos('U02', '/pedidos?tab=ventas', estado);
 
     await usuario.click(screen.getByRole('button', { name: `Marcar como enviado el pedido ${pendiente?.id}` }));
@@ -45,9 +47,7 @@ describe('Pedidos', () => {
     await usuario.type(within(ventana).getByLabelText(/Número de seguimiento/), 'BX-7777');
     await usuario.click(within(ventana).getByRole('button', { name: 'Marcar como enviado' }));
 
-    expect(tienda.actualizar).toHaveBeenCalledTimes(1);
-    const pedido = estado.pedidos.find((o) => o.id === pendiente?.id);
-    expect(pedido?.estado).toBe('enviado');
-    expect(pedido?.seguimiento).toBe('BX-7777');
+    expect(tienda.ejecutar).toHaveBeenCalledTimes(1);
+    expect(enviar).toHaveBeenCalledOnceWith(pendiente?.id as string, 'BX-7777');
   });
 });
