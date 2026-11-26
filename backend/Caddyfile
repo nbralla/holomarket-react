@@ -1,0 +1,25 @@
+# Caddy: puerta de entrada HTTPS de HoloMarket en la EC2.
+# - Obtiene y renueva solo el certificado de Let's Encrypt para DOMINIO.
+# - /api/* va al backend Spring Boot (contenedor api, puerto 8080 de la red interna).
+# - Todo lo demás se pide al sitio estático del bucket S3 (el front sigue alojado en S3).
+# Se usa en lugar de CloudFront porque el Learner Lab no permite crear distribuciones.
+
+{$DOMINIO} {
+	encode gzip
+
+	handle /api/* {
+		reverse_proxy api:8080
+	}
+
+	handle {
+		reverse_proxy http://{$FRONT_S3_HOST} {
+			# S3 elige el bucket por el nombre del host: hay que enviarle el suyo, no el de Caddy.
+			header_up Host {$FRONT_S3_HOST}
+		}
+	}
+}
+
+# Compatibilidad: la API también responde por http://IP/api (pruebas con curl y el link antiguo).
+http://{$IP_PUBLICA} {
+	reverse_proxy api:8080
+}

@@ -1,5 +1,5 @@
-# Producción (EC2): MySQL + backend juntos. MySQL no publica ningún puerto: solo el backend lo ve,
-# por la red interna de Docker. El backend queda en el puerto 80 de la máquina.
+# Producción (EC2): MySQL + backend + Caddy. MySQL y el backend no publican puertos: solo se ven
+# por la red interna de Docker. Caddy es la única entrada (80 y 443) y pone el HTTPS.
 # Uso:  docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
 name: holomarket-prod
 services:
@@ -41,9 +41,27 @@ services:
       DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:?Falta DEMO_USER_PASSWORD en .env.prod}
       APITCG_KEY: ${APITCG_KEY:-}
       SWAGGER_ENABLED: ${SWAGGER_ENABLED:-false}
-    ports:
-      - "80:8080"
     mem_limit: 900m
+
+  caddy:
+    image: caddy:2.8
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      DOMINIO: ${DOMINIO:?Falta DOMINIO en .env.prod}
+      IP_PUBLICA: ${IP_PUBLICA:?Falta IP_PUBLICA en .env.prod}
+      FRONT_S3_HOST: ${FRONT_S3_HOST:?Falta FRONT_S3_HOST en .env.prod}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data          # certificados de Let's Encrypt (no se pierden al reiniciar)
+      - caddy_config:/config
+    mem_limit: 128m
 
 volumes:
   mysql_data:
+  caddy_data:
+  caddy_config:
