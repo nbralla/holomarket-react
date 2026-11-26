@@ -159,7 +159,7 @@ export default function Catalogo({ ruta }: { ruta: Ruta }) {
           <h2 className="solo-lector">Resultados</h2>
           {productos.length ? (
             // 1 ficha por fila en celular, 2 en tablet/escritorio y 3 en pantallas muy anchas
-            <div className="rejilla-productos row row-cols-1 row-cols-md-2 row-cols-xxl-3 g-3" id="catalogo-resultados">
+            <div className="rejilla-productos row row-cols-2 row-cols-md-2 row-cols-xxl-3 g-3" id="catalogo-resultados">
               {productos.map((p) => <div key={p.clave} className="col"><FichaProducto producto={p} /></div>)}
             </div>
           ) : (

@@ -24,6 +24,9 @@ import org.springframework.web.client.RestClientException;
 public class TcgController {
 
     private static final String PREFIJO = "/api/tcg/";
+    /** Solo las consultas que usa el front: así el proxy no sirve para gastar la clave en cualquier cosa. */
+    private static final java.util.regex.Pattern PERMITIDAS =
+            java.util.regex.Pattern.compile("^api/(products|[a-z-]+/sets|history-prices/[0-9]+)$");
 
     private final RestClient cliente;
     private final String clave;
@@ -39,7 +42,7 @@ public class TcgController {
     public ResponseEntity<byte[]> consultar(HttpServletRequest request) {
         if (clave.isEmpty()) return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).build();
         String ruta = request.getRequestURI().substring(request.getContextPath().length() + PREFIJO.length());
-        if (ruta.contains("..")) return ResponseEntity.badRequest().build();
+        if (!PERMITIDAS.matcher(ruta).matches()) return ResponseEntity.notFound().build();
         String consulta = request.getQueryString() == null ? "" : "?" + request.getQueryString();
         try {
             return cliente.get()

@@ -16,8 +16,9 @@ public final class SolicitudDtos {
     /* ---------- Auth ---------- */
 
     public record LoginRequest(
-            @Schema(example = "admin@holomarket.cl") @NotBlank(message = "Ingresa tu correo.") @Email(message = "Revisa el formato del correo.") String email,
-            @Schema(example = "Admin1234") @NotBlank(message = "Ingresa tu contraseña.") String clave) {
+            @Schema(example = "admin@holomarket.cl") @NotBlank(message = "Ingresa tu correo.") @Email(message = "Revisa el formato del correo.") @Size(max = 100) String email,
+            // Tope de largo: nadie tiene una clave de 3 MB, y así un cuerpo gigante no ocupa al servidor.
+            @Schema(example = "Admin1234") @NotBlank(message = "Ingresa tu contraseña.") @Size(max = 100, message = "Correo o contraseña incorrectos.") String clave) {
     }
 
     public record RegistroRequest(

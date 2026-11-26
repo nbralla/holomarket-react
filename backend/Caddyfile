@@ -7,6 +7,23 @@
 {$DOMINIO} {
 	encode gzip
 
+	# Cabeceras de seguridad para todas las respuestas (sitio y API).
+	header {
+		# El navegador recuerda por un año que este sitio solo se usa con HTTPS.
+		Strict-Transport-Security "max-age=31536000"
+		# No adivinar tipos de archivo, no permitir que otro sitio nos meta en un iframe.
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		# CSP: solo nuestro JavaScript; tipografías de Google; imágenes de cartas por https;
+		# la API en el mismo dominio y el dólar desde mindicador.cl y open.er-api.com.
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://mindicador.cl https://open.er-api.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+		# No anunciar qué servidores hay detrás (Caddy, AmazonS3).
+		-Server
+		defer
+	}
+
 	handle /api/* {
 		reverse_proxy api:8080
 	}

@@ -52,7 +52,7 @@ export default function Categoria({ juego }: { juego: string }) {
       </ul>
 
       {productos.length ? (
-        <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3" id="categoria-resultados">
+        <div className="row row-cols-2 row-cols-md-2 row-cols-xl-3 g-3" id="categoria-resultados">
           {productos.map((p) => <div key={p.clave} className="col"><FichaProducto producto={p} /></div>)}
         </div>
       ) : (

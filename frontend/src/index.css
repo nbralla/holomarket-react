@@ -1998,3 +1998,50 @@ legend.titulo-chico + * { clear: both; }
 .usuario__enlaces { display: grid; gap: 2px; margin: 10px 0; padding: 10px 0; border-block: 1px solid var(--linea); list-style: none; }
 .usuario__enlaces a { display: block; padding: 7px 8px; border-radius: 8px; color: var(--tinta); font-weight: 700; text-decoration: none; }
 .usuario__enlaces a:hover, .usuario__enlaces a[aria-current="page"] { background: var(--foil-suave); color: var(--foil-texto); }
+
+/* 27. Celular: ajustes finos para pantallas chicas ------------------------- */
+@media (max-width: 767.98px) {
+  /* Cabecera más delgada: deja más pantalla para el contenido al desplazarse. */
+  .cabecera__fila { gap: 8px 12px; min-height: 60px; padding-block: 8px; }
+  .buscador input { min-height: 42px; }
+
+  /* Menú: panel con margen interno, esquinas y el resto de la página oscurecido detrás. */
+  .menu {
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 18px 30px rgba(28, 33, 64, .18), 0 0 0 100vmax rgba(28, 33, 64, .45);
+    clip-path: inset(0 -100vmax -100vmax -100vmax);
+  }
+  .menu__lista { padding: 4px var(--margen) 18px; }
+  .menu__lista a { padding: 15px 6px; font-size: 1.02rem; }
+  .menu__lista a[aria-current="page"] { padding-left: 16px; }
+
+  /* Portada: menos alto, sin desbordes de la grilla y con la vitrina más cerca del texto. */
+  .portada .row { --bs-gutter-x: 1.5rem; }
+  .portada__contenido { padding-block: 36px 28px; }
+  .portada__titulo { font-size: clamp(2.05rem, 9.5vw, 2.6rem); }
+  .portada__bajada { font-size: 1rem; margin-top: 14px; }
+  .portada__acciones { margin: 22px 0 14px; }
+
+  /* Catálogo, ofertas y categorías: dos cartas por fila, como en una tienda móvil. */
+  .rejilla-productos, #ofertas-resultados, #categoria-resultados { --bs-gutter-x: .75rem; --bs-gutter-y: .75rem; }
+  .producto-ficha__enlace { grid-template-columns: 1fr; gap: 10px; padding: 10px; }
+  .producto-ficha__carta { width: 100%; max-width: 160px; margin-inline: auto; }
+  .producto-ficha__nombre { font-size: .95rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .producto-ficha__edicion, .producto-ficha__rareza { font-size: .8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .producto-ficha__info .producto-ficha__desde { margin-top: 6px; font-size: .8rem; }
+  .producto-ficha__precio { font-size: 1.15rem; }
+  .producto-ficha__info .producto-ficha__mercado { font-size: .78rem; }
+
+  /* Pestañas del historial de la carta: ocupan el ancho y no se cortan. */
+  /* Indicadores (inventario, retiros, administración): de a dos, más compactos. */
+  .indicadores { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .indicador { padding: 12px 14px; }
+  .indicador__valor { font-size: 1.35rem; overflow-wrap: anywhere; }
+  .indicador__etiqueta { font-size: .84rem; }
+  .indicador__detalle { font-size: .74rem; }
+
+  /* Pestañas de pedidos y administración: más juntas para que quepan más sin deslizar. */
+  .pestanas a, .pestanas button { padding: 12px 10px; }
+
+  .pestanas--panel button { flex: 1 1 0; justify-content: center; padding: 10px 6px; font-size: .9rem; line-height: 1.2; text-align: center; white-space: normal; }
+}
