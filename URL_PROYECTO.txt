@@ -4,6 +4,9 @@ Integrantes: Nicolas Bralla y Sergio Melillan
 Sitio en la nube (front en Amazon S3):
 http://holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com
 
+Link para compartir (HTTPS, redirige al sitio; sirve para WhatsApp y celulares):
+https://nbralla.github.io/holomarket-react/
+
 API (backend Spring Boot + MySQL en EC2 con Docker):
 http://3.218.125.149/api/estado
 
