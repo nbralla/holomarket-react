@@ -1,13 +1,14 @@
 /* =========================================================================
    Imágenes de cartas desde API TCG (https://docs.apitcg.com)
    -------------------------------------------------------------------------
-   El navegador consulta /apitcg/api/... y el servidor de desarrollo de Vite
-   reenvía la consulta a api.apitcg.com agregando la clave (ver
-   vite.config.ts). Así la clave nunca llega al navegador y no hay bloqueo
-   de CORS.
+   La clave nunca llega al navegador: siempre la agrega un servidor intermedio.
+   - Producción (npm run build): el navegador consulta /api/tcg/api/... y el
+     backend Spring Boot (TcgController) reenvía a api.apitcg.com con la
+     APITCG_KEY del servidor. Solo acepta las 3 consultas que usa el front.
+   - Desarrollo (npm run dev): el navegador consulta /apitcg/api/... y el
+     servidor de Vite reenvía con la APITCG_KEY de .env.local (vite.config.ts).
 
-   Solo está activo con "npm run dev" y APITCG_KEY en .env.local. Si no, las
-   cartas se dibujan con CSS como siempre.
+   Sin clave, las cartas se dibujan con CSS como siempre.
 
    Para encontrar la imagen CORRECTA (Charizard ex tiene decenas de versiones)
    se busca en este orden y se elige la carta cuyo número coincide:

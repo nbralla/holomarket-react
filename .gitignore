@@ -1,0 +1,25 @@
+# Reglas para todo el repositorio (frontend/ y backend/ tienen además las suyas).
+
+# Secretos: nunca se suben. Solo las plantillas *.example.
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+
+# Dependencias y compilados
+node_modules/
+dist/
+target/
+coverage/
+coverage-logica/
+
+# Editores y sistema
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+*.log
+__pycache__/

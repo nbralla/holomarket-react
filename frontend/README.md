@@ -52,11 +52,12 @@ funcionar aunque haya errores de tipos.
 
 ### Compilar para producción (S3)
 
-1. Copia `.env.production.example` como `.env.production` y pon la IP del backend:
-   `VITE_API_URL=http://TU_ELASTIC_IP/api`
-2. `npm run build` y sube el **contenido** de `dist/` al bucket.
+1. Copia `.env.production.example` como `.env.production`. Deja `VITE_API_URL=/api`: el sitio y la
+   API comparten dominio, porque Caddy (en la EC2) envía `/api` al backend y el resto a S3.
+2. `npm run build` y sube el **contenido** de `dist/` (`index.html`, `favicon.svg` y `assets/`) al bucket,
+   después de borrar los archivos anteriores.
 
-`VITE_API_URL` queda grabada dentro del JavaScript: si cambia la IP hay que volver a compilar y subir.
+`VITE_API_URL` queda grabada dentro del JavaScript: si cambia, hay que volver a compilar y subir.
 
 ## Cuentas de prueba
 
@@ -120,6 +121,15 @@ Bootstrap se importa en `src/main.tsx` **antes** de `index.css`, así nuestros e
 | **Componente botón** (`.btn`) | Todos los botones: nuestras variantes (`btn--primario`, `btn--suave`…) definen las variables CSS de Bootstrap (`--bs-btn-bg`, `--bs-btn-hover-bg`…) |
 | **Badge** y **spinner** | Contadores del carrito y de pedidos; "Cargando HoloMarket..." |
 | **Utilidades flex** (`d-flex`, `justify-content-between`, `gap-4`) | Pie de página |
+
+Ajustes propios para pantallas chicas (`index.css`, secciones 22 y 27):
+
+- **Cabecera:** en escritorio, logo, buscador y enlaces en una fila. Hasta 1180 px el menú pasa a un
+  **panel lateral izquierdo** (fondo oscuro, se cierra con la X, Escape o un toque fuera) y en celular el
+  logo queda al centro con el buscador en su propia fila.
+- **Inicio en celular:** primero las 3 cartas destacadas y después el texto (`order-first order-md-0`).
+- **Catálogo, ofertas y categorías:** 2 cartas por fila en celular (`row-cols-2`).
+- **Tablas:** bajo 720 px cada fila se muestra como tarjeta con su etiqueta.
 
 Puntos de quiebre de Bootstrap: `sm` 576 px, `md` 768 px, `lg` 992 px, `xl` 1200 px, `xxl` 1400 px.
 Nuestras clases `.modal` y `.nav` se renombraron a `.ventana` y `.menu` porque Bootstrap ya usa esos nombres.
@@ -204,7 +214,7 @@ los enlaces), igual que en la Pokédex:
 | `/carrito`, `/checkout`, `/confirmacion/:id` | Compra (compra exitosa) | Cliente |
 | `/pago-rechazado?motivo=...` | No se pudo realizar el pago: motivo, total pendiente y reintentar | Cliente |
 | `/vender`, `/vender/:id` | Publicar o editar una carta (misma página) | Cliente |
-| `/inventario` | Mi inventario e historial de stock | Cliente |
+| `/inventario` | Mi inventario e historial de stock (`?historial=P001` lo abre filtrado en esa publicación) | Cliente |
 | `/pedidos?tab=compras` / `?tab=ventas` | Pedidos y seguimiento | Cliente |
 | `/retiros` | Retiro de ganancias | Cliente |
 | `/admin?tab=resumen` | Administración (7 pestañas) | Administrador |

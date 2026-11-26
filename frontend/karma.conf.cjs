@@ -72,7 +72,9 @@ module.exports = (config) => {
     // Cada ejecución en un documento limpio: así las búsquedas de Testing Library solo ven los componentes.
     client: { jasmine: { random: false }, clearContext: true },
 
-    browsers: ['ChromeHeadless'],
+    // En GitHub Actions (CI=true) Chrome corre sin sandbox: el contenedor de Linux no lo permite.
+    customLaunchers: { ChromeHeadlessCI: { base: 'ChromeHeadless', flags: ['--no-sandbox'] } },
+    browsers: [process.env.CI ? 'ChromeHeadlessCI' : 'ChromeHeadless'],
     singleRun: true,
   });
 };

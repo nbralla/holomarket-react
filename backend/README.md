@@ -69,7 +69,7 @@ importable en Postman). Para los endpoints protegidos: ejecuta `POST /api/auth/l
 | PUT | `/api/config` | Admin | Comisión, IVA, envíos, stock bajo, sesión, retiro mínimo, dólar |
 | POST | `/api/admin/restablecer` | Admin | Borra todo y recarga la demo |
 | POST | `/api/actividad` | Logueado | Registrar una acción del navegador (por ejemplo, exportar CSV) |
-| GET | `/api/tcg/**` | Público | Proxy a API TCG con `APITCG_KEY` (503 si no hay clave) |
+| GET | `/api/tcg/**` | Público | Proxy a API TCG con `APITCG_KEY` (503 sin clave). Solo `products`, `{juego}/sets` e `history-prices/{id}`; lo demás, 404 |
 
 Errores en JSON uniforme: `{ "status": 409, "message": "...", "errors": { ... } }`.
 
@@ -102,5 +102,23 @@ docker compose -f docker-compose.prod.yml --env-file .env.prod up -d --build
 docker compose -f docker-compose.prod.yml --env-file .env.prod logs -f api
 ```
 
-Levanta MySQL (sin puertos hacia afuera) y el backend en el puerto 80. El paso a paso en AWS está en
-[../DESPLIEGUE_AWS.md](../DESPLIEGUE_AWS.md).
+Levanta tres contenedores:
+
+| Contenedor | Puertos | Qué hace |
+|---|---|---|
+| `mysql` | ninguno hacia afuera | Base de datos (volumen `mysql_data`) |
+| `api` | ninguno hacia afuera (8080 en la red interna) | Este backend, como usuario sin privilegios |
+| `caddy` | 80 y 443 | HTTPS con Let's Encrypt (`Caddyfile`): `/api/*` → `api`, el resto → bucket S3; agrega cabeceras de seguridad (HSTS, CSP, X-Frame-Options...) |
+
+El paso a paso en AWS está en [../DESPLIEGUE_AWS.md](../DESPLIEGUE_AWS.md).
+
+## 6. Pruebas de seguridad y casos extremos
+
+[`pruebas/ataque.py`](pruebas/ataque.py) ejecuta 37 pruebas contra el backend **local** (con los datos
+demo; nunca contra la nube): permisos entre usuarios (IDOR), manipulación del precio y la cantidad,
+tarjetas rechazadas, compras y retiros simultáneos de lo mismo, validaciones y usuario bloqueado.
+Al terminar restablece la demo.
+
+```bash
+python pruebas/ataque.py      # con el backend encendido en localhost:8080 → "37/37 pruebas OK"
+```

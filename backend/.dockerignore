@@ -3,3 +3,5 @@ target/
 *.iml
 .env
 .env.*
+pruebas/
+README.md

@@ -51,9 +51,11 @@ function PanelImagenes() {
       <dl className="datos datos--compacto">
         <dt>Estado</dt>
         <dd>
-          {IMAGENES_ACTIVAS
-            ? 'Activa a través del servidor de desarrollo de Vite: la clave se queda en .env.local y el navegador no la ve.'
-            : 'Desactivada: falta APITCG_KEY en .env.local o el sitio no se está ejecutando con npm run dev. Mientras tanto se muestran las cartas dibujadas.'}
+          {!IMAGENES_ACTIVAS
+            ? 'Desactivada: falta APITCG_KEY. Mientras tanto se muestran las cartas dibujadas.'
+            : import.meta.env?.PROD
+              ? 'Activa a través del backend (/api/tcg): la clave APITCG_KEY se queda en el servidor y el navegador no la ve.'
+              : 'Activa a través del servidor de desarrollo de Vite: la clave se queda en .env.local y el navegador no la ve.'}
         </dd>
         <dt>En caché</dt>
         <dd>{guardadas} {plural(guardadas, 'imagen guardada', 'imágenes guardadas')} en este navegador ({DIAS_CACHE} días)</dd>
