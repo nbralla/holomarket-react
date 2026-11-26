@@ -191,6 +191,37 @@ Pruebas de seguridad (deben fallar):
 - [ ] `Test-NetConnection TU_ELASTIC_IP -Port 3306` → `TcpTestSucceeded : False`.
 - [ ] `admin@holomarket.cl` / `Admin1234` no funciona (se reemplazó por `ADMIN_PASSWORD`).
 
+## Fase 8 · HTTPS con Caddy (en vez de CloudFront)
+
+El Learner Lab **no permite CloudFront** (`cloudfront:CreateDistribution` está bloqueado). Para tener
+HTTPS se agrega **Caddy** en la misma EC2: obtiene solo un certificado de Let's Encrypt y es la única
+entrada del servidor.
+
+| Ruta | Caddy la envía a |
+|---|---|
+| `/api/*` | Contenedor `api` (Spring Boot, red interna) |
+| Todo lo demás | Sitio estático del bucket S3 (`FRONT_S3_HOST`); las rutas de React reciben `index.html` |
+| `http://TU_ELASTIC_IP/...` | Contenedor `api` (compatibilidad con pruebas por IP) |
+
+Como Let's Encrypt necesita un nombre de dominio, se usa **sslip.io**, un servicio gratuito donde
+`holomarket.3-218-125-149.sslip.io` apunta a `3.218.125.149`.
+
+1. **Grupo de seguridad:** agrega **HTTPS 443 → 0.0.0.0/0** (quedan 22 desde Mi IP, 80 y 443).
+2. **En la EC2**, dentro de `holomarket-react/backend`, agrega a `.env.prod` (con tu IP):
+
+   ```bash
+   DOMINIO=holomarket.3-218-125-149.sslip.io
+   IP_PUBLICA=3.218.125.149
+   FRONT_S3_HOST=holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com
+   CORS_ORIGINS=https://holomarket.3-218-125-149.sslip.io,http://holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com
+   ```
+
+   y levanta: `docker compose -f docker-compose.prod.yml --env-file .env.prod up -d`.
+   En `logs caddy` debe aparecer `certificate obtained successfully`.
+3. **Front:** compílalo con `VITE_API_URL=/api` (misma dirección que el sitio), borra los objetos del
+   bucket y sube el nuevo `dist/`.
+4. Abre **https://holomarket.3-218-125-149.sslip.io** (con candado).
+
 ## Día a día
 
 - **Nueva sesión del lab:** Start Lab; la EC2 y los contenedores arrancan solos (`restart: unless-stopped`). Espera 1-2 minutos.

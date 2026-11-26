@@ -10,7 +10,7 @@ publicación de cartas, pedidos con seguimiento, retiro de ganancias y panel de 
 | [`frontend/`](frontend) | React 19 + TypeScript + Vite + React Router + Bootstrap 5 | [frontend/README.md](frontend/README.md) |
 | [`backend/`](backend) | Spring Boot 3.5 + Java 21 + JPA + Spring Security (JWT) + Swagger | [backend/README.md](backend/README.md) |
 | Base de datos | MySQL 8.4 en Docker | `backend/docker-compose.yml` (desarrollo) y `docker-compose.prod.yml` (producción) |
-| Despliegue | AWS Learner Lab: front en S3, backend + MySQL en EC2 con Docker Compose | [DESPLIEGUE_AWS.md](DESPLIEGUE_AWS.md) |
+| Despliegue | AWS Learner Lab: front en S3, backend + MySQL en EC2 con Docker Compose y HTTPS con Caddy | [DESPLIEGUE_AWS.md](DESPLIEGUE_AWS.md) · https://holomarket.3-218-125-149.sslip.io |
 
 Cómo está armado y por qué: [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md).
 

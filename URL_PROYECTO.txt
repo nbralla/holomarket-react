@@ -1,14 +1,17 @@
 HoloMarket - DSY1104 Desarrollo FullStack II - Evaluación Parcial 3
 Integrantes: Nicolas Bralla y Sergio Melillan
 
-Sitio en la nube (front en Amazon S3):
-http://holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com
+Sitio en la nube (HTTPS):
+https://holomarket.3-218-125-149.sslip.io
 
-Link para compartir (HTTPS, redirige al sitio; sirve para WhatsApp y celulares):
+Link corto para compartir (redirige al sitio):
 https://nbralla.github.io/holomarket-react/
 
 API (backend Spring Boot + MySQL en EC2 con Docker):
-http://3.218.125.149/api/estado
+https://holomarket.3-218-125-149.sslip.io/api/estado
+
+Front alojado en Amazon S3 (sitio estático, HTTP):
+http://holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com
 
 Repositorio GitHub:
 https://github.com/nbralla/holomarket-react

@@ -12,6 +12,10 @@
 	}
 
 	handle {
+		# React Router: /catalogo, /carrito... no existen como archivos en S3. Se pide index.html
+		# (con estado 200) y React muestra la vista. Los archivos reales (assets, favicon) pasan tal cual.
+		@spa not path /assets/* /favicon.svg
+		rewrite @spa /index.html
 		reverse_proxy http://{$FRONT_S3_HOST} {
 			# S3 elige el bucket por el nombre del host: hay que enviarle el suyo, no el de Caddy.
 			header_up Host {$FRONT_S3_HOST}

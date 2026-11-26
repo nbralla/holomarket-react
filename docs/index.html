@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>HoloMarket · Marketplace de cartas TCG</title>
   <meta name="description" content="Compra y vende cartas sueltas de Pokémon, Magic, Yu-Gi-Oh!, One Piece y Mitos y Leyendas en Chile.">
-  <!-- Esta página (con HTTPS, en GitHub Pages) solo redirige al sitio en Amazon S3, que se sirve por HTTP.
-       Así el link se puede compartir por WhatsApp sin que el celular lo fuerce a https y falle. -->
-  <meta http-equiv="refresh" content="0; url=http://holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com/">
+  <!-- Esta página (en GitHub Pages) solo redirige al sitio de HoloMarket en AWS:
+       Caddy en la EC2 (HTTPS con Let's Encrypt) sirve el front desde S3 y la API desde Spring Boot. -->
+  <meta http-equiv="refresh" content="0; url=https://holomarket.3-218-125-149.sslip.io/">
   <style>
     :root { color-scheme: light dark; }
     body {
@@ -27,11 +27,11 @@
   <main>
     <h1>HoloMarket</h1>
     <p>Marketplace de cartas TCG en Chile. Abriendo la tienda…</p>
-    <a href="http://holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com/">Entrar a HoloMarket</a>
+    <a href="https://holomarket.3-218-125-149.sslip.io/">Entrar a HoloMarket</a>
     <small>Si no te redirige solo, toca el botón.</small>
   </main>
   <script>
-    location.replace('http://holomarket-tienda-tcg.s3-website-us-east-1.amazonaws.com/');
+    location.replace('https://holomarket.3-218-125-149.sslip.io/');
   </script>
 </body>
 </html>
