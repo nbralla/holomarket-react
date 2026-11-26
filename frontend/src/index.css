@@ -262,6 +262,7 @@ code {
   gap: 20px;
   min-height: 70px;
 }
+.cabecera__acciones { display: flex; align-items: center; gap: 12px; }
 
 .logo {
   display: inline-flex;
@@ -313,6 +314,7 @@ code {
 .boton-menu {
   display: none;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   min-height: 44px;
   margin-left: auto;
@@ -324,10 +326,12 @@ code {
   font-size: .9rem;
   cursor: pointer;
 }
+.boton-menu:hover { border-color: var(--linea-fuerte); }
 .boton-menu__icono { display: grid; gap: 3px; }
 .boton-menu__icono i { display: block; width: 16px; height: 2px; border-radius: 1px; background: currentColor; }
 
 .menu { margin-left: auto; flex: 0 0 auto; white-space: nowrap; }
+.menu__cabeza, .menu-fondo { display: none; }
 .menu__lista {
   display: flex;
   align-items: center;
@@ -354,9 +358,6 @@ code {
   background: var(--tinta);
   color: #fff;
 }
-.menu__lista .menu__ingresar:hover { background: #2C3260; color: #fff; }
-.menu__lista .menu__ingresar[aria-current="page"] { box-shadow: none; color: #fff; }
-
 .contador {   /* badge de Bootstrap con el color de HoloMarket */
   --bs-badge-padding-x: 6px;
   --bs-badge-padding-y: 0;
@@ -1468,26 +1469,82 @@ legend.titulo-chico + * { clear: both; }
 .pie__legal { padding-top: 18px; color: rgba(255, 255, 255, .66); font-size: .8rem; }
 .pie__legal p { margin: 0 0 6px; }
 
-/* 22. Responsivo ---------------------------------------------------------- */
-/* El menú pasa a botón antes que el resto: con sesión de cliente tiene 5 enlaces. */
+@keyframes aparece { from { opacity: 0; } }
+/* 22. Responsivo -----------------------------------------------------------
+   Hasta 1180 px el menú pasa a panel lateral (con sesión de cliente tiene 5 enlaces). */
 @media (max-width: 1180px) {
+  /* Menú principal: panel que entra desde la izquierda, con fondo oscuro detrás. */
   .boton-menu { display: inline-flex; }
   .menu {
-    position: absolute;
-    top: 100%;
-    left: calc(-1 * var(--margen));
-    right: calc(-1 * var(--margen));
-    display: none;
+    position: fixed;
     margin: 0;
+    white-space: normal;
+    inset: 0 auto 0 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    width: min(320px, 86vw);
     background: #fff;
-    border-bottom: 1px solid var(--linea);
-    box-shadow: 0 18px 30px rgba(28, 33, 64, .12);
+    box-shadow: 18px 0 40px rgba(28, 33, 64, .18);
+    overflow-y: auto;
+    transform: translateX(-105%);
+    visibility: hidden;
+    transition: transform .25s ease, visibility 0s linear .25s;
   }
-  .menu--abierta { display: block; }
-  .menu__lista { flex-direction: column; align-items: stretch; gap: 0; padding: 6px var(--margen) 16px; }
-  .menu__lista a { width: 100%; padding: 14px 2px; border-bottom: 1px solid var(--linea); }
-  .menu__lista a[aria-current="page"] { box-shadow: inset 4px 0 0 var(--foil); padding-left: 14px; }
-  .menu__lista .menu__ingresar { justify-content: center; margin-top: 12px; border-bottom: 0; }
+  .menu--abierta { transform: none; visibility: visible; transition: transform .25s ease; }
+  .menu-fondo { display: block; position: fixed; inset: 0; z-index: 55; background: rgba(28, 33, 64, .45); animation: aparece .2s ease both; }
+  .menu__cabeza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 70px;
+    padding: 0 14px 0 22px;
+    border-bottom: 1px solid var(--linea);
+  }
+  .menu__cerrar {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--tinta-2);
+    cursor: pointer;
+  }
+  .menu__cerrar:hover { background: var(--papel); color: var(--tinta); }
+  .menu__lista {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 10px 12px 20px;
+  }
+  .menu__lista a {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 12px;
+    border-radius: 10px;
+    color: var(--tinta);
+    font-weight: 700;
+    font-size: 1.02rem;
+    text-decoration: none;
+  }
+  .menu__lista a:hover { background: var(--papel); color: var(--tinta); }
+  .menu__lista a[aria-current="page"] { background: var(--foil-suave); color: var(--foil-texto); box-shadow: inset 4px 0 0 var(--foil); }
+  .menu__lista .menu__ingresar {
+    justify-content: center;
+    padding: 14px 12px;
+    margin-top: 12px;
+    background: var(--tinta);
+    color: #fff;
+  }
+  .menu__lista .menu__ingresar[aria-current="page"] { background: var(--tinta); color: #fff; box-shadow: none; }
+  .menu__lista .menu__ingresar:hover { background: #2C3260; color: #fff; }
 }
 
 @media (max-width: 1080px) {
@@ -1499,15 +1556,26 @@ legend.titulo-chico + * { clear: both; }
   .filtros-panel[open] > summary::after { content: '−'; }
   .filtros { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
 
-  .vender { grid-template-columns: 1fr; }
+  .vender { grid-template-columns: minmax(0, 1fr); }
   .resumen, .vista-previa { position: static; }
   .vista-previa { max-width: 420px; }
   .rejilla-admin { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 860px) {
-  .cabecera__fila { flex-wrap: wrap; gap: 10px 14px; padding-block: 10px; }
-  .buscador { order: 10; flex-basis: 100%; max-width: none; }
+  /* Cabecera de celular: menú a la izquierda, logo al centro, carrito y cuenta a la derecha;
+     el buscador baja a su propia fila. Las columnas laterales miden lo mismo para centrar el logo. */
+  .cabecera__fila {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-areas: "izq logo der" "busca busca busca";
+    gap: 10px 14px;
+    padding-block: 10px;
+  }
+  .cabecera__fila > .boton-menu { grid-area: izq; justify-self: start; margin-left: 0; }
+  .cabecera__fila > .logo { grid-area: logo; }
+  .cabecera__acciones { grid-area: der; justify-content: flex-end; }
+  .buscador { grid-area: busca; max-width: none; }
   .portada__titulo { max-width: 18ch; }
   .vitrina { min-height: 330px; }
   .vitrina__carta { width: 150px; }
@@ -1533,9 +1601,15 @@ legend.titulo-chico + * { clear: both; }
 
 @media (max-width: 600px) {
   .franja-demo { font-size: .78rem; }
-  .boton-menu { padding: 0 11px; }
+  .boton-menu { width: 44px; padding: 0; }
   .boton-menu > span:not(.boton-menu__icono) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .logo__texto { font-size: 1.2rem; }
+  /* Cabecera de celular: logo más compacto para que quepa al centro entre el menú y el carrito. */
+  .cabecera__fila { column-gap: 8px; }
+  .cabecera__fila > .logo { gap: 8px; }
+  .logo__texto { font-size: 1rem; }
+  .logo__marca { width: 16px; height: 22px; }
+  .cabecera__acciones { gap: 4px; }
+  .carrito-enlace { flex: 0 0 42px; width: 42px; height: 44px; }
   .usuario__nombre { display: none; }
   .usuario__boton { padding: 4px; }
   .portada__acciones .btn { flex: 1 1 100%; }
@@ -1766,7 +1840,9 @@ legend.titulo-chico + * { clear: both; }
 .producto__dato dd { margin: 0; color: var(--tinta-2); overflow-wrap: anywhere; }
 
 /* Recuadro de compra (oferta seleccionada) */
-.oferta { display: grid; gap: 12px; }
+.oferta { display: grid; gap: 12px; align-content: start; align-self: flex-start; }
+/* En escritorio el recuadro de compra acompaña al desplazarse, sin estirarse al alto de los detalles. */
+@media (min-width: 1200px) { .oferta { position: sticky; top: 96px; } }
 .oferta__caja { overflow: hidden; background: var(--superficie); border: 1px solid var(--linea); border-radius: var(--radio); }
 .oferta__cabeza {
   margin: 0;
@@ -1782,7 +1858,8 @@ legend.titulo-chico + * { clear: both; }
 .oferta__precio { font: 800 1.9rem/1.1 var(--f-display); font-stretch: 100%; }
 .oferta__cuerpo .oferta__envio { margin-top: -6px; color: var(--tinta-3); font-size: .88rem; }
 .oferta__vendedor { color: var(--tinta-2); font-size: .92rem; }
-.oferta__enlace { font-size: .92rem; }
+.oferta__enlace { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: .92rem; }
+#inv-historial-titulo { scroll-margin-top: 150px; }
 .oferta__otras {
   display: grid;
   gap: 2px;
@@ -2005,19 +2082,10 @@ legend.titulo-chico + * { clear: both; }
   .cabecera__fila { gap: 8px 12px; min-height: 60px; padding-block: 8px; }
   .buscador input { min-height: 42px; }
 
-  /* Menú: panel con margen interno, esquinas y el resto de la página oscurecido detrás. */
-  .menu {
-    border-radius: 0 0 16px 16px;
-    box-shadow: 0 18px 30px rgba(28, 33, 64, .18), 0 0 0 100vmax rgba(28, 33, 64, .45);
-    clip-path: inset(0 -100vmax -100vmax -100vmax);
-  }
-  .menu__lista { padding: 4px var(--margen) 18px; }
-  .menu__lista a { padding: 15px 6px; font-size: 1.02rem; }
-  .menu__lista a[aria-current="page"] { padding-left: 16px; }
-
   /* Portada: menos alto, sin desbordes de la grilla y con la vitrina más cerca del texto. */
   .portada .row { --bs-gutter-x: 1.5rem; }
-  .portada__contenido { padding-block: 36px 28px; }
+  .portada__contenido { padding-block: 18px 30px; }
+  .portada .vitrina { margin-bottom: -6px; }
   .portada__titulo { font-size: clamp(2.05rem, 9.5vw, 2.6rem); }
   .portada__bajada { font-size: 1rem; margin-top: 14px; }
   .portada__acciones { margin: 22px 0 14px; }

@@ -5,7 +5,6 @@ import { CondicionChip, EstadoChip } from '../components/Chips';
 import GraficoPrecios from '../components/GraficoPrecios';
 import Precio from '../components/Precio';
 import Tabla from '../components/Tabla';
-import TablaMovimientos from '../components/TablaMovimientos';
 import { CONDICIONES, IDIOMAS, JUEGOS, condicionDe } from '../data/catalogo';
 import { estadoPublicacion, pubPorId, publicacionesVisibles, usuarioPorId } from '../logica/consultas';
 import { costoEnvio } from '../logica/estado';
@@ -107,7 +106,6 @@ export default function Detalle({ id }: { id: string }) {
   };
   const envio = envioPara(estado, vendedor, usuario);
   const dolar = dolarVivo.valor;
-  const movimientos = estado.movimientos.filter((m) => m.pubId === pub.id).reverse();
 
   const rangoCond = (p: Publicacion) => CONDICIONES.findIndex((c) => c.id === p.condicion);
   const listado = [...producto.publicaciones].sort((a, b) =>
@@ -165,7 +163,12 @@ export default function Detalle({ id }: { id: string }) {
               <p className="oferta__vendedor">Vende <strong>{nombreCorto(vendedor)}</strong>, {vendedor.comuna}</p>
               {aviso ?? <Comprar key={pub.id} pub={pub} grande />}
               {pub.descripcion && <p className="cita"><strong>Nota de quien vende:</strong> {pub.descripcion}</p>}
-              {esDueno && <p className="oferta__enlace"><Link to="/inventario">Ir a mi inventario</Link></p>}
+              {esDueno && (
+                <p className="oferta__enlace">
+                  <Link to="/inventario">Ir a mi inventario</Link>
+                  <Link to={`/inventario?historial=${pub.id}`}>Ver historial de stock</Link>
+                </p>
+              )}
             </div>
           </div>
           {producto.publicaciones.length > 1 && (
@@ -316,13 +319,6 @@ export default function Detalle({ id }: { id: string }) {
         </ul>
       </section>
 
-      {(esDueno || esAdmin) && (
-        <section className="subseccion" aria-labelledby="detalle-historial">
-          <h2 id="detalle-historial">Historial de stock</h2>
-          <p className="bajada">Solo lo ven quien vende y el equipo de administración.</p>
-          <TablaMovimientos movimientos={movimientos} conCarta={false} />
-        </section>
-      )}
     </section>
   );
 }

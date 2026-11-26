@@ -1,4 +1,4 @@
-import { useState, type FocusEvent, type KeyboardEvent } from 'react';
+import { useEffect, useState, type FocusEvent, type KeyboardEvent } from 'react';
 import Carta from '../components/Carta';
 import { CondicionChip, EstadoChip } from '../components/Chips';
 import Indicadores from '../components/Indicadores';
@@ -15,7 +15,7 @@ import type { Publicacion, Usuario } from '../types';
 import { clp, plural, suma } from '../utils/formato';
 import { entero, precioError } from '../utils/validaciones';
 
-import { Link } from 'react-router';
+import { Link, useSearchParams } from 'react-router';
 type Filtro = 'todas' | 'activas' | 'pausadas' | 'agotadas' | 'bajo';
 const MOTIVOS = ['Reposición de stock', 'Venta fuera de HoloMarket', 'Carta dañada o perdida', 'Corrección de conteo'];
 
@@ -76,7 +76,12 @@ export default function Inventario({ usuario }: { usuario: Usuario }) {
   const { avisar } = useAvisos();
   const modal = useModal();
   const [filtro, setFiltro] = useState<Filtro>('todas');
-  const [kardexPub, setKardexPub] = useState('');
+  // Desde la página de una carta se llega con ?historial=ID: el historial abre filtrado en esa publicación.
+  const [params] = useSearchParams();
+  const [kardexPub, setKardexPub] = useState(() => params.get('historial') ?? '');
+  useEffect(() => {
+    if (params.get('historial')) document.getElementById('inv-historial-titulo')?.scrollIntoView({ block: 'start' });
+  }, [params]);
 
   const stockBajo = estado.config.stockBajo;
   const mias = estado.publicaciones.filter((p) => p.vendedorId === usuario.id && p.estado !== 'eliminada');

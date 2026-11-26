@@ -21,7 +21,7 @@ export default function Inicio() {
   return (
     <section className="vista" id="vista-inicio" data-vista="inicio" aria-labelledby="inicio-titulo">
       <div className="portada">
-        {/* Grilla de Bootstrap: texto y vitrina en dos columnas desde tablet (md), una sola en celular */}
+        {/* Grilla de Bootstrap: texto y vitrina en dos columnas desde tablet (md). En celular la vitrina va primero (order-first). */}
         <div className="portada__contenido contenedor">
           <div className="row align-items-center gx-5 gy-4">
             <div className="portada__texto col-md-7">
@@ -37,7 +37,7 @@ export default function Inicio() {
                 {plural(vendedores, 'vendedor', 'vendedores')} en {IDS_JUEGOS.length} juegos.
               </p>
             </div>
-            <div className="vitrina col-md-5" id="vitrina" role="group" aria-label="Cartas destacadas">
+            <div className="vitrina col-md-5 order-first order-md-0" id="vitrina" role="group" aria-label="Cartas destacadas">
               {vitrina.map(({ pub, pos }) => pub && (
                 <Link key={pub.id} className={`vitrina__carta vitrina__carta--${pos}`} to={`/carta/${pub.id}`} aria-label={`${pub.nombre}, ${clp(pub.precio)}`}>
                   <Carta carta={pub} alt={pub.nombre} interactiva={pos === 'centro'} />

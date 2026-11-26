@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
 import { leerFiltros, rutaCatalogo } from '../logica/consultas';
 import { useDebounce } from '../hooks/useDebounce';
 import { useNavegar, useRuta } from '../hooks/useRuta';
@@ -8,14 +8,27 @@ import { iniciales, nombreCorto, plural, suma } from '../utils/formato';
 import { Link } from 'react-router';
 const SECCION_ACTIVA: Record<string, string> = { carta: 'catalogo', categoria: 'categorias', checkout: 'carrito', 'pago-rechazado': 'carrito', confirmacion: 'pedidos' };
 
+/* Hasta 1180 px el menú es un panel lateral (en escritorio los enlaces van en la misma cabecera). */
+const PANEL = '(max-width: 1180px)';
+const escucharPanel = (aviso: () => void) => {
+  const mq = window.matchMedia(PANEL);
+  mq.addEventListener('change', aviso);
+  return () => mq.removeEventListener('change', aviso);
+};
+const esPanelAhora = () => window.matchMedia(PANEL).matches;
+
 export default function Cabecera() {
   const { estado, usuario, carrito, cerrarSesion } = useTienda();
   const ruta = useRuta();
   const { navegar, reemplazar: reemplazarRuta } = useNavegar();
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const enPanel = useSyncExternalStore(escucharPanel, esPanelAhora, () => false);
   const [menuUsuario, setMenuUsuario] = useState(false);
   const [texto, setTexto] = useState(() => (ruta.vista === 'catalogo' ? ruta.params.get('q') ?? '' : ''));
   const buscador = useRef<HTMLInputElement>(null);
+  const botonMenu = useRef<HTMLButtonElement>(null);
+  const cerrarMenu = useRef<HTMLButtonElement>(null);
+  const menuFueAbierto = useRef(false);
   const escribiendo = useRef(false);
   const rutaRef = useRef(ruta);
   rutaRef.current = ruta;
@@ -32,6 +45,22 @@ export default function Cabecera() {
     setMenuUsuario(false);
     if (document.activeElement !== buscador.current) setTexto(ruta.vista === 'catalogo' ? ruta.params.get('q') ?? '' : '');
   }, [ruta]);
+
+  // Panel lateral: mientras está abierto la página no se desplaza; el foco entra al panel y vuelve al botón al cerrar.
+  useEffect(() => {
+    if (!enPanel) setMenuAbierto(false);
+  }, [enPanel]);
+  useEffect(() => {
+    if (menuAbierto) {
+      menuFueAbierto.current = true;
+      document.body.style.overflow = 'hidden';
+      cerrarMenu.current?.focus({ preventScroll: true });
+    } else {
+      document.body.style.overflow = '';
+      if (menuFueAbierto.current && document.activeElement?.closest('#navegacion')) botonMenu.current?.focus();
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menuAbierto]);
 
   // En el catálogo, la búsqueda se aplica mientras escribes (250 ms después de la última tecla).
   const textoRetrasado = useDebounce(texto, 250);
@@ -91,13 +120,22 @@ export default function Cabecera() {
             </button>
           </form>
 
-          <button type="button" className="boton-menu" id="boton-menu" aria-expanded={menuAbierto} aria-controls="navegacion"
+          <button type="button" className="boton-menu" id="boton-menu" ref={botonMenu} aria-expanded={menuAbierto} aria-controls="navegacion"
             onClick={() => setMenuAbierto((a) => !a)}>
             <span className="boton-menu__icono" aria-hidden="true"><i /><i /><i /></span>
             <span>Menú</span>
           </button>
 
-          <nav className={`menu${menuAbierto ? ' menu--abierta' : ''}`} id="navegacion" aria-label="Principal">
+          <nav className={`menu${menuAbierto ? ' menu--abierta' : ''}`} id="navegacion" aria-label="Principal" inert={enPanel && !menuAbierto}>
+            <div className="menu__cabeza">
+              <span className="logo">
+                <span className="logo__marca" aria-hidden="true" />
+                <span className="logo__texto">HoloMarket</span>
+              </span>
+              <button type="button" className="menu__cerrar" ref={cerrarMenu} aria-label="Cerrar menú" onClick={() => setMenuAbierto(false)}>
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+              </button>
+            </div>
             <ul className="menu__lista">
               <li><Link to="/catalogo" data-nav="catalogo" aria-current={marca('catalogo')}>Catálogo</Link></li>
               <li><Link to="/categorias" data-nav="categorias" aria-current={marca('categorias')}>Categorías</Link></li>
@@ -117,41 +155,45 @@ export default function Cabecera() {
               {rol === 'visitante' && <li><Link className="menu__ingresar" to="/ingresar" data-nav="ingresar" aria-current={marca('ingresar')}>Ingresar</Link></li>}
             </ul>
           </nav>
+          {/* Fondo oscuro detrás del panel: un clic fuera lo cierra. */}
+          <div className="menu-fondo" hidden={!menuAbierto} onClick={() => setMenuAbierto(false)} />
 
-          {rol !== 'admin' && (
-            <Link className="carrito-enlace" id="carrito-enlace" to="/carrito" data-nav="carrito" aria-current={marca('carrito')}
-              aria-label={enCarrito ? `Carrito, ${enCarrito} ${plural(enCarrito, 'carta', 'cartas')}` : 'Carrito, vacío'}>
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M3 4h2.2l2.3 10.6a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.5L21 8H6.1" /><circle cx="10" cy="20" r="1.4" /><circle cx="17.2" cy="20" r="1.4" />
-              </svg>
-              <span className="badge rounded-pill contador" id="carrito-contador" hidden={enCarrito === 0}>{enCarrito}</span>
-            </Link>
-          )}
+          <div className="cabecera__acciones">
+            {rol !== 'admin' && (
+              <Link className="carrito-enlace" id="carrito-enlace" to="/carrito" data-nav="carrito" aria-current={marca('carrito')}
+                aria-label={enCarrito ? `Carrito, ${enCarrito} ${plural(enCarrito, 'carta', 'cartas')}` : 'Carrito, vacío'}>
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 4h2.2l2.3 10.6a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.5L21 8H6.1" /><circle cx="10" cy="20" r="1.4" /><circle cx="17.2" cy="20" r="1.4" />
+                </svg>
+                <span className="badge rounded-pill contador" id="carrito-contador" hidden={enCarrito === 0}>{enCarrito}</span>
+              </Link>
+            )}
 
-          {usuario && (
-            <div className="usuario">
-              <button type="button" className="usuario__boton" id="boton-usuario" aria-expanded={menuUsuario} aria-controls="menu-usuario"
-                onClick={() => setMenuUsuario((a) => !a)}>
-                <span className="avatar" id="usuario-avatar" aria-hidden="true">{iniciales(usuario.nombre)}</span>
-                <span className="usuario__nombre" id="usuario-nombre">{nombreCorto(usuario)}</span>
-              </button>
-              <div className="usuario__menu" id="menu-usuario" hidden={!menuUsuario}>
-                <p className="usuario__completo" id="usuario-nombre-completo">{usuario.nombre}</p>
-                <p className="usuario__correo" id="usuario-correo">{usuario.email}</p>
-                <p className="usuario__rol" id="usuario-rol">{usuario.rol === 'admin' ? 'Administrador' : 'Cliente'}</p>
-                {rol === 'cliente' && (
-                  <ul className="usuario__enlaces" aria-label="Mi cuenta">
-                    <li><Link to="/inventario" aria-current={marca('inventario')} onClick={() => setMenuUsuario(false)}>Mi inventario</Link></li>
-                    <li><Link to="/pedidos" aria-current={marca('pedidos')} onClick={() => setMenuUsuario(false)}>Mis pedidos</Link></li>
-                    <li><Link to="/retiros" aria-current={marca('retiros')} onClick={() => setMenuUsuario(false)}>Retiros de dinero</Link></li>
-                  </ul>
-                )}
-                <button type="button" className="btn btn--fantasma btn--chico btn--bloque" data-accion="cerrar-sesion" onClick={() => cerrarSesion()}>
-                  Cerrar sesión
+            {usuario && (
+              <div className="usuario">
+                <button type="button" className="usuario__boton" id="boton-usuario" aria-expanded={menuUsuario} aria-controls="menu-usuario"
+                  onClick={() => setMenuUsuario((a) => !a)}>
+                  <span className="avatar" id="usuario-avatar" aria-hidden="true">{iniciales(usuario.nombre)}</span>
+                  <span className="usuario__nombre" id="usuario-nombre">{nombreCorto(usuario)}</span>
                 </button>
+                <div className="usuario__menu" id="menu-usuario" hidden={!menuUsuario}>
+                  <p className="usuario__completo" id="usuario-nombre-completo">{usuario.nombre}</p>
+                  <p className="usuario__correo" id="usuario-correo">{usuario.email}</p>
+                  <p className="usuario__rol" id="usuario-rol">{usuario.rol === 'admin' ? 'Administrador' : 'Cliente'}</p>
+                  {rol === 'cliente' && (
+                    <ul className="usuario__enlaces" aria-label="Mi cuenta">
+                      <li><Link to="/inventario" aria-current={marca('inventario')} onClick={() => setMenuUsuario(false)}>Mi inventario</Link></li>
+                      <li><Link to="/pedidos" aria-current={marca('pedidos')} onClick={() => setMenuUsuario(false)}>Mis pedidos</Link></li>
+                      <li><Link to="/retiros" aria-current={marca('retiros')} onClick={() => setMenuUsuario(false)}>Retiros de dinero</Link></li>
+                    </ul>
+                  )}
+                  <button type="button" className="btn btn--fantasma btn--chico btn--bloque" data-accion="cerrar-sesion" onClick={() => cerrarSesion()}>
+                    Cerrar sesión
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </header>
     </>
