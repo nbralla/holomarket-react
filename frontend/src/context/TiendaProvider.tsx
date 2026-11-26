@@ -30,17 +30,21 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
   const [estado, setEstado] = useState<Estado>(estadoInicial);
   const [sesion, setSesion] = useState<Sesion | null>(leerSesion);
   const [ahora, setAhora] = useState(() => Date.now());
+  /* Token con que se pidieron los datos que hay en pantalla (Arranque los pidió con la sesión guardada).
+     Sirve para no juzgar una sesión con datos pedidos con otra: por ejemplo, cuando se ingresa en
+     otra pestaña y esta todavía tiene los datos de visitante. */
+  const [tokenDelEstado, setTokenDelEstado] = useState<string | null>(() => leerSesion()?.token ?? null);
   const estadoRef = useRef(estado);
   const ultimaRenovacion = useRef(0);
 
   /* ---------- Usuario actual: sesión vigente y cuenta activa ---------- */
   const usuario = useMemo(() => {
-    if (!sesion || sesion.expira <= ahora) return null;
+    if (!sesion || sesion.expira <= ahora || sesion.token !== tokenDelEstado) return null;
     // Con un token válido el backend entrega los datos completos del propio usuario (con su correo).
     // Si solo llega la ficha pública, el token ya no sirve y la sesión se cierra.
     const u = usuarioPorId(estado, sesion.uid);
     return u && u.estado === 'activo' && u.email ? u : null;
-  }, [estado, sesion, ahora]);
+  }, [estado, sesion, ahora, tokenDelEstado]);
   const uid = usuario?.id ?? null;
 
   const [carrito, setCarrito] = useState<ItemCarrito[]>(() => (sesion ? leerCarrito(sesion.uid) : []));
@@ -52,9 +56,11 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
   /* Vuelve a pedir GET /api/estado (después de cada acción, o si otra pestaña cambió los datos). */
   const recargar = useCallback(async () => {
     try {
+      const token = leerSesion()?.token ?? null;
       const nuevo = await cargarEstado();
       estadoRef.current = nuevo;
       setEstado(nuevo);
+      setTokenDelEstado(token);
     } catch (error) {
       avisar(mensajeDe(error), 'error');
     }
@@ -134,11 +140,13 @@ export function TiendaProvider({ estadoInicial, children }: { estadoInicial: Est
   /* Si la sesión venció por inactividad (o el usuario fue bloqueado), se cierra. */
   useEffect(() => {
     if (!sesion || usuario) return;
+    // Datos pedidos con otro token (la sesión cambió en otra pestaña): se esperan los datos nuevos.
+    if (sesion.expira > ahora && sesion.token !== tokenDelEstado) return;
     borrarSesion();
     setSesion(null);
     if (sesion.expira <= ahora) avisar('Tu sesión se cerró por inactividad. Vuelve a ingresar para continuar.', 'info');
     recargar();
-  }, [sesion, usuario, ahora, avisar, recargar]);
+  }, [sesion, usuario, ahora, tokenDelEstado, avisar, recargar]);
 
   useEffect(() => {
     const t = setInterval(() => setAhora(Date.now()), MS_REVISAR);
